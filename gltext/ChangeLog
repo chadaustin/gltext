@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- -----------  -------------------------------------------------------
+2002-06-15 nonchocoboy  Aliased (bitmap) rendering added.
 2002-05-08 nonchocoboy  Added the sizes example.
 2002-05-08 nonchocoboy  Antialiased (pixmap) rendering added.
 2002-05-08 nonchocoboy  FT2 glyph management support added.
