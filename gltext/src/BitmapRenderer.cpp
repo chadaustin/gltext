@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: BitmapRenderer.cpp,v $
- * Date modified: $Date: 2002-06-15 22:38:46 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-06-15 22:58:16 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -78,84 +78,30 @@ namespace gltext
          --srcRow;
          for (int c=0; c<width; ++c)
          {
-            int bytePos = r * pitch + (c/8);
+            int bytePos = srcRow * pitch + (c/8);
             int bit = c % 8;
             unsigned char byte = srcBuffer[bytePos];
-            bool on = (byte & (0x1 << bit)) != 0;
-//            std::cout<<(on ? "X" : "+");
-            std::cout<<(bytePos + bit);
+            bool on = (byte & (0x80 >> bit)) != 0;
+            std::cout<<(on ? "X" : "+");
+
+            int destOffset = 4*(r * width + c);
+            if (on)
+            {
+               data[destOffset + 0] = color[0];
+               data[destOffset + 1] = color[1];
+               data[destOffset + 2] = color[2];
+               data[destOffset + 3] = color[3];
+            }
+            else
+            {
+               data[destOffset + 0] = 0;
+               data[destOffset + 1] = 0;
+               data[destOffset + 2] = 0;
+               data[destOffset + 3] = 0;
+            }
          }
          std::cout<<std::endl;
       }
-//      for (int r=0; r<height; ++r)
-//      {
-//         --srcRow;
-//         for (int c=0; c<width; ++c)
-//         {
-//            int srcBit = r * pitch*8 + c;
-//            char byte = srcBuffer[srcBit];
-//            bool on = false;
-//
-//            switch (srcBit % 8)
-//            {
-//            case 0: on = ((byte & 0) == 0); break;
-//            case 1: on = ((byte & 1) == 1); break;
-//            case 2: on = ((byte & 2) == 2); break;
-//            case 3: on = ((byte & 3) == 3); break;
-//            case 4: on = ((byte & 4) == 4); break;
-//            case 5: on = ((byte & 5) == 5); break;
-//            case 6: on = ((byte & 6) == 6); break;
-//            case 7: on = ((byte & 7) == 7); break;
-//            }
-///*
-//      std::cout<<"---------------------------------------------------"<<std::endl;
-//      for (int r=0; r<height; ++r)
-//      {
-//         --srcRow;
-//         for (int c=0; c<width; ++c)
-//         {
-//            int x = c / 8;
-//            int y = srcRow / 8;
-//
-//            char byte = srcBuffer[y * pitch + x];
-//            bool on = false;
-//            switch ((y*pitch+x) % 8)
-//            {
-//            case 0: on = (byte & 0); break;
-//            case 1: on = (byte & 1); break;
-//            case 2: on = (byte & 2); break;
-//            case 3: on = (byte & 3); break;
-//            case 4: on = (byte & 4); break;
-//            case 5: on = (byte & 5); break;
-//            case 6: on = (byte & 6); break;
-//            case 7: on = (byte & 7); break;
-//            }
-//*/
-////            int srcOffset = (sizeof(unsigned char)*(srcRow * pitch + c)) >> 4;
-//
-//            int destOffset = 4*(r * width + c);
-////            int bit_value = srcBuffer[srcOffset];
-////            std::cout<<(on ? "X" : "-");
-//            std::cout<<(srcBit);
-//            // bit is set, full color
-//            if (on)
-//            {
-//               data[destOffset + 0] = color[0];
-//               data[destOffset + 1] = color[1];
-//               data[destOffset + 2] = color[2];
-//               data[destOffset + 3] = color[3];
-//            }
-//            // bit is not set, no color
-//            else
-//            {
-//               data[destOffset + 0] = 0;
-//               data[destOffset + 1] = 0;
-//               data[destOffset + 2] = 0;
-//               data[destOffset + 3] = 0;
-//            }
-//         }
-//         std::cout<<std::endl;
-//      }
 
       // Free the bitmap glyph
       FT_Done_Glyph(newGlyph);
