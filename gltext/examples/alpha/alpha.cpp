@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: alpha.cpp,v $
- * Date modified: $Date: 2003-03-06 08:59:34 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-03-10 09:37:04 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -31,20 +31,11 @@
 #include <gltext.h>
 #include <iostream>
 
-int gContext = 0;
 gltext::FontPtr font;
 gltext::FontRendererPtr btmRenderer;
 gltext::FontRendererPtr pxmRenderer;
 gltext::FontRendererPtr texRenderer;
 
-void idle()
-{
-   if (glutGetWindow() != gContext)
-   {
-      glutSetWindow(gContext);
-   }
-   glutPostRedisplay();
-}
 
 void renderText(gltext::FontRenderer* renderer, const std::string& name)
 {
@@ -103,10 +94,9 @@ main(int argc, char** argv)
    glutInitWindowPosition(50, 50);
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
-   gContext = glutCreateWindow("Alpha Example");
+   glutCreateWindow("Alpha Example");
 
    glutDisplayFunc(display);
-   glutIdleFunc(idle);
    glutReshapeFunc(reshape);
    glutKeyboardFunc(keydown);
 

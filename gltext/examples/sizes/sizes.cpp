@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: sizes.cpp,v $
- * Date modified: $Date: 2003-02-07 23:02:35 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-03-10 09:37:04 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -32,17 +32,9 @@
 #include <GL/glut.h>
 #include <gltext.h>
 
-int gContext = 0;
+
 gltext::FontRendererPtr renderer;
 
-void idle()
-{
-   if (glutGetWindow() != gContext)
-   {
-      glutSetWindow(gContext);
-   }
-   glutPostRedisplay();
-}
 
 void display()
 {
@@ -105,10 +97,9 @@ main(int argc, char** argv)
    glutInitWindowPosition(50, 50);
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
-   gContext = glutCreateWindow("Sizes Example");
+   glutCreateWindow("Sizes Example");
 
    glutDisplayFunc(display);
-   glutIdleFunc(idle);
    glutReshapeFunc(reshape);
    glutKeyboardFunc(keydown);
 

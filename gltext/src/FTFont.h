@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: FTFont.h,v $
- * Date modified: $Date: 2003-02-26 01:32:05 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2003-03-10 09:37:05 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -59,39 +59,20 @@ namespace gltext
        */
       ~FTFont();
 
-      /// Gets the name of this font.
       const char* GLTEXT_CALL getName();
-
-      /// Gets the point size of this font.
-      int GLTEXT_CALL getSize();
-
-      int GLTEXT_CALL getDPI();
-
-      /**
-       * Gets the ascent of this font. This is the distance from the baseline to
-       * the top of the tallest glyph of this font.
-       */
-      int GLTEXT_CALL getAscent();
-
-      /**
-       * Gets the descent of this font. This is the distance from the baseline
-       * to the bottom of the the glyph that descends the most from the
-       * baseline.
-       */
-      int GLTEXT_CALL getDescent();
-
-      /**
-       * Gets the distance that must be placed between two lines of text. Thus
-       * the baseline to baseline distance can be computed as
-       * ascent - descent + linegap.
-       */
-      int GLTEXT_CALL getLineGap();
 
       /**
        * Gets the FT2 glyph for the given character. Returns NULL if this font
        * does not support the character requested.
        */
       Glyph* GLTEXT_CALL getGlyph(unsigned char c);
+
+      int GLTEXT_CALL getSize();
+      int GLTEXT_CALL getDPI();
+      int GLTEXT_CALL getAscent();
+      int GLTEXT_CALL getDescent();
+      int GLTEXT_CALL getLineGap();
+      int GLTEXT_CALL getKerning(unsigned char l, unsigned char r);
 
    private:
       /// The name of this font.

@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AbstractRenderer.cpp,v $
- * Date modified: $Date: 2003-02-26 01:58:27 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2003-03-10 09:37:05 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -46,6 +46,8 @@ namespace gltext
 
       int penX = 0;
       int penY = 0;
+
+      unsigned char last_character = 0;
 
       // Run through each char and generate a glyph to draw
       for (const char* itr = text; *itr; ++itr)
@@ -79,6 +81,10 @@ namespace gltext
             mCache.put(fontGlyph, drawGlyph);
          }
 
+         int kerning = mFont->getKerning(last_character, *itr);
+         last_character = *itr;
+         penX += kerning;
+
          // Now tell the glyph to render itself.
          drawGlyph->render(penX, penY);
          penX += fontGlyph->getAdvance();
@@ -95,6 +101,8 @@ namespace gltext
       int max_width = 0;
       int width = 0;
 
+      unsigned char last_character = 0;
+
       // Iterate over each character adding its width
       for (const char* itr = text; *itr != 0; ++itr)
       {
@@ -108,6 +116,10 @@ namespace gltext
          Glyph* fontGlyph = mFont->getGlyph(*itr);
          if (fontGlyph)
          {
+            int kerning = mFont->getKerning(last_character, *itr);
+            last_character = *itr;
+            width += kerning;
+         
             // Add this glyph's advance
             width += fontGlyph->getAdvance();
             max_width = std::max(width, max_width);

@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: simple.cpp,v $
- * Date modified: $Date: 2003-02-26 01:58:27 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-03-10 09:37:04 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -32,19 +32,10 @@
 #include <gltext.h>
 using namespace gltext;
 
-int gContext = 0;
 FontRendererPtr btmRenderer;
 FontRendererPtr pxmRenderer;
 FontRendererPtr texRenderer;
 
-void idle()
-{
-   if (glutGetWindow() != gContext)
-   {
-      glutSetWindow(gContext);
-   }
-   glutPostRedisplay();
-}
 
 void drawText(FontRenderer* renderer, std::string text)
 {
@@ -104,10 +95,9 @@ main(int argc, char** argv)
    glutInitWindowPosition(50, 50);
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
-   gContext = glutCreateWindow("Simple Example");
+   glutCreateWindow("Simple Example");
 
    glutDisplayFunc(display);
-   glutIdleFunc(idle);
    glutReshapeFunc(reshape);
    glutKeyboardFunc(keydown);
 

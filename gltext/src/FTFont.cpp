@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: FTFont.cpp,v $
- * Date modified: $Date: 2003-02-26 01:32:05 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2003-03-10 09:37:05 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -109,6 +109,17 @@ namespace gltext
       return mName.c_str();
    }
 
+   Glyph*
+   FTFont::getGlyph(unsigned char c)
+   {
+      // Have we already loaded a glyph?
+      if (!mGlyphMap[c])
+      {
+         mGlyphMap[c] = FTGlyph::create(mFace, c);
+      }
+      return mGlyphMap[c];
+   }
+
    int
    FTFont::getSize()
    {
@@ -140,14 +151,20 @@ namespace gltext
       return (mFace->size->metrics.height >> 6) - getAscent() - getDescent();
    }
 
-   Glyph*
-   FTFont::getGlyph(unsigned char c)
+   int
+   FTFont::getKerning(unsigned char l, unsigned char r)
    {
-      // Have we already loaded a glyph?
-      if (!mGlyphMap[c])
+      int left  = FT_Get_Char_Index(mFace, l);
+      int right = FT_Get_Char_Index(mFace, r);
+
+      FT_Vector rv;
+      if (FT_Get_Kerning(mFace, left, right, ft_kerning_default, &rv))
       {
-         mGlyphMap[c] = FTGlyph::create(mFace, c);
+         return 0;
       }
-      return mGlyphMap[c];
+      else
+      {
+         return rv.x >> 6;
+      }
    }
 }

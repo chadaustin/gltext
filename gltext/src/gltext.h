@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.h,v $
- * Date modified: $Date: 2003-02-26 01:58:27 $
- * Version:       $Revision: 1.19 $
+ * Date modified: $Date: 2003-03-10 09:37:06 $
+ * Version:       $Revision: 1.20 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -309,6 +309,13 @@ namespace gltext
        * as ascent + descent + linegap.
        */
       virtual int GLTEXT_CALL getLineGap() = 0;
+
+      /**
+       * Returns the kerning distance between character c1 and
+       * character c2.  The kerning distance is added to the previous
+       * character's advance distance.
+       */
+      virtual int GLTEXT_CALL getKerning(unsigned char l, unsigned char r) = 0;
    };
    typedef RefPtr<Font> FontPtr;
 
