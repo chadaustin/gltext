@@ -52,8 +52,13 @@ def BuildBaseEnvironment():
 def ParseConfig(env, command, options):
    "Parses xxx-config style output for compilation directives"
 
+   cmd = WhereIs(command)
+   if cmd is None:
+      print "Error: Could not find %s" % command
+      sys.exit(-1)
+
    # Run the command
-   cmd = WhereIs(command) + ' ' + string.join(options)
+   cmd = cmd + ' ' + string.join(options)
    params = string.split(os.popen(cmd).read())
 
    # Parse its output
