@@ -22,11 +22,12 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: alpha.cpp,v $
- * Date modified: $Date: 2003-03-15 06:18:59 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2003-08-05 00:34:30 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
+#include <stdlib.h>  // GLUT complains if exit() isn't predefined in VC7
 #include <GL/glut.h>
 #include <gltext.h>
 #include <iostream>
