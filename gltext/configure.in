@@ -36,14 +36,14 @@ AC_CHECK_LIB(freetype, FT_Init_FreeType,,
 # Win32), and we want to use it over -lglut if we can.
 AC_MSG_CHECKING(glutMainLoop in -lglut32)
 GLUT_SAVE_LIBS=$LIBS
-LIBS="-lglut32 $LIBS"
+LIBS="-lglut32 -lopengl32 -lglu32 $LIBS"
 AC_TRY_LINK(
         #include <GL/glut.h>
     ,
         glutMainLoop();
     ,
         HAVE_GLUT=true
-        GLUT_SAVE_LIBS="-lglut32 -lopengl32 -lglu32 $LIBS"
+        GLUT_SAVE_LIBS=$LIBS
         AC_MSG_RESULT(yes)
     ,
         AC_MSG_RESULT(no))
@@ -54,14 +54,14 @@ if [[ "x$HAVE_GLUT" != "xtrue" ]]; then
     # we need to include glut.h for the link to work.
     AC_MSG_CHECKING(glutMainLoop in -lglut)
     GLUT_SAVE_LIBS=$LIBS
-    LIBS="-lglut $LIBS"
+    LIBS="-lglut -lGL -lGLU -lX11 -lXmu $LIBS"
     AC_TRY_LINK(
             #include <GL/glut.h>
         ,
             glutMainLoop();
         ,
             HAVE_GLUT=true
-            GLUT_SAVE_LIBS="-lglut -lGL -lGLU $LIBS"
+            GLUT_SAVE_LIBS=$LIBS
             AC_MSG_RESULT(yes)
         ,
             AC_MSG_RESULT(no))
