@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: simple.cpp,v $
- * Date modified: $Date: 2003-03-11 23:00:45 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2003-03-15 04:09:26 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -32,9 +32,11 @@
 #include <gltext.h>
 using namespace gltext;
 
+
 FontRendererPtr btmRenderer;
 FontRendererPtr pxmRenderer;
 FontRendererPtr texRenderer;
+FontRendererPtr mipRenderer;
 
 
 void drawText(const FontRendererPtr& renderer, std::string text)
@@ -61,13 +63,13 @@ void display()
 
    typedef FontStream FS;
 
-   glPushMatrix();
    drawText(btmRenderer, "(bitmap) ");
    glTranslatef(0, 100, 0);
    drawText(pxmRenderer, "(pixmap) ");
    glTranslatef(0, 100, 0);
    drawText(texRenderer, "(texture)");
-   glPopMatrix();
+   glTranslatef(0, 100, 0);
+   drawText(mipRenderer, "(mipmap) ");
 
    glutSwapBuffers();
 }
@@ -129,6 +131,13 @@ main(int argc, char** argv)
    if (! texRenderer)
    {
       std::cerr<<"Couldn't create texture font renderer!"<<std::endl;
+      return 1;
+   }
+
+   mipRenderer = CreateRenderer(MIPMAP, font);
+   if (! mipRenderer)
+   {
+      std::cerr<<"Couldn't create mipmap font renderer!"<<std::endl;
       return 1;
    }
 
