@@ -49,6 +49,19 @@ body, BODY, .BODY, BODY:text, noframes, p, table, table tr, table tr td
    border: 0;
 }
 
+.person_list
+{
+   border-spacing: 8 2;
+   border: 0;
+}
+
+.person
+{
+   background-color: #ebecff;
+   border-spacing: 8 2;
+   border: 0;
+}
+
 .mailinglist
 {
    border-spacing: 8 4;
