@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GLTextureGlyph.cpp,v $
- * Date modified: $Date: 2003-02-23 09:58:58 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2003-03-15 04:04:11 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -44,7 +44,8 @@ namespace gltext
    }
 
    GLTextureGlyph::GLTextureGlyph(int offx, int offy,
-                                  int width, int height, u8* data)
+                                  int width, int height, u8* data,
+                                  bool mipmap)
       : mOffsetX(offx)
       , mOffsetY(offy)
       , mWidth(width)
@@ -80,16 +81,31 @@ namespace gltext
 
       // Generate a 2D texture with our image data
       glBindTexture(GL_TEXTURE_2D, mTexName);
-      glTexImage2D(
-         GL_TEXTURE_2D,
-         0,
-         GL_LUMINANCE_ALPHA,
-         mTexWidth,
-         mTexHeight,
-         0,
-         GL_LUMINANCE_ALPHA,
-         GL_UNSIGNED_BYTE,
-         la);
+      if (mipmap)
+      {
+         gluBuild2DMipmaps(
+            GL_TEXTURE_2D,
+            2,
+            mTexWidth,
+            mTexHeight,
+            GL_LUMINANCE_ALPHA,
+            GL_UNSIGNED_BYTE,
+            la);
+      }
+      else
+      {
+         glTexImage2D(
+            GL_TEXTURE_2D,
+            0,
+            GL_LUMINANCE_ALPHA,
+            mTexWidth,
+            mTexHeight,
+            0,
+            GL_LUMINANCE_ALPHA,
+            GL_UNSIGNED_BYTE,
+            la);
+      }
+
       delete[] la;
       la = 0;
 

@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GLTextureGlyph.h,v $
- * Date modified: $Date: 2003-02-03 19:40:41 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-03-15 04:04:12 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -46,7 +46,8 @@ namespace gltext
        * Creates a new OpenGL ready glyph with the given data. This glyph will
        * take ownership of the data memory.
        */
-      GLTextureGlyph(int offx, int offy, int width, int height, u8* data);
+      GLTextureGlyph(int offx, int offy, int width, int height, u8* data,
+                     bool mipmap);
 
       /**
        * Frees memory used by this glyph.

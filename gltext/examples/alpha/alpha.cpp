@@ -22,21 +22,24 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: alpha.cpp,v $
- * Date modified: $Date: 2003-03-11 23:00:43 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2003-03-15 04:04:11 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
 #include <GL/glut.h>
 #include <gltext.h>
 #include <iostream>
-
-gltext::FontRendererPtr btmRenderer;
-gltext::FontRendererPtr pxmRenderer;
-gltext::FontRendererPtr texRenderer;
+using namespace gltext;
 
 
-void renderText(gltext::FontRenderer* renderer, const std::string& name)
+FontRendererPtr btmRenderer;
+FontRendererPtr pxmRenderer;
+FontRendererPtr texRenderer;
+FontRendererPtr mipRenderer;
+
+
+void renderText(const FontRendererPtr& renderer, const std::string& name)
 {
    const int size = renderer->getFont()->getSize();
    const int dpi  = renderer->getFont()->getDPI();
@@ -62,11 +65,13 @@ void display()
    glLoadIdentity();
 
    glTranslatef(100, 100, 0);
-   renderText(btmRenderer.get(), "(btm)");
+   renderText(btmRenderer, "(btm)");
    glTranslatef(0, 100, 0);
-   renderText(pxmRenderer.get(), "(pxm)");
+   renderText(pxmRenderer, "(pxm)");
    glTranslatef(0, 100, 0);
-   renderText(texRenderer.get(), "(tex)");
+   renderText(texRenderer, "(tex)");
+   glTranslatef(0, 100, 0);
+   renderText(mipRenderer, "(mip)");
 
    glutSwapBuffers();
 }
@@ -103,31 +108,38 @@ main(int argc, char** argv)
    glEnable(GL_BLEND);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-   gltext::FontPtr font = gltext::OpenFont("../arial.ttf", 26);
+   FontPtr font = OpenFont("../arial.ttf", 26);
    if (! font)
    {
       std::cerr<<"Couldn't create font!"<<std::endl;
       return 1;
    }
 
-   btmRenderer = gltext::CreateRenderer(gltext::BITMAP, font);
+   btmRenderer = CreateRenderer(BITMAP, font);
    if (! btmRenderer)
    {
       std::cerr<<"Couldn't create bitmap font renderer!"<<std::endl;
       return 1;
    }
 
-   pxmRenderer = gltext::CreateRenderer(gltext::PIXMAP, font);
+   pxmRenderer = CreateRenderer(PIXMAP, font);
    if (! pxmRenderer)
    {
       std::cerr<<"Couldn't create pixmap font renderer!"<<std::endl;
       return 1;
    }
 
-   texRenderer = gltext::CreateRenderer(gltext::TEXTURE, font);
+   texRenderer = CreateRenderer(TEXTURE, font);
    if (! texRenderer)
    {
       std::cerr<<"Couldn't create texture font renderer!"<<std::endl;
+      return 1;
+   }
+
+   mipRenderer = CreateRenderer(MIPMAP, font);
+   if (! mipRenderer)
+   {
+      std::cerr<<"Couldn't create mipmap font renderer!"<<std::endl;
       return 1;
    }
 

@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: TextureRenderer.cpp,v $
- * Date modified: $Date: 2003-02-03 19:40:41 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-03-15 04:04:12 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -34,13 +34,14 @@
 
 namespace gltext
 {
-   TextureRenderer* TextureRenderer::create(Font* font)
+   TextureRenderer* TextureRenderer::create(Font* font, bool mipmap)
    {
-      return new TextureRenderer(font);
+      return new TextureRenderer(font, mipmap);
    }
    
-   TextureRenderer::TextureRenderer(Font* font)
+   TextureRenderer::TextureRenderer(Font* font, bool mipmap)
       : AbstractRenderer(font)
+      , mMipMap(mipmap)
    {
    }
 
@@ -54,6 +55,6 @@ namespace gltext
       u8* data = new u8[width * height];
       glyph->render(data);
       
-      return new GLTextureGlyph(offX, offY, width, height, data);
+      return new GLTextureGlyph(offX, offY, width, height, data, mMipMap);
    }
 }

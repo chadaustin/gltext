@@ -1,5 +1,7 @@
 DATE       AUTHOR       CHANGE
 ---------- -----------  -------------------------------------------------------
+2003-03-14 aegis        Added a MIPMAP font renderer that generates a full set
+	                of mipmaps instead of just one, like TEXTURE does.
 2003-02-25 aegis        Improved rendering by taking advantage of kerning.
 2003-02-25 aegis        Added getHeight() to FontRenderer.
 2003-02-25 aegis        Re-added getFont() to FontRenderer and added getDPI()

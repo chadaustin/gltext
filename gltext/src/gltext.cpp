@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.cpp,v $
- * Date modified: $Date: 2003-02-14 04:59:43 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2003-03-15 04:04:12 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -62,7 +62,8 @@ namespace gltext
          {
             case BITMAP:  return BitmapRenderer::create(font);
             case PIXMAP:  return PixmapRenderer::create(font);
-            case TEXTURE: return TextureRenderer::create(font);
+            case TEXTURE: return TextureRenderer::create(font, false);
+            case MIPMAP:  return TextureRenderer::create(font, true);
             default:      return 0;
          }
       }
