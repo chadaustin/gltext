@@ -18,6 +18,14 @@ AC_PROG_CXXCPP
 AC_PROG_MAKE_SET
 AM_PROG_LIBTOOL
 
+dnl Look for where X is installed
+AC_PATH_X
+X_LDFLAGS=''
+if test "x$x_libraries" != "xNONE" -a "x$x_libraries" != "x" ; then
+   X_LDFLAGS="-L$x_libraries"
+fi
+LDFLAGS="$X_LDFLAGS $LDFLAGS"
+
 dnl Checks for libraries.
 
 AC_CHECK_LIB(freetype, FT_Init_FreeType,,
