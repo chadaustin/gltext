@@ -1,0 +1,36 @@
+import os
+from os import path
+
+# Builds all sources and examples by default, but not the tests
+Default(Split('src examples'))
+
+# Find libraries
+execfile('opengl_libs.py')
+execfile('glut_libs.py')
+Export('GLUT_LIBS OPENGL_LIBS')
+
+# Enable all warnings
+CXXFLAGS = ['-Wall']
+LINKFLAGS = []
+
+# Check for debug vs release build
+if ARGUMENTS.get('debug', 0):
+   CXXFLAGS.extend(['-g', '-DDEBUG'])
+else:
+   CXXFLAGS.extend(['-DNDEBUG'])
+
+# Check if we should insert profiling statements for gcc
+if ARGUMENTS.get('profile', 0):
+   CXXFLAGS.append('-pg')
+   LINKFLAGS.append('-pg')
+
+
+# Create the base environment
+baseEnv = Environment(
+   ENV = os.environ,
+   CXXFLAGS = CXXFLAGS,
+   LINKFLAGS = LINKFLAGS)
+Export('baseEnv')
+
+# Recurse
+SConscript(dirs=Split('src test examples'))

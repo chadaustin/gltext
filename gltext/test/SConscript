@@ -1,0 +1,18 @@
+import os
+from os import path
+
+Import('baseEnv')
+
+sources = [
+   'main.cpp',
+   'FTFontTest.cpp',
+]
+
+FT2_LIBS = ['freetype']
+CPPUNIT_LIBS = ['cppunit']
+
+env = baseEnv.Copy(CPPPATH = ['#src'],
+                   LIBPATH = ['#src'],
+                   LIBS = ['gltext'] + FT2_LIBS + CPPUNIT_LIBS)
+
+env.Program(target = 'runtests', source = sources)

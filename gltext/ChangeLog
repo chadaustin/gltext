@@ -1,0 +1,7 @@
+DATE       AUTHOR       CHANGE
+---------- -----------  -------------------------------------------------------
+2002-05-08 nonchocoboy  Added the sizes example.
+2002-05-08 nonchocoboy  Antialiased (pixmap) rendering added.
+2002-05-08 nonchocoboy  FT2 glyph management support added.
+2002-05-07 nonchocoboy  FT2 face opening support added.
+2002-05-06 nonchocoboy  Initial version

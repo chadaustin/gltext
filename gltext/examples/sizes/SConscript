@@ -1,0 +1,6 @@
+Import('baseEnv GLUT_LIBS OPENGL_LIBS')
+
+env = baseEnv.Copy(CPPPATH = ['#src'],
+                   LIBPATH = ['#src'],
+                   LIBS = ['gltext', 'freetype'] + GLUT_LIBS + OPENGL_LIBS)
+env.Program(target = 'sizes', source = 'main.cpp')

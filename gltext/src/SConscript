@@ -1,0 +1,21 @@
+import os
+from os import path
+
+Import('baseEnv OPENGL_LIBS')
+
+sources = Split("""
+   gltext.cpp
+   AbstractRenderer.cpp
+   BitmapRenderer.cpp
+   FTFont.cpp
+   FTGlyph.cpp
+   FTLibrary.cpp
+   GLPixelGlyph.cpp
+   PixmapRenderer.cpp
+""")
+
+FT2_LIBS = ['freetype']
+
+env = baseEnv.Copy(LIBS=FT2_LIBS + OPENGL_LIBS)
+
+env.Library(target = 'gltext', source = sources)
