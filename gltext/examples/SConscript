@@ -1,1 +1,1 @@
-SConscript(dirs = ['alpha', 'simple', 'sizes'])
+SConscript(dirs = ['alpha', 'fps', 'simple', 'sizes'])

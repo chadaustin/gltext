@@ -1,5 +1,8 @@
 DATE       AUTHOR       CHANGE
 ---------- -----------  -------------------------------------------------------
+2003-03-15 aegis        Added an fps example and made the renderers always
+	                draw with the current position being the upper left
+	                corner of the text.
 2003-03-14 aegis        Added a MIPMAP font renderer that generates a full set
 	                of mipmaps instead of just one, like TEXTURE does.
 2003-02-25 aegis        Improved rendering by taking advantage of kerning.

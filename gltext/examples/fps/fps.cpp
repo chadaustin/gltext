@@ -21,53 +21,91 @@
  * Boston, MA 02111-1307, USA.
  *
  * -----------------------------------------------------------------
- * File:          $RCSfile: simple.cpp,v $
+ * File:          $RCSfile: fps.cpp,v $
  * Date modified: $Date: 2003-03-15 06:18:59 $
- * Version:       $Revision: 1.11 $
+ * Version:       $Revision: 1.1 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
 #include <iostream>
+#include <vector>
 #include <GL/glut.h>
 #include <gltext.h>
 using namespace gltext;
 
 
-FontRendererPtr btmRenderer;
-FontRendererPtr pxmRenderer;
-FontRendererPtr texRenderer;
-FontRendererPtr mipRenderer;
-
-
-void drawText(const FontRendererPtr& renderer, std::string text)
+class FPSCounter
 {
-   text += " Hello...\n...World!  ";
-   const int size   = renderer->getFont()->getSize();
-   const int dpi    = renderer->getFont()->getDPI();
-   const int width  = renderer->getWidth(text.c_str());
-   const int height = renderer->getHeight(text.c_str());
-   FontStream(renderer).get() << text << size << "  " << dpi
-                              << "  " << width << "*" << height;
-}
+public:
+   FPSCounter()
+   {
+      mFPS = 0;
+      mFrameCount = 0;
+      mElapsedTime = 0;
+   }
+
+   void update(float dt)
+   {
+      mElapsedTime += dt;
+      ++mFrameCount;
+      if (mElapsedTime > 1.0f)
+      {
+         mFPS = mFrameCount;
+         mFrameCount = 0;
+         mElapsedTime -= 1.0f;
+      }
+   }
+
+   int getFPS() const
+   {
+      return mFPS;
+   }
+
+private:
+   int mFPS;
+   int mFrameCount;
+   float mElapsedTime;
+};
+
+
+struct Renderer
+{
+   Renderer(std::string n, const FontRendererPtr& r)
+   {
+      name = n;
+      renderer = r;
+   }
+
+   std::string name;
+   FontRendererPtr renderer;
+};
+
+
+std::vector<Renderer> gRenderers;
+unsigned gCurrentRenderer;
+int gLastUpdate;
+FPSCounter gFPSCounter;
+
 
 void display()
 {
-   glClearColor(0, 0, 0.25f, 1);
+   glClearColor(0, 0, 0, 0);
    glClear(GL_COLOR_BUFFER_BIT);
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
 
-   glColor4f(0.75f, 0.25f, 0, 1);
+   const std::string& name = gRenderers[gCurrentRenderer].name;
+   const FontRendererPtr& renderer = gRenderers[gCurrentRenderer].renderer;
 
-   glTranslatef(50, 50, 0);
+   int fps = gFPSCounter.getFPS();
+   std::stringstream ss;
+   ss << "FPS: " << fps << "\n" << "Renderer: " << name << "\n\n";
+   for (int i = 0; i < 12; ++i)
+   {
+      ss << "The five boxing wizards jump quickly.\n";
+   }
 
-   drawText(btmRenderer, "(bitmap) ");
-   glTranslatef(0, 100, 0);
-   drawText(pxmRenderer, "(pixmap) ");
-   glTranslatef(0, 100, 0);
-   drawText(texRenderer, "(texture)");
-   glTranslatef(0, 100, 0);
-   drawText(mipRenderer, "(mipmap) ");
+   renderer->render(ss.str().c_str());
 
    glutSwapBuffers();
 }
@@ -86,20 +124,36 @@ void keydown(unsigned char key, int x, int y)
    {
       exit(0);
    }
+   else if (key == ' ')
+   {
+      gCurrentRenderer = (gCurrentRenderer + 1) % gRenderers.size();
+   }
 }
 
-int
-main(int argc, char** argv)
+
+void idle()
+{
+   int now = glutGet(GLUT_ELAPSED_TIME);
+   float dt = (now - gLastUpdate) / 1000.0f;
+   gLastUpdate = now;
+
+   gFPSCounter.update(dt);
+   glutPostRedisplay();
+}
+
+
+int main(int argc, char** argv)
 {
    glutInitWindowSize(640, 480);
    glutInitWindowPosition(50, 50);
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
-   glutCreateWindow("Simple Example");
+   glutCreateWindow("Alpha Example");
 
    glutDisplayFunc(display);
    glutReshapeFunc(reshape);
    glutKeyboardFunc(keydown);
+   glutIdleFunc(idle);
 
    glEnable(GL_BLEND);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -111,33 +165,40 @@ main(int argc, char** argv)
       return 1;
    }
 
-   btmRenderer = CreateRenderer(BITMAP, font);
+   FontRendererPtr btmRenderer = CreateRenderer(BITMAP, font);
    if (! btmRenderer)
    {
       std::cerr<<"Couldn't create bitmap font renderer!"<<std::endl;
       return 1;
    }
 
-   pxmRenderer = CreateRenderer(PIXMAP, font);
+   FontRendererPtr pxmRenderer = CreateRenderer(PIXMAP, font);
    if (! pxmRenderer)
    {
       std::cerr<<"Couldn't create pixmap font renderer!"<<std::endl;
       return 1;
    }
 
-   texRenderer = CreateRenderer(TEXTURE, font);
+   FontRendererPtr texRenderer = CreateRenderer(TEXTURE, font);
    if (! texRenderer)
    {
       std::cerr<<"Couldn't create texture font renderer!"<<std::endl;
       return 1;
    }
 
-   mipRenderer = CreateRenderer(MIPMAP, font);
+   FontRendererPtr mipRenderer = CreateRenderer(MIPMAP, font);
    if (! mipRenderer)
    {
       std::cerr<<"Couldn't create mipmap font renderer!"<<std::endl;
       return 1;
    }
 
+   gRenderers.push_back(Renderer("bitmap",  btmRenderer));
+   gRenderers.push_back(Renderer("pixmap",  pxmRenderer));
+   gRenderers.push_back(Renderer("texture", texRenderer));
+   gRenderers.push_back(Renderer("mipmap",  mipRenderer));
+   gCurrentRenderer = 0;
+
+   gLastUpdate = glutGet(GLUT_ELAPSED_TIME);
    glutMainLoop();
 }

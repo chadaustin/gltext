@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: TextureRenderer.cpp,v $
- * Date modified: $Date: 2003-03-15 04:04:12 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-03-15 06:19:00 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -55,6 +55,7 @@ namespace gltext
       u8* data = new u8[width * height];
       glyph->render(data);
       
-      return new GLTextureGlyph(offX, offY, width, height, data, mMipMap);
+      return new GLTextureGlyph(offX, offY + getFont()->getAscent(),
+                                width, height, data, mMipMap);
    }
 }

@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: sizes.cpp,v $
- * Date modified: $Date: 2003-03-11 23:00:47 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2003-03-15 06:19:00 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -31,6 +31,7 @@
 #include <assert.h>
 #include <GL/glut.h>
 #include <gltext.h>
+using namespace gltext;
 
 
 void display()
@@ -41,17 +42,18 @@ void display()
       glLoadIdentity();
 
    glColor4f(0,0,1,1);
-   int size = 4;
-   for (int y=0; y<480; )
+   int size = 2;
+   int y = 0;
+   while (y < 480)
    {
-      gltext::FontPtr font(gltext::OpenFont("../arial.ttf", size));
+      FontPtr font(OpenFont("../arial.ttf", size));
       if (! font)
       {
          std::cerr << "Can't create font" << std::endl;
          exit(1);
       }
       
-      gltext::FontRendererPtr renderer(gltext::CreateRenderer(gltext::TEXTURE, font));
+      FontRendererPtr renderer(CreateRenderer(TEXTURE, font));
       if (! renderer)
       {
          std::cerr << "Can't create renderer" << std::endl;
@@ -59,12 +61,11 @@ void display()
       }
 
       glPushMatrix();
-      y += font->getAscent();
-      glTranslatef(5, y, 0);
+      glTranslatef(0, y, 0);
       renderer->render("The quick, brown fox jumped over the lazy dog.");
       glPopMatrix();
 
-      y += (font->getDescent() + font->getLineGap());
+      y += (font->getAscent() + font->getDescent() + font->getLineGap());
       size += 2;
    }
 

@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PixmapRenderer.cpp,v $
- * Date modified: $Date: 2003-02-03 19:40:41 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2003-03-15 06:19:00 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -46,13 +46,14 @@ namespace gltext
    GLGlyph*
    PixmapRenderer::makeGlyph(Glyph* glyph)
    {
-      int width  = glyph->getWidth();
-      int height = glyph->getHeight();
-      int offX   = glyph->getXOffset();
-      int offY   = glyph->getYOffset();
+      const int width  = glyph->getWidth();
+      const int height = glyph->getHeight();
+      const int offX   = glyph->getXOffset();
+      const int offY   = glyph->getYOffset();
       u8* pixels = new u8[width * height];
       glyph->render(pixels);
 
-      return new GLPixelGlyph(offX, offY, width, height, pixels);
+      return new GLPixelGlyph(offX, offY + getFont()->getAscent(),
+                              width, height, pixels);
    }
 }

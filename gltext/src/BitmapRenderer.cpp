@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: BitmapRenderer.cpp,v $
- * Date modified: $Date: 2003-02-03 19:40:41 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2003-03-15 06:19:00 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -45,13 +45,14 @@ namespace gltext
    GLGlyph*
    BitmapRenderer::makeGlyph(Glyph* glyph)
    {
-      int width  = glyph->getWidth();
-      int height = glyph->getHeight();
-      int offX   = glyph->getXOffset();
-      int offY   = glyph->getYOffset();
+      const int width  = glyph->getWidth();
+      const int height = glyph->getHeight();
+      const int offX   = glyph->getXOffset();
+      const int offY   = glyph->getYOffset();
       u8* buffer = new u8[width * height];
       glyph->renderBitmap(buffer);
 
-      return new GLPixelGlyph(offX, offY, width, height, buffer);
+      return new GLPixelGlyph(offX, offY + getFont()->getAscent(),
+                              width, height, buffer);
    }
 }

@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: alpha.cpp,v $
- * Date modified: $Date: 2003-03-15 04:04:11 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-03-15 06:18:59 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -64,7 +64,7 @@ void display()
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
 
-   glTranslatef(100, 100, 0);
+   glTranslatef(50, 50, 0);
    renderText(btmRenderer, "(btm)");
    glTranslatef(0, 100, 0);
    renderText(pxmRenderer, "(pxm)");
