@@ -90,5 +90,6 @@ AC_OUTPUT(
 	doc/Makefile
 	src/Makefile
 	examples/Makefile
+        examples/alpha/Makefile
 	examples/simple/Makefile
 	examples/sizes/Makefile)

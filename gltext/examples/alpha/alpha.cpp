@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: alpha.cpp,v $
- * Date modified: $Date: 2003-02-23 09:58:57 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2003-03-06 08:59:34 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -46,35 +46,36 @@ void idle()
    glutPostRedisplay();
 }
 
+void renderText(gltext::FontRenderer* renderer, const std::string& name)
+{
+   const int size = renderer->getFont()->getSize();
+   const int dpi  = renderer->getFont()->getDPI();
+
+   std::ostringstream ss;
+   ss << "hello world " << name << " AVWAT.  " << size << "/" << dpi;
+
+   glPushMatrix();
+   glColor3f(0, 0, 0);
+   renderer->render(ss.str().c_str());
+   glTranslatef(-5, -5, 0);
+   glColor3f(1, 1, 1);
+   renderer->render(ss.str().c_str());
+   glPopMatrix();   
+}
+
 void display()
 {
-   glClearColor(1, 0, 0, 1);
+   glClearColor(0.5f, 0, 0.5f, 1);
    glClear(GL_COLOR_BUFFER_BIT);
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
 
-   glColor4f(1,0,0,1);
-
-   glPushMatrix();
-   glTranslatef(100, 100, 0); glColor3f(0, 0, 0);
-   gltext::FontStream(btmRenderer).get() << "hello world (btm) AVWAW." << 10;
-   glTranslatef(-5, -5, 0);   glColor3f(1, 1, 1);
-   gltext::FontStream(btmRenderer).get() << "hello world (btm) AVWAW." << 10;
-   glPopMatrix();
-
-   glPushMatrix();
-   glTranslatef(100, 200, 0); glColor3f(0, 0, 0);
-   gltext::FontStream(pxmRenderer).get() << "hello world (pxm) AVWAW." << 10;
-   glTranslatef(-5, -5, 0);   glColor3f(1, 1, 1);
-   gltext::FontStream(pxmRenderer).get() << "hello world (pxm) AVWAW." << 10;
-   glPopMatrix();
-
-   glPushMatrix();
-   glTranslatef(100, 300, 0); glColor3f(0, 0, 0);
-   gltext::FontStream(texRenderer).get() << "hello world (tex) AVWAW." << 10;
-   glTranslatef(-5, -5, 0);   glColor3f(1, 1, 1);
-   gltext::FontStream(texRenderer).get() << "hello world (tex) AVWAW." << 10;
-   glPopMatrix();
+   glTranslatef(100, 100, 0);
+   renderText(btmRenderer.get(), "(btm)");
+   glTranslatef(0, 100, 0);
+   renderText(pxmRenderer.get(), "(pxm)");
+   glTranslatef(0, 100, 0);
+   renderText(texRenderer.get(), "(tex)");
 
    glutSwapBuffers();
 }
