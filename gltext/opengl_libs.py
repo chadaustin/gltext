@@ -27,7 +27,7 @@ def SetupOpenGL(env):
 
    # Make sure the environment has LIBS defined
    if not env.Dictionary().has_key('LIBS'):
-      env['LIBS'] = [];
+      env['LIBS'] = []
 
    # Add in the OpenGL libs to the environment
    env['LIBS'].extend(OPENGL_LIBS)

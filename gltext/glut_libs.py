@@ -27,7 +27,7 @@ def SetupGLUT(env):
 
    # Make sure the environment has LIBS defined
    if not env.Dictionary().has_key('LIBS'):
-      env['LIBS'] = [];
+      env['LIBS'] = []
 
    # Add in the GLUT libs to the environment
    env['LIBS'].extend(GLUT_LIBS)
