@@ -9,25 +9,23 @@ Make sure you include the gltext header.
 First you'll need to open a font. The font describes how each character
 looks to the renderer. You need to specify:
    - the name of the file that contains the font definition
-   - the style of font you want to create
    - the point size of the font you want
 If the creation fails, CreateFont will return NULL.
 
-   gltext::FontPtr myFont(gltext::CreateFont("arial.ttf", gltext::PLAIN, 24));
+   gltext::FontPtr myFont(gltext::CreateFont("arial.ttf", 24));
 
-3.
-Create a renderer for the font. The renderer is responsible for making the
-OpenGL calls necessary to draw the text you want on the screen. You must tell
-GLText what type of renderer you want. If the creation fails, CreateRenderer
-will return NULL.
+3.  Create a renderer for the font. The renderer is responsible for
+making the OpenGL calls necessary to draw the text you want on the
+screen. You must tell GLText what type of renderer you want and what
+font it should render. If the creation fails, CreateRenderer will
+return NULL.
 
-  gltext::RendererPtr myRenderer(gltext::CreateRenderer(gltext::PIXMAP));
+   gltext::RendererPtr myRenderer(gltext::CreateRenderer(
+      gltext::PIXMAP, myFont.get());
 
 4.
 Tell the renderer which font you want to use when it draws your text to the
 screen.
-
-   myRenderer->setFont(myFont.get());
 
 5.
 Set up the OpenGL MODELVIEW matrix to place the font on the screen and ask the
@@ -37,9 +35,9 @@ current OpenGL color to draw the text.
    glMatrixMode(GL_MODELVIEW);
    glTranslatef(100, 100, 100);
    glColor4f(1, 1, 1, 0.5f);
-   myRenderer->getStream() << "hello world in the year " << 2002 << gltext::flush;
+   gltext::FontStream(myRenderer) << "hello world in the year " << 2002;
 
-6.
-When you're done, make sure you delete your fonts and renderers.
+6.  When you're done, make sure you delete your fonts and renderers.
+The smart pointers will take care of this in most cases for you.
 
 That's it! Look in gltext.h for descriptions of the remaining functions.
