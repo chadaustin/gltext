@@ -43,4 +43,5 @@ lib = pkg.createStaticLibrary('gltext', env)
 lib.addSources(sources)
 lib.addHeaders(headers)
 
-pkg.addExtraDist(extra)
+def addSrc(n): return os.path.join('src', n)
+pkg.addExtraDist(map(addSrc, extra))
