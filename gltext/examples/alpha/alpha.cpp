@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: alpha.cpp,v $
- * Date modified: $Date: 2003-03-10 09:37:04 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-03-11 02:57:07 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -31,7 +31,6 @@
 #include <gltext.h>
 #include <iostream>
 
-gltext::FontPtr font;
 gltext::FontRendererPtr btmRenderer;
 gltext::FontRendererPtr pxmRenderer;
 gltext::FontRendererPtr texRenderer;
@@ -43,7 +42,8 @@ void renderText(gltext::FontRenderer* renderer, const std::string& name)
    const int dpi  = renderer->getFont()->getDPI();
 
    std::ostringstream ss;
-   ss << "hello world " << name << " AVWAT.  " << size << "/" << dpi;
+   ss << "hello world " << name << " AVWAT.  T. S. Lewis "
+      << size << "/" << dpi;
 
    glPushMatrix();
    glColor3f(0, 0, 0);
@@ -103,7 +103,7 @@ main(int argc, char** argv)
    glEnable(GL_BLEND);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-   font = gltext::OpenFont("../arial.ttf", 26);
+   gltext::FontPtr font = gltext::OpenFont("../arial.ttf", 26);
    if (! font)
    {
       std::cerr<<"Couldn't create font!"<<std::endl;

@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: simple.cpp,v $
- * Date modified: $Date: 2003-03-10 09:37:04 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2003-03-11 02:57:08 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -50,12 +50,12 @@ void drawText(FontRenderer* renderer, std::string text)
 
 void display()
 {
-   glClearColor(0, 0, 1, 1);
+   glClearColor(0, 0, 0.25f, 1);
    glClear(GL_COLOR_BUFFER_BIT);
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
 
-   glColor4f(1, 0, 0, 1);
+   glColor4f(0.75f, 0.25f, 0, 1);
 
    glTranslatef(100, 100, 0);
 

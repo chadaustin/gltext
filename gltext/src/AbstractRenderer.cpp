@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AbstractRenderer.cpp,v $
- * Date modified: $Date: 2003-03-10 09:37:05 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2003-03-11 02:57:08 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -40,9 +40,9 @@ namespace gltext
 
    void GLTEXT_CALL AbstractRenderer::render(const char* text)
    {
-      const int ascent = mFont->getAscent();
+      const int ascent  = mFont->getAscent();
       const int descent = mFont->getDescent();
-      const int height = ascent + descent + mFont->getLineGap();
+      const int height  = ascent + descent + mFont->getLineGap();
 
       int penX = 0;
       int penY = 0;
@@ -83,11 +83,16 @@ namespace gltext
 
          int kerning = mFont->getKerning(last_character, *itr);
          last_character = *itr;
+         int old_x = penX;
          penX += kerning;
 
          // Now tell the glyph to render itself.
          drawGlyph->render(penX, penY);
          penX += fontGlyph->getAdvance();
+
+         // Kerning shouldn't make us draw farther and farther to the
+         // left...  this fixes the "sliding dot problem".
+         penX = std::max(penX, old_x);
       }
    }
 
