@@ -1,5 +1,5 @@
 %define name gltext
-%define version 0.2.0
+%define version 0.3.0
 %define release 1
 
 Summary: an OpenGL TrueType font rendering API
