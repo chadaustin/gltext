@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: main.cpp,v $
- * Date modified: $Date: 2002-07-04 17:55:35 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-12-21 02:56:58 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -32,8 +32,8 @@
 #include <iostream>
 
 int gContext = 0;
-gltext::Font* font = 0;
-gltext::FontRenderer* renderer = 0;
+gltext::FontPtr font = 0;
+gltext::FontRendererPtr renderer = 0;
 
 void idle()
 {
@@ -104,7 +104,7 @@ main(int argc, char** argv)
       std::cerr<<"Couldn't create font renderer!"<<std::endl;
       return 1;
    }
-   renderer->setFont(font);
+   renderer->setFont(font.get());
 
    glutMainLoop();
 }

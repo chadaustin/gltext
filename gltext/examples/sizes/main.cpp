@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: main.cpp,v $
- * Date modified: $Date: 2002-07-04 17:55:35 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-12-21 02:56:58 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -33,7 +33,7 @@
 #include <iostream>
 
 int gContext = 0;
-gltext::FontRenderer* renderer = 0;
+gltext::FontRendererPtr renderer;
 
 void idle()
 {
@@ -55,9 +55,8 @@ void display()
    int size = 4;
    for (int y=0; y<640; )
    {
-      gltext::Font* font = 0;
-      font = gltext::CreateFont("../arial.ttf", gltext::PLAIN, size);
-      renderer->setFont(font);
+      gltext::FontPtr font(gltext::CreateFont("../arial.ttf", gltext::PLAIN, size));
+      renderer->setFont(font.get());
       glPushMatrix();
       y += font->getAscent();
       glTranslatef(5, y, 0);
@@ -65,7 +64,6 @@ void display()
       glPopMatrix();
 
       y += (font->getDescent() + font->getLineGap());
-      delete font;
       size += 2;
    }
 
