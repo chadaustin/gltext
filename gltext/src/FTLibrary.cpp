@@ -1,22 +1,8 @@
 /* -*- Mode: C++; tab-width: 3; indent-tabs-mode: nil c-basic-offset: 3 -*- */
 // vim:cindent:ts=3:sw=3:et:tw=80:sta:
-/************************************************************** gltext-head beg
- *
- * GLText
- *
- * Original Authors:
- *    Ben Scott <bscott@iastate.edu>
- *
- * -----------------------------------------------------------------
- * File:          $RCSfile: FTLibrary.cpp,v $
- * Date modified: $Date: 2002-06-11 04:27:18 $
- * Version:       $Revision: 1.1 $
- * -----------------------------------------------------------------
- *
- *********************************************************** gltext-head-end */
 /*************************************************************** gltext-cpr beg
  *
- * GLText
+ * GLText - OpenGL TrueType Front Renderer
  * GLText is (C) Copyright 2002 by Ben Scott
  *
  * This library is free software; you can redistribute it and/or
@@ -33,6 +19,12 @@
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
+ *
+ * -----------------------------------------------------------------
+ * File:          $RCSfile: FTLibrary.cpp,v $
+ * Date modified: $Date: 2002-06-15 22:38:46 $
+ * Version:       $Revision: 1.2 $
+ * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
 #include "FTLibrary.h"
