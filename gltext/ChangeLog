@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- -----------  -------------------------------------------------------
+2003-02-07 aegis        Renamed CreateFont to OpenFont
 2003-02-03 aegis        Modified internal structure slightly so that
                         custom Font and Glyph implementations will work.
                         Greatly reduced footprint by removing the few uses

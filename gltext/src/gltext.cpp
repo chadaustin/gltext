@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.cpp,v $
- * Date modified: $Date: 2003-02-04 03:30:32 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2003-02-07 23:02:36 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -44,7 +44,7 @@ namespace gltext
          return "0.3.0";
       }
 
-      GLTEXT_EXPORT(Font*) GLTextCreateFont(const char* name, int size)
+      GLTEXT_EXPORT(Font*) GLTextOpenFont(const char* name, int size)
       {
          return FTFont::create(name, size);
       }

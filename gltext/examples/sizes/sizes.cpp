@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: sizes.cpp,v $
- * Date modified: $Date: 2003-02-04 03:39:02 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-02-07 23:02:35 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -55,7 +55,7 @@ void display()
    int size = 4;
    for (int y=0; y<480; )
    {
-      gltext::FontPtr font(gltext::CreateFont("../arial.ttf", size));
+      gltext::FontPtr font(gltext::OpenFont("../arial.ttf", size));
       if (! font)
       {
          std::cerr << "Can't create font" << std::endl;

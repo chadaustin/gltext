@@ -10,9 +10,9 @@ First you'll need to open a font. The font describes how each character
 looks to the renderer. You need to specify:
    - the name of the file that contains the font definition
    - the point size of the font you want
-If the creation fails, CreateFont will return NULL.
+If the creation fails, OpenFont will return NULL.
 
-   gltext::FontPtr myFont(gltext::CreateFont("arial.ttf", 24));
+   gltext::FontPtr myFont(gltext::OpenFont("arial.ttf", 24));
 
 3.  Create a renderer for the font. The renderer is responsible for
 making the OpenGL calls necessary to draw the text you want on the

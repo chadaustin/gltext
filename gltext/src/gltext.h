@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.h,v $
- * Date modified: $Date: 2003-02-04 01:10:52 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2003-02-07 23:02:36 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -425,7 +425,7 @@ namespace gltext
       GLTEXT_FUNC(const char*) GLTextGetVersion();
 
       /// Creates a new Font by name.
-      GLTEXT_FUNC(Font*) GLTextCreateFont(const char* name, int size);
+      GLTEXT_FUNC(Font*) GLTextOpenFont(const char* name, int size);
 
       /// Creates a new FontRenderer.
       GLTEXT_FUNC(FontRenderer*) GLTextCreateRenderer(
@@ -449,9 +449,9 @@ namespace gltext
     * @param name    the name of a particular font face.
     * @param size    the point size of the font.
     */
-   inline Font* CreateFont(const char* name, int size)
+   inline Font* OpenFont(const char* name, int size)
    {
-      return internal::GLTextCreateFont(name, size);
+      return internal::GLTextOpenFont(name, size);
    }
 
    /**
