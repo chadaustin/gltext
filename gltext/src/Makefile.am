@@ -15,16 +15,21 @@ libgltext_la_SOURCES = \
 	FTGlyph.h \
 	FTLibrary.cpp \
 	FTLibrary.h \
+   FontStreamImpl.cpp \
+   FontStreamImpl.h \
 	GLGlyph.h \
 	GLPixelGlyph.cpp \
 	GLPixelGlyph.h \
+   GLTextureGlyph.cpp \
+   GLTextureGlyph.h \
 	GlyphCache.h \
-	InterfaceImpl.h \
 	PixmapRenderer.cpp \
-	PixmapRenderer.h
+	PixmapRenderer.h \
+   TextureRenderer.cpp \
+   TextureRenderer.h
 
 libgltext_la_LDFLAGS = \
 	-release $(VERSION)
 
 ligltext_la_CFLAGS = \
-	-Wall
+	-Wall -Wno-non-virtual-dtor
