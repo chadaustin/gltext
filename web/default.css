@@ -43,6 +43,12 @@ body, BODY, .BODY, BODY:text, noframes, p, table, table tr, table tr td
    font-size: 14px;
 }
 
+.resource
+{
+   border-spacing: 8 2;
+   border: 0;
+}
+
 .blockborder
 {
 //   background-color: #ebecff;
