@@ -27,12 +27,12 @@ Automatic distribution builder and packager for SCons.
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: AutoDist.py,v $
-# Date modified: $Date: 2003-02-03 19:40:38 $
-# Version:       $Revision: 1.3 $
+# Date modified: $Date: 2003-02-13 06:01:04 $
+# Version:       $Revision: 1.4 $
 # -----------------------------------------------------------------
 ############################################################## autodist-cpr end
 
-__version__ = '0.1.1'
+__version__ = '0.1.3'
 
 
 from os import path
@@ -112,8 +112,8 @@ class _Assembly:
 
    def addSources(self, sources):
       """
-      Adds the given list of source files into this assembly. The list must
-      come in as strings as they are processed through File().
+      Adds the given list of source files into this assembly. The list must come
+      in as strings as they are processed through File().
       """
       # Use File() to figure out the absolute path to the file
       srcs = map(File, sources)
@@ -122,11 +122,11 @@ class _Assembly:
 
    def addHeaders(self, headers, prefix = None):
       """
-      Adds the given list of distribution header files into this assembly.
-      These headers will be installed to Prefix()/include/prefix. The list
-      must come in as strings as they are processed through File().
+      Adds the given list of distribution header files into this assembly. These
+      headers will be installed to Prefix()/include/prefix. The list must come
+      in as strings as they are processed through File().
       """
-      hdrs = map(lambda n, prefix=prefix: Header(n,prefix), map(File, headers))
+      hdrs = map(lambda n,prefix=prefix: Header(n,prefix), map(File, headers))
       self.data['headers'].extend(hdrs)
 
    def addIncludes(self, includes):
@@ -252,7 +252,7 @@ class Program(_Assembly):
       prog_name = path.join(path.dirname(str(name)),
                             baseEnv.subst('${PROGPREFIX}') + path.basename(str(name)) + baseEnv.subst('${PROGSUFFIX}'))
 
-      _Assembly.__init__(self, name, baseEnv)
+      _Assembly.__init__(self, prog_name, baseEnv)
 
    def _buildImpl(self):
       """
