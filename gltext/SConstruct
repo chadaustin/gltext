@@ -1,6 +1,9 @@
-import os
-from os import path
+import os, string, sys
 pj = os.path.join
+
+# Pull in the AutoDist module
+sys.path = ['build'] + sys.path
+from AutoDist import *
 
 
 # Check for optimize option
@@ -14,17 +17,16 @@ if ARGUMENTS.get('profile', 0):
    profile = 1
 
 # Check for an install prefix
-PREFIX = '/usr/local'
 if ARGUMENTS.get('prefix'):
-   PREFIX = ARGUMENTS['prefix']
-Export('PREFIX')
+   Prefix(ARGUMENTS['prefix'])
 
 
 def BuildBaseEnvironment():
+   "Builds a base environment for other modules to build on."
    global optimize, profile
 
-   "Builds a base environment for other modules to build on."
-
+   CXX = WhereIs('g++3') or 'g++'
+   LINK = CXX
    CXXFLAGS = ['-Wall', '-Wno-non-virtual-dtor']
    LINKFLAGS = []
 
@@ -39,6 +41,8 @@ def BuildBaseEnvironment():
 
    env = Environment(
       ENV = os.environ,
+      CXX = CXX,
+      LINK = LINK,
       CPPPATH = [],
       LIBPATH = [],
       LIBS = [],
@@ -86,6 +90,12 @@ def SetupCppUnit(env):
    "Sets up the given environment for CppUnit"
    ParseConfig(env, 'cppunit-config', Split('--cflags --libs'))
 
+def GetGLTextVersionString():
+   import re
+   contents = open('src/gltext.cpp', 'r').read()
+   version = re.compile(r'.*return +"(\d+\.\d+\.\d+)".*', re.DOTALL).sub(r'\1', contents)
+   return version
+
 # Define additional functions to build with external libraries
 execfile('opengl_libs.py')
 execfile('glut_libs.py')
@@ -98,6 +108,10 @@ Export('SetupGLUT SetupOpenGL')
 baseEnv = BuildBaseEnvironment()
 Export('baseEnv')
 
+# Create the gltext package
+pkg = Package('gltext', GetGLTextVersionString())
+Export('pkg')
+
 subdirs = Split('src test examples')
 
 # Build everything except the examples and tests by default
@@ -109,5 +123,5 @@ Default(defaultTargets)
 # Recurse
 SConscript(dirs = subdirs)
 
-# Install target
-baseEnv.Alias('install', PREFIX)
+pkg.build()
+#MakeSourceDist(pkg)

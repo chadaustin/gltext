@@ -1,7 +1,7 @@
 import os
 pj = os.path.join
 
-Import('baseEnv PREFIX')
+Import('baseEnv pkg')
 Import('SetupFreeType SetupOpenGL')
 
 sources = Split("""
@@ -22,9 +22,7 @@ env = baseEnv.Copy()
 SetupFreeType(env)
 SetupOpenGL(env)
 
-libraries = []
-libraries.append(env.SharedLibrary(target = 'gltext', source = sources))
 
-# Installation
-env.Install(pj(PREFIX, 'include'), 'gltext.h')
-env.Install(pj(PREFIX, 'lib'), libraries)
+lib = pkg.createSharedLibrary('gltext', env)
+lib.addSources(sources)
+lib.addHeaders(['gltext.h'])

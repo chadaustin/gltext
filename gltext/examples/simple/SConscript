@@ -1,14 +1,14 @@
-Import('baseEnv')
+Import('baseEnv pkg')
 Import('SetupFreeType SetupGLUT SetupOpenGL')
 
 # Clone the environment
 env = baseEnv.Copy()
-env['CPPPATH'].extend(['#src'])
-env['LIBPATH'].extend(['#src'])
-env['LIBS'].extend(['gltext'])
 SetupFreeType(env)
 SetupGLUT(env)
 SetupOpenGL(env)
 
-
-env.Program(target = 'simple', source = 'main.cpp')
+prog = pkg.createProgram('simple', env)
+prog.addIncludes(['#src'])
+prog.addLibPaths(['#src'])
+prog.addLibs(['gltext'])
+prog.addSources(['main.cpp'])
