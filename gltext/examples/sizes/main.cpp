@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: main.cpp,v $
- * Date modified: $Date: 2002-12-21 02:56:58 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-12-23 22:21:58 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -60,7 +60,7 @@ void display()
       glPushMatrix();
       y += font->getAscent();
       glTranslatef(5, y, 0);
-      renderer->render("The quick, brown fox jumped over the ... I forget!");
+      renderer->getStream() << "The quick, brown fox jumped over the lazy dog." << gltext::flush;
       glPopMatrix();
 
       y += (font->getDescent() + font->getLineGap());

@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: main.cpp,v $
- * Date modified: $Date: 2002-12-21 02:56:58 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-12-23 22:21:57 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -53,7 +53,8 @@ void display()
 
    glColor4f(1,0,0,1);
    glTranslatef(100, 100, 0);
-   renderer->render("hello world");
+   renderer->getStream() << "hello world " << 10 << gltext::flush;
+//   renderer->render("hello world");
 
    glutSwapBuffers();
 }

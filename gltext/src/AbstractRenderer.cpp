@@ -22,20 +22,23 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AbstractRenderer.cpp,v $
- * Date modified: $Date: 2002-12-23 21:03:26 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-12-23 22:21:58 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
 #include <iostream>
 #include "AbstractRenderer.h"
+#include "FontStreamImpl.h"
 #include "GlyphCache.h"
 
 namespace gltext
 {
    AbstractRenderer::AbstractRenderer()
       : mFont(0)
-   {}
+   {
+      mStream = new FontStreamImpl(this);
+   }
 
    AbstractRenderer::~AbstractRenderer()
    {}
@@ -79,6 +82,11 @@ namespace gltext
             penX += fontGlyph->getAdvance();
          }
       }
+   }
+
+   FontStream& AbstractRenderer::getStream()
+   {
+      return *mStream;
    }
 
    int AbstractRenderer::getWidth(const char* text)

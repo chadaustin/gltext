@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.h,v $
- * Date modified: $Date: 2002-12-23 21:03:26 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-12-23 22:21:58 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -33,6 +33,8 @@
 #ifndef __cplusplus
 #  error GLText requires C++
 #endif
+
+#include <sstream>
 
 // The calling convention for cross-DLL calls in win32
 #ifdef WIN32
@@ -108,7 +110,7 @@ namespace gltext
             mPtr = 0;
          }
       }
- 
+
       RefPtr<T>& operator=(T* ptr)
       {
          if (ptr != mPtr)
@@ -254,6 +256,8 @@ namespace gltext
    };
    typedef RefPtr<Font> FontPtr;
 
+   class FontStream;
+
    /**
     * Interface to an object that knows how to render a font.
     */
@@ -268,6 +272,12 @@ namespace gltext
        * renderer's current font.
        */
       virtual void render(const char* text) = 0;
+
+      /**
+       * Gets a stream for this renderer. All output to the stream will be sent
+       * as text to this renderer when it has been flushed.
+       */
+      virtual FontStream& getStream() = 0;
 
       /**
        * Computes the width of the given text string if it were to be rendered
@@ -291,6 +301,48 @@ namespace gltext
    };
    typedef RefPtr<FontRenderer> FontRendererPtr;
 
+   /**
+    * Provides a stream with which to use to provide text to a renderer.
+    */
+   class FontStream : public RefCounted
+   {
+   protected:
+      ~FontStream() {}
+
+   public:
+      /**
+       * Flushes the output in the given font stream through the renderer.
+       */
+      virtual FontStream& flush() = 0;
+
+      ///@{
+      /**
+       * Renders the value of the given type as text.
+       */
+      virtual FontStream& operator<<(long val) = 0;
+      virtual FontStream& operator<<(unsigned long val) = 0;
+      virtual FontStream& operator<<(bool val) = 0;
+      virtual FontStream& operator<<(short val) = 0;
+      virtual FontStream& operator<<(unsigned short val) = 0;
+      virtual FontStream& operator<<(int val) = 0;
+      virtual FontStream& operator<<(unsigned int val) = 0;
+      virtual FontStream& operator<<(float val) = 0;
+      virtual FontStream& operator<<(double val) = 0;
+      virtual FontStream& operator<<(long double val) = 0;
+      virtual FontStream& operator<<(char val) = 0;
+      virtual FontStream& operator<<(unsigned char val) = 0;
+      virtual FontStream& operator<<(const char* val) = 0;
+      virtual FontStream& operator<<(const unsigned char* val) = 0;
+      virtual FontStream& operator<<(FontStream& (*func)(FontStream& stream)) = 0;
+      ///@}
+   };
+   typedef RefPtr<FontStream> FontStreamPtr;
+
+   /**
+    * Flushes the output in the given font stream through the renderer.
+    */
+   FontStream& flush(FontStream& fs);
+   
    /**
     * PRIVATE API - for internal use only
     * Anonymous namespace containing our exported functions. They are extern "C"

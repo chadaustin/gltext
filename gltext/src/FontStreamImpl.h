@@ -21,44 +21,47 @@
  * Boston, MA 02111-1307, USA.
  *
  * -----------------------------------------------------------------
- * File:          $RCSfile: AbstractRenderer.h,v $
+ * File:          $RCSfile: FontStreamImpl.h,v $
  * Date modified: $Date: 2002-12-23 22:21:58 $
- * Version:       $Revision: 1.6 $
+ * Version:       $Revision: 1.1 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
-#ifndef GLTEXT_ABSTRACTRENDERER_H
-#define GLTEXT_ABSTRACTRENDERER_H
+#ifndef GLTEXT_FONTSTREAMIMPL_H
+#define GLTEXT_FONTSTREAMIMPL_H
 
 #include "gltext.h"
-#include "FTFont.h"
-#include "GLGlyph.h"
+#include <sstream>
 
 namespace gltext
 {
-   class AbstractRenderer : public RefImpl< FontRenderer >
+   class FontStreamImpl : public RefImpl<FontStream>
    {
-   protected:
-      AbstractRenderer();
-      virtual ~AbstractRenderer();
-
    public:
-      void render(const char* text);
-      FontStream& getStream();
-      int getWidth(const char* text);
-      void setFont(Font* font);
-      Font* getFont() const;
+      FontStreamImpl(FontRenderer* renderer);
+      virtual ~FontStreamImpl();
 
-   protected:
-      /**
-       * Makes a rendered glyph ready for OpenGL based on the given FreeType2
-       * glyph.
-       */
-      virtual GLGlyph* makeGlyph(const FTGlyph* glyph) = 0;
+      FontStream& flush();
 
-   protected:
-      FTFont* mFont;
-      FontStreamPtr mStream;
+      FontStream& operator<<(long val);
+      FontStream& operator<<(unsigned long val);
+      FontStream& operator<<(bool val);
+      FontStream& operator<<(short val);
+      FontStream& operator<<(unsigned short val);
+      FontStream& operator<<(int val);
+      FontStream& operator<<(unsigned int val);
+      FontStream& operator<<(float val);
+      FontStream& operator<<(double val);
+      FontStream& operator<<(long double val);
+      FontStream& operator<<(char val);
+      FontStream& operator<<(unsigned char val);
+      FontStream& operator<<(const char* val);
+      FontStream& operator<<(const unsigned char* val);
+      FontStream& operator<<(FontStream& (*func)(FontStream& stream));
+
+   private:
+      FontRendererPtr mRenderer;
+      std::ostringstream* mStream;
    };
 }
 
