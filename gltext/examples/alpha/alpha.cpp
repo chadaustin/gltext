@@ -21,9 +21,9 @@
  * Boston, MA 02111-1307, USA.
  *
  * -----------------------------------------------------------------
- * File:          $RCSfile: simple.cpp,v $
+ * File:          $RCSfile: alpha.cpp,v $
  * Date modified: $Date: 2003-02-23 09:58:57 $
- * Version:       $Revision: 1.3 $
+ * Version:       $Revision: 1.1 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -48,25 +48,31 @@ void idle()
 
 void display()
 {
-   glClearColor(0, 0, 1, 1);
+   glClearColor(1, 0, 0, 1);
    glClear(GL_COLOR_BUFFER_BIT);
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
 
-   glColor4f(1, 0, 0, 1);
+   glColor4f(1,0,0,1);
 
    glPushMatrix();
-   glTranslatef(100, 100, 0);
+   glTranslatef(100, 100, 0); glColor3f(0, 0, 0);
+   gltext::FontStream(btmRenderer).get() << "hello world (btm) AVWAW." << 10;
+   glTranslatef(-5, -5, 0);   glColor3f(1, 1, 1);
    gltext::FontStream(btmRenderer).get() << "hello world (btm) AVWAW." << 10;
    glPopMatrix();
 
    glPushMatrix();
-   glTranslatef(100, 200, 0);
+   glTranslatef(100, 200, 0); glColor3f(0, 0, 0);
+   gltext::FontStream(pxmRenderer).get() << "hello world (pxm) AVWAW." << 10;
+   glTranslatef(-5, -5, 0);   glColor3f(1, 1, 1);
    gltext::FontStream(pxmRenderer).get() << "hello world (pxm) AVWAW." << 10;
    glPopMatrix();
 
    glPushMatrix();
-   glTranslatef(100, 300, 0);
+   glTranslatef(100, 300, 0); glColor3f(0, 0, 0);
+   gltext::FontStream(texRenderer).get() << "hello world (tex) AVWAW." << 10;
+   glTranslatef(-5, -5, 0);   glColor3f(1, 1, 1);
    gltext::FontStream(texRenderer).get() << "hello world (tex) AVWAW." << 10;
    glPopMatrix();
 
@@ -96,12 +102,15 @@ main(int argc, char** argv)
    glutInitWindowPosition(50, 50);
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
-   gContext = glutCreateWindow("Simple Example");
+   gContext = glutCreateWindow("Alpha Example");
 
    glutDisplayFunc(display);
    glutIdleFunc(idle);
    glutReshapeFunc(reshape);
    glutKeyboardFunc(keydown);
+
+   glEnable(GL_BLEND);
+   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
    font = gltext::OpenFont("../arial.ttf", 26);
    if (! font)

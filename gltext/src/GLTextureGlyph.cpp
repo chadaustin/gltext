@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GLTextureGlyph.cpp,v $
- * Date modified: $Date: 2003-02-04 03:39:03 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-02-23 09:58:58 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -45,45 +45,59 @@ namespace gltext
 
    GLTextureGlyph::GLTextureGlyph(int offx, int offy,
                                   int width, int height, u8* data)
-      : mOffsetX(offx), mOffsetY(offy), mWidth(width), mHeight(height)
+      : mOffsetX(offx)
+      , mOffsetY(offy)
+      , mWidth(width)
+      , mHeight(height)
    {
       // Make a texture sized at a power of 2.  Require them to be 8x8
       // to prevent some funky texture flickering rendering glitches.
       mTexWidth  = std::max(8, nextPowerOf2(mWidth));
       mTexHeight = std::max(8, nextPowerOf2(mHeight));
-      u8* pixels = new u8[mTexWidth * mTexHeight];
-      memset(pixels, 0, mTexWidth * mTexHeight);
-
-      for (int row = 0; row < mHeight; ++row)
-      {
-         memcpy(pixels + mTexWidth * row, data + mWidth * row, mWidth);
-      }
 
       // Get a unique texture name for our new texture
       glGenTextures(1, &mTexName);
 
+      const int size = mTexWidth * mTexHeight;
+      u8* pixels = new u8[size];
+      memset(pixels, 0, size);
+      for (int row = 0; row < mHeight; ++row)
+      {
+         memcpy(pixels + mTexWidth * row, data + mWidth * row, mWidth);
+      }
+      delete[] data;
+      data = 0;
+
+      // This is basically an expansion of pixels into Luminance/Alpha.
+      u8* la = new u8[size * 2];
+      for (int i = 0; i < size; ++i)
+      {
+         la[i * 2 + 0] = (pixels[i] ? 255 : 0);
+         la[i * 2 + 1] = pixels[i];
+      }
+      delete[] pixels;
+      pixels = 0;
+
       // Generate a 2D texture with our image data
       glBindTexture(GL_TEXTURE_2D, mTexName);
       glTexImage2D(
-            GL_TEXTURE_2D,
-            0,
-            1,
-            mTexWidth,
-            mTexHeight,
-            0,
-            GL_LUMINANCE,
-            GL_UNSIGNED_BYTE,
-            pixels);
+         GL_TEXTURE_2D,
+         0,
+         GL_LUMINANCE_ALPHA,
+         mTexWidth,
+         mTexHeight,
+         0,
+         GL_LUMINANCE_ALPHA,
+         GL_UNSIGNED_BYTE,
+         la);
+      delete[] la;
+      la = 0;
 
       // Setup clamping and our min/mag filters
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-      // Free image data memory
-      delete [] pixels;
-      delete [] data;
    }
 
    GLTextureGlyph::~GLTextureGlyph()
