@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.00"
 	Name="gltext"
-	ProjectGUID="{A737529C-8CC0-4303-BD76-071F2232C965}"
+	ProjectGUID="{C3BD8866-415F-4402-B5D9-1FC854C7E434}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -19,7 +19,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../third-party-vc7/include"
+				AdditionalIncludeDirectories="../../third-party-vc7/include"
 				PreprocessorDefinitions="NOMINMAX;WIN32;_DEBUG;_WINDOWS;_USRDLL;GLTEXT_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -32,11 +32,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="freetype.lib opengl32.lib"
-				OutputFile="$(OutDir)/gltext.dll"
+				AdditionalDependencies="freetype.lib OpenGL32.lib GLU32.lib"
+				OutputFile="../bin/$(OutDir)/gltext.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../third-party-vc7/lib"
-				ModuleDefinitionFile=""
+				AdditionalLibraryDirectories="../../third-party-vc7/lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/gltext.pdb"
 				SubSystem="2"
@@ -68,7 +67,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OmitFramePointers="TRUE"
-				AdditionalIncludeDirectories="../third-party-vc7/include"
+				AdditionalIncludeDirectories="../../third-party-vc7/include"
 				PreprocessorDefinitions="NOMINMAX;WIN32;NDEBUG;_WINDOWS;_USRDLL;GLTEXT_EXPORTS"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
@@ -81,11 +80,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="freetype.lib opengl32.lib"
-				OutputFile="$(OutDir)/gltext.dll"
+				AdditionalDependencies="freetype.lib OpenGL32.lib GLU32.lib"
+				OutputFile="../bin/$(OutDir)/gltext.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../third-party-vc7/lib"
-				ModuleDefinitionFile=""
+				AdditionalLibraryDirectories="../../third-party-vc7/lib"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -110,67 +108,70 @@
 	</Configurations>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm">
+			Name="files"
+			Filter="">
 			<File
-				RelativePath="..\src\AbstractRenderer.cpp">
+				RelativePath="..\..\src\AbstractRenderer.cpp">
 			</File>
 			<File
-				RelativePath="..\src\AbstractRenderer.h">
+				RelativePath="..\..\src\AbstractRenderer.h">
 			</File>
 			<File
-				RelativePath="..\src\BitmapRenderer.cpp">
+				RelativePath="..\..\src\BitmapRenderer.cpp">
 			</File>
 			<File
-				RelativePath="..\src\BitmapRenderer.h">
+				RelativePath="..\..\src\BitmapRenderer.h">
 			</File>
 			<File
-				RelativePath="..\src\FTFont.cpp">
+				RelativePath="..\..\src\FTFont.cpp">
 			</File>
 			<File
-				RelativePath="..\src\FTFont.h">
+				RelativePath="..\..\src\FTFont.h">
 			</File>
 			<File
-				RelativePath="..\src\FTGlyph.cpp">
+				RelativePath="..\..\src\FTGlyph.cpp">
 			</File>
 			<File
-				RelativePath="..\src\FTGlyph.h">
+				RelativePath="..\..\src\FTGlyph.h">
 			</File>
 			<File
-				RelativePath="..\src\GLGlyph.h">
+				RelativePath="..\..\src\GLGlyph.h">
 			</File>
 			<File
-				RelativePath="..\src\GLPixelGlyph.cpp">
+				RelativePath="..\..\src\GLPixelGlyph.cpp">
 			</File>
 			<File
-				RelativePath="..\src\GLPixelGlyph.h">
+				RelativePath="..\..\src\GLPixelGlyph.h">
 			</File>
 			<File
-				RelativePath="..\src\GLTextureGlyph.cpp">
+				RelativePath="..\..\src\GLTextureGlyph.cpp">
 			</File>
 			<File
-				RelativePath="..\src\GLTextureGlyph.h">
+				RelativePath="..\..\src\GLTextureGlyph.h">
 			</File>
 			<File
-				RelativePath="..\src\GlyphCache.h">
+				RelativePath="..\..\src\GlyphCache.h">
 			</File>
 			<File
-				RelativePath="..\src\PixmapRenderer.cpp">
+				RelativePath="..\..\src\OpenGL.h">
 			</File>
 			<File
-				RelativePath="..\src\PixmapRenderer.h">
+				RelativePath="..\..\src\PixmapRenderer.cpp">
 			</File>
 			<File
-				RelativePath="..\src\TextureRenderer.cpp">
+				RelativePath="..\..\src\PixmapRenderer.h">
 			</File>
 			<File
-				RelativePath="..\src\TextureRenderer.h">
+				RelativePath="..\..\src\TextureRenderer.cpp">
 			</File>
 			<File
-				RelativePath="..\src\gltext.cpp">
+				RelativePath="..\..\src\TextureRenderer.h">
 			</File>
 			<File
-				RelativePath="..\src\gltext.h">
+				RelativePath="..\..\src\gltext.cpp">
+			</File>
+			<File
+				RelativePath="..\..\src\gltext.h">
 			</File>
 		</Filter>
 	</Files>

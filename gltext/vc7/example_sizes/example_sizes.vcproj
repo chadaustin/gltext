@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.00"
 	Name="example_sizes"
-	ProjectGUID="{AFE97A6E-60A0-4583-ADE3-79C6D8078439}"
+	ProjectGUID="{E04D3FB0-70CE-46E7-B9DF-31B8F7CAAA32}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -19,8 +19,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(SolutionDir)../src;$(SolutionDir)../third-party-vc7/include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
+				AdditionalIncludeDirectories="../../src"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="5"
@@ -32,10 +32,8 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="glut32.lib gltext.lib"
-				OutputFile="$(OutDir)/example_sizes.exe"
+				OutputFile="../bin/$(OutDir)/example_sizes.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(OutDir);$(SolutionDir)../third-party-vc7/lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/example_sizes.pdb"
 				SubSystem="1"
@@ -66,8 +64,8 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OmitFramePointers="TRUE"
-				AdditionalIncludeDirectories="$(SolutionDir)../src;$(SolutionDir)../third-party-vc7/include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
+				AdditionalIncludeDirectories="../../src"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				StringPooling="TRUE"
 				RuntimeLibrary="4"
 				EnableFunctionLevelLinking="TRUE"
@@ -79,10 +77,8 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="glut32.lib gltext.lib"
-				OutputFile="$(OutDir)/example_sizes.exe"
+				OutputFile="../bin/$(OutDir)/example_sizes.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(OutDir);$(SolutionDir)../third-party-vc7/lib"
 				GenerateDebugInformation="TRUE"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -105,9 +101,13 @@
 		</Configuration>
 	</Configurations>
 	<Files>
-		<File
-			RelativePath="..\examples\sizes\sizes.cpp">
-		</File>
+		<Filter
+			Name="files"
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm">
+			<File
+				RelativePath="..\..\examples\sizes\sizes.cpp">
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.00"
-	Name="example_simple"
-	ProjectGUID="{E111584B-A981-48C2-AAA5-1C2DD23B494B}"
+	Name="example_fps"
+	ProjectGUID="{6BBD96D4-E8AB-4637-97D6-D0F20EF348D3}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -19,8 +19,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(SolutionDir)../src;$(SolutionDir)../third-party-vc7/include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
+				AdditionalIncludeDirectories="../../src"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="5"
@@ -32,12 +32,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="glut32.lib gltext.lib"
-				OutputFile="$(OutDir)/example_simple.exe"
+				OutputFile="../bin/$(OutDir)/example_fps.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(OutDir);$(SolutionDir)../third-party-vc7/lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/example_simple.pdb"
+				ProgramDatabaseFile="$(OutDir)/example_fps.pdb"
 				SubSystem="1"
 				TargetMachine="1"/>
 			<Tool
@@ -66,8 +64,8 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OmitFramePointers="TRUE"
-				AdditionalIncludeDirectories="$(SolutionDir)../src;$(SolutionDir)../third-party-vc7/include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
+				AdditionalIncludeDirectories="../../src"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				StringPooling="TRUE"
 				RuntimeLibrary="4"
 				EnableFunctionLevelLinking="TRUE"
@@ -79,10 +77,8 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="glut32.lib gltext.lib"
-				OutputFile="$(OutDir)/example_simple.exe"
+				OutputFile="../bin/$(OutDir)/example_fps.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(OutDir);$(SolutionDir)../third-party-vc7/lib"
 				GenerateDebugInformation="TRUE"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -105,9 +101,13 @@
 		</Configuration>
 	</Configurations>
 	<Files>
-		<File
-			RelativePath="..\examples\simple\simple.cpp">
-		</File>
+		<Filter
+			Name="files"
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm">
+			<File
+				RelativePath="..\..\examples\fps\fps.cpp">
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
