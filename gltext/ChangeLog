@@ -1,5 +1,10 @@
 DATE       AUTHOR       CHANGE
 ---------- -----------  -------------------------------------------------------
+2002-12-23 nonchocoboy  Added method to the renderer for querying the width of
+                        a string in pixels.
+2002-12-23 nonchocoboy  Reworked the scons build system.
+2002-12-20 nonchocoboy  Reworked the interface to use reference counting to
+                        manage memory.
 2002-06-30 nonchocoboy  NEW VERSION: 0.1.0
 2002-06-30 aegis        autotools build system
 2002-06-30 nonchocoboy  Improved documentation. Added a quick tutorial to get
