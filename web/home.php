@@ -1,5 +1,5 @@
 <?php
-// $Id: home.php,v 1.2 2002-07-04 05:55:16 nonchocoboy Exp $
+// $Id: home.php,v 1.3 2002-12-23 23:44:40 nonchocoboy Exp $
 include 'common.inc';
 layoutHeader('home', 'home');
 ?>
@@ -27,6 +27,22 @@ virtually anywhere that FreeType2 supports.
 </p>
 
 <h2>News</h2>
+
+<h3>GLText 0.2.0 Released [2002.12.23]</h3>
+<p>
+GLText 0.2.0 has been released just in time for Christmas. Here are the major
+changes since the last release.
+</p>
+
+<ul>
+ <li>New FontStream interface for an STL iostream-like interface to writing text
+     to the screen.</li>
+ <li>All objects are now ref-counted. Use the XXXPtr classes to have the
+     reference counting managed for you. You won't have to worry about when to
+     delete GLText objects any more.</li>
+ <li>You can now query a renderer for the width a string will be when
+     rendered.</li>
+</ul>
 
 <h3>GLText 0.1.0 Released [2002.07.04]</h3>
 <p>

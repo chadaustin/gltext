@@ -1,5 +1,5 @@
 <?php
-// $Id: download.php,v 1.3 2002-07-04 05:56:21 nonchocoboy Exp $
+// $Id: download.php,v 1.4 2002-12-23 23:44:40 nonchocoboy Exp $
 include 'common.inc';
 layoutHeader('download', 'download');
 
@@ -39,19 +39,19 @@ EOD;
 
 <h1>Download</h1>
 <p>
-The current release of GLText is <b>0.1.0</b>. This is a <b>beta</b> release for
+The current release of GLText is <b>0.2.0</b>. This is a <b>beta</b> release for
 testing the design. Download it here as binary or source.
 </p>
 
 <h2>Releases</h2>
 <?php
-echo release('GLText', '0.1.0',
+echo release('GLText', '0.2.0',
    array(
-      releaseFile('gltext-0.1.0.tar.gz',     'Gzipped tarball, ready to build and install using configure.'),
-      releaseFile('gltext-0.1.0-1.i386.rpm', 'RPM for RedHat/Mandrake Linux.'),
-      releaseFile('gltext-0.1.0-1.src.rpm',  'Source RPM for RedHat/Mandrake Linux.'),
-      releaseFile('gltext-0.1.0.win32.zip',  'Zipped Win32 binaries, ready to install.'),
-      releaseFile('gltext-src-0.1.0.tar.gz', 'Gzipped tarball of the checked-in source tree.'),
+      releaseFile('gltext-0.2.0.tar.gz',     'Gzipped tarball, ready to build and install using configure.'),
+      releaseFile('gltext-0.2.0-1.i386.rpm', 'RPM for RedHat/Mandrake Linux.'),
+      releaseFile('gltext-0.2.0-1.src.rpm',  'Source RPM for RedHat/Mandrake Linux.'),
+      releaseFile('gltext-0.2.0.win32.zip',  'Zipped Win32 binaries, ready to install.'),
+      releaseFile('gltext-src-0.2.0.tar.gz', 'Gzipped tarball of the checked-in source tree.'),
    )
 );
 
