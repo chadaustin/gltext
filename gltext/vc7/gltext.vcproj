@@ -78,8 +78,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="freetype.lib opengl32.lib"
 				OutputFile="$(OutDir)/gltext.dll"
 				LinkIncremental="1"
+				ModuleDefinitionFile="$(SolutionDir)gltext.def"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
