@@ -171,7 +171,6 @@ pkg.addExtraDist(Split("""
    test/SConscript
    vc7/example_simple.vcproj
    vc7/example_sizes.vcproj
-   vc7/gltext.def
    vc7/gltext.sln
    vc7/gltext.vcproj
 """))
@@ -179,11 +178,7 @@ Export('pkg')
 
 subdirs = Split('src test examples')
 
-# Build everything except the examples and tests by default
-defaultTargets = list(subdirs)
-defaultTargets.remove('test')
-defaultTargets.remove('examples')
-Default(defaultTargets)
+Default('.')
 
 # Recurse
 SConscript(dirs = subdirs)
