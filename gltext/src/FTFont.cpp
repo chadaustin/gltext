@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: FTFont.cpp,v $
- * Date modified: $Date: 2003-03-10 09:37:05 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2003-08-05 00:34:59 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -41,8 +41,6 @@ namespace gltext
       {
          return 0;
       }
-
-      // @todo Determine the path to the font using the style somehow.
 
       // Try to open the face
       FT_Face face;
