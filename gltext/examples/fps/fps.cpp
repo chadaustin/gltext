@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: fps.cpp,v $
- * Date modified: $Date: 2003-03-18 06:59:56 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-05-26 22:55:56 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -85,6 +85,13 @@ std::vector<Renderer> gRenderers;
 unsigned gCurrentRenderer;
 int gLastUpdate;
 FPSCounter gFPSCounter;
+static const char* gStrings[] =
+{
+   "The five boxing wizards jump quickly.",
+   "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+};
+static const unsigned gStringCount = sizeof(gStrings) / sizeof(*gStrings);
+unsigned gCurrentString = 0;
 
 
 void display()
@@ -102,7 +109,7 @@ void display()
    ss << "FPS: " << fps << "\n" << "Renderer: " << name << "\n\n";
    for (int i = 0; i < 12; ++i)
    {
-      ss << "The five boxing wizards jump quickly.\n";
+      ss << gStrings[gCurrentString] << "\n";
    }
 
    renderer->render(ss.str().c_str());
@@ -127,6 +134,10 @@ void keydown(unsigned char key, int x, int y)
    else if (key == ' ')
    {
       gCurrentRenderer = (gCurrentRenderer + 1) % gRenderers.size();
+   }
+   else if (key == 'n')
+   {
+      gCurrentString = (gCurrentString + 1) % gStringCount;
    }
 }
 
