@@ -1,3 +1,6 @@
+#
+# $Id: checkoutlist,v 1.2 2002-06-06 00:17:09 nonchocoboy Exp $
+#
 # The "checkoutlist" file is used to support additional version controlled
 # administrative files in $CVSROOT/CVSROOT, such as template files.
 #
@@ -11,3 +14,16 @@
 #	[<whitespace>]<filename><whitespace><error message><end-of-line>
 #
 # comment lines begin with '#'
+avail
+cfg.pm
+cfg_local.pm
+commit_prep.pl
+commitcheck
+cvs_acls.pl
+log_accum.pl
+logcheck
+log_verify
+log_verify.pl
+rcstemplate
+unwrap
+wrap

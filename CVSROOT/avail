@@ -1,0 +1,12 @@
+# $Id: avail,v 1.1 2002-06-06 00:17:09 nonchocoboy Exp $
+#
+# This can be used to implement finer grain access controls beyond
+# being in access.  Look in cvs_acls.pl for details on this file's
+# syntax.
+#
+
+group|meisters|nonchocoboy
+
+unavail
+avail|:meisters|CVSROOT
+avail|nonchocoboy
