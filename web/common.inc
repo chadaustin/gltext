@@ -1,5 +1,6 @@
 <?php
-// $Id: common.inc,v 1.1 2002-06-07 04:55:49 nonchocoboy Exp $
+// $Id: common.inc,v 1.2 2002-06-07 23:56:39 nonchocoboy Exp $
+include 'menu.inc';
 include 'doctype.inc';
 
 $SITE_NAME     = 'GLText';
@@ -53,35 +54,6 @@ function blockEnd()
 EOD;
 }
 
-
-/**
- * Makes a menu item within the menu.
- */
-function menuItem($name, $link, $curSection)
-{
-   $selected = $name == $curSection;
-   $html = '<strong>&middot;</strong> ';
-   if ($selected)
-   {
-      $html .= '<b>';
-   }
-   $html .= "<a href=\"$link\">$name</a>";
-   if ($selected)
-   {
-      $html .= '</b>';
-   }
-   return $html;
-}
-
-/**
- * Makes a menu from a list of menu items.
- */
-function menu($items)
-{
-   // put the menu items together, each on its own line
-   return join("<br>\n", $items);
-}
-
 function layoutHeader($section, $name)
 {
    global $SITE_NAME, $SITE_SLOGAN;
@@ -124,18 +96,9 @@ function layoutHeader($section, $name)
    <td width=150 nowrap valign=top>
 EOD;
 
-   // create the menu
-   $menuitems = array(
-         menuItem('introduction',   'index.php',      $section),
-         menuItem('documentation',  'docs.php',       $section),
-         menuItem('download',       'download.php',   $section),
-         menuItem('source',         'source.php',     $section),
-         menuItem('people',         'people.php',     $section)
-   );
-
    // Menu
    $html .= blockBegin('Main Menu');
-   $html .= menu($menuitems);
+   $html .= layoutMenu($section);
    $html .= blockEnd();
 
    // Sponsors
