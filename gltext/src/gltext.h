@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.h,v $
- * Date modified: $Date: 2002-09-27 02:59:34 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-12-20 10:05:19 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -32,12 +32,6 @@
 
 #ifndef __cplusplus
 #  error GLText requires C++
-#endif
-
-// Make sure we pull in windows.h on windows
-#ifdef WIN32
-#  define WIN32_LEAN_AND_MEAN
-#  include <windows.h>
 #endif
 
 // The calling convention for cross-DLL calls in win32
@@ -51,6 +45,158 @@
 
 namespace gltext
 {
+   /**
+    * Base class for classes the manage their own memory using reference
+    * counting.
+    *
+    * This class was originally written by Chad Austin for the audiere project
+    * and released under the LGPL.
+    */
+   class RefCounted
+   {
+   protected:
+      /**
+       * Protected so users of recounted classes don't use std::auto_ptr or the
+       * delete operator.
+       *
+       * Interfaces that derive from RefCounted should define an inline, empty,
+       * protected destrutor as well.
+       */
+      ~RefCounted() {}
+   public:
+      /**
+       * Add a reference to this object. This will increment the internal
+       * reference count.
+       */
+      virtual void ref() = 0;
+
+      /**
+       * Remove a reference from this object. This will decrement the internal
+       * reference count. When this count reaches 0, the object is destroyed.
+       */
+      virtual void unref() = 0;
+   };
+
+   /**
+    * This defines a smart pointer to some type T that implements the RefCounted
+    * interface. This object will do all the nasty reference counting for you.
+    *
+    * This class was originally written by Chad Austin for the audiere project
+    * and released under the LGPL.
+    */
+   template< typename T >
+   class RefPtr
+   {
+   public:
+      RefPtr(T* ptr = 0)
+      {
+         mPtr = 0;
+         *this = ptr;
+      }
+
+      RefPtr(const RefPtr<T>& ptr)
+      {
+         mPtr = 0;
+         *this = ptr;
+      }
+
+      ~RefPtr()
+      {
+         if (mPtr)
+         {
+            mPtr->unref();
+            mPtr = 0;
+         }
+      }
+ 
+      RefPtr<T>& operator=(T* ptr)
+      {
+         if (ptr != mPtr)
+         {
+            if (mPtr)
+            {
+               mPtr->unref();
+            }
+            mPtr = ptr;
+            if (mPtr)
+            {
+               mPtr->ref();
+            }
+         }
+         return *this;
+      }
+
+      RefPtr<T>& operator=(const RefPtr<T>& ptr)
+      {
+         *this = ptr.mPtr;
+         return *this;
+      }
+
+      T* operator->() const
+      {
+         return mPtr;
+      }
+
+      T& operator*() const
+      {
+         return *mPtr;
+      }
+
+      operator bool() const
+      {
+         return (mPtr != 0);
+      }
+
+      T* get() const
+      {
+         return mPtr;
+      }
+
+   private:
+      T* mPtr;
+   };
+
+
+   /**
+    * A basic implementation of the RefCounted interface.  Derive your
+    * implementations from RefImpl<YourInterface>.
+    *
+    * This class was originally written by Chad Austin for the audiere project
+    * and released under the LGPL.
+    */
+   template< class Interface >
+   class RefImpl : public Interface
+   {
+   protected:
+      RefImpl()
+         : mRefCount(0)
+      {}
+
+      /**
+       * So the implementation can put its destruction logic in the destructor,
+       * as natural C++ code does.
+       */
+      virtual ~RefImpl() {}
+
+   public:
+      void ref()
+      {
+         ++mRefCount;
+      }
+
+      void unref()
+      {
+         if (--mRefCount == 0)
+         {
+            delete this;
+         }
+      }
+
+   private:
+      int mRefCount;
+   };
+
+
    /// Styles of fonts supported.
    enum FontStyle
    {
@@ -71,8 +217,11 @@ namespace gltext
    /**
     * Represents a particular font face.
     */
-   class Font
+   class Font : public RefCounted
    {
+   protected:
+      ~Font() {}
+
    public:
       /// Gets the name of this font.
       virtual const char* getName() const = 0;
@@ -123,12 +272,16 @@ namespace gltext
        */
       virtual void destroy() = 0;
    };
+   typedef RefPtr<Font> FontPtr;
 
    /**
     * Interface to an object that knows how to render a font.
     */
-   class FontRenderer
+   class FontRenderer : public RefCounted
    {
+   protected:
+      ~FontRenderer() {}
+
    public:
       /**
        * Renders the text in the given string as glyphs using this font
@@ -171,6 +324,7 @@ namespace gltext
        */
       virtual void destroy() = 0;
    };
+   typedef RefPtr<FontRenderer> FontRendererPtr;
 
    /**
     * PRIVATE API - for internal use only
