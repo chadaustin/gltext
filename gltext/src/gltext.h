@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.h,v $
- * Date modified: $Date: 2003-02-26 01:32:05 $
- * Version:       $Revision: 1.18 $
+ * Date modified: $Date: 2003-02-26 01:58:27 $
+ * Version:       $Revision: 1.19 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -333,6 +333,12 @@ namespace gltext
        * with this renderer.
        */
       virtual int GLTEXT_CALL getWidth(const char* text) = 0;
+
+      /**
+       * Computes the height of the given text string if it were to be
+       * rendered with this renderer.
+       */
+      virtual int GLTEXT_CALL getHeight(const char* text) = 0;
 
       /**
        * Returns the font used to create this renderer.

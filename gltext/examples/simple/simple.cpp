@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: simple.cpp,v $
- * Date modified: $Date: 2003-02-26 01:32:05 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2003-02-26 01:58:27 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -46,6 +46,17 @@ void idle()
    glutPostRedisplay();
 }
 
+void drawText(FontRenderer* renderer, std::string text)
+{
+   text += " Hello...\n...World!  ";
+   const int size   = renderer->getFont()->getSize();
+   const int dpi    = renderer->getFont()->getDPI();
+   const int width  = renderer->getWidth(text.c_str());
+   const int height = renderer->getHeight(text.c_str());
+   FontStream(renderer).get() << text << size << "  " << dpi
+                              << "  " << width << "*" << height;
+}
+
 void display()
 {
    glClearColor(0, 0, 1, 1);
@@ -55,31 +66,16 @@ void display()
 
    glColor4f(1, 0, 0, 1);
 
-   std::string text = "hello ...\n... world!";
-   int btm_size = btmRenderer->getFont()->getSize();
-   int pxm_size = pxmRenderer->getFont()->getSize();
-   int tex_size = texRenderer->getFont()->getSize();
-
-   int btm_dpi = btmRenderer->getFont()->getDPI();
-   int pxm_dpi = pxmRenderer->getFont()->getDPI();
-   int tex_dpi = texRenderer->getFont()->getDPI();
-
    glTranslatef(100, 100, 0);
 
    typedef FontStream FS;
 
    glPushMatrix();
-     FS(btmRenderer).get() << text << " (bitmap)  " << btm_size << " " << btm_dpi;
-     glTranslatef(0, 100, 0);
-     FS(pxmRenderer).get() << text << " (pixmap)  " << pxm_size << " " << pxm_dpi;
-     glTranslatef(0, 100, 0);
-     FS(texRenderer).get() << text << " (texture) " << tex_size << " " << tex_dpi;
-   glPopMatrix();
-
-   glTranslatef(100, 200, 0);
-
-   glPushMatrix();
-   glTranslatef(100, 300, 0);
+   drawText(btmRenderer.get(), "(bitmap) ");
+   glTranslatef(0, 100, 0);
+   drawText(pxmRenderer.get(), "(pixmap) ");
+   glTranslatef(0, 100, 0);
+   drawText(texRenderer.get(), "(texture)");
    glPopMatrix();
 
    glutSwapBuffers();

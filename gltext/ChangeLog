@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- -----------  -------------------------------------------------------
+2003-02-25 aegis        Added getHeight() to FontRenderer.
 2003-02-25 aegis        Re-added getFont() to FontRenderer and added getDPI()
 	                to Font.
 2003-02-25 aegis        When rendering a \n, the FontRenderer now drops down

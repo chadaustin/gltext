@@ -22,11 +22,12 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AbstractRenderer.cpp,v $
- * Date modified: $Date: 2003-02-26 01:32:05 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2003-02-26 01:58:27 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
+#include <algorithm>
 #include <iostream>
 #include "AbstractRenderer.h"
 
@@ -37,7 +38,7 @@ namespace gltext
    {
    }
 
-   void AbstractRenderer::render(const char* text)
+   void GLTEXT_CALL AbstractRenderer::render(const char* text)
    {
       const int ascent = mFont->getAscent();
       const int descent = mFont->getDescent();
@@ -84,31 +85,47 @@ namespace gltext
       }
    }
 
-   int AbstractRenderer::getWidth(const char* text)
+   int GLTEXT_CALL AbstractRenderer::getWidth(const char* text)
    {
       if (! text)
       {
          return 0;
       }
 
+      int max_width = 0;
       int width = 0;
 
       // Iterate over each character adding its width
       for (const char* itr = text; *itr != 0; ++itr)
       {
+         if (*itr == '\n')
+         {
+            width = 0;
+            continue;
+         }
+
          // Get the glyph for the current character
          Glyph* fontGlyph = mFont->getGlyph(*itr);
          if (fontGlyph)
          {
             // Add this glyph's advance
             width += fontGlyph->getAdvance();
+            max_width = std::max(width, max_width);
          }
       }
 
-      return width;
+      return max_width;
    }
 
-   Font* AbstractRenderer::getFont()
+   int GLTEXT_CALL AbstractRenderer::getHeight(const char* text)
+   {
+      const int ascent = mFont->getAscent();
+      const int descent = mFont->getDescent();
+      const int height = ascent + descent + mFont->getLineGap();
+      return int(std::count(text, text + strlen(text), '\n') + 1) * height;
+   }
+
+   Font* GLTEXT_CALL AbstractRenderer::getFont()
    {
       return mFont.get();
    }
