@@ -5,6 +5,9 @@ Import('*')
 
 headers = Split("""
    gltext.h
+""")
+
+extra = Split("""
    AbstractRenderer.h
    BitmapRenderer.h
    FTFont.h
@@ -39,3 +42,5 @@ lib.addHeaders(headers)
 lib = pkg.createStaticLibrary('gltext', env)
 lib.addSources(sources)
 lib.addHeaders(headers)
+
+pkg.addExtraDist(extra)
