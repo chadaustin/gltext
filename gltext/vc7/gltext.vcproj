@@ -124,10 +124,19 @@
 				RelativePath="..\src\FTLibrary.cpp">
 			</File>
 			<File
+				RelativePath="..\src\FontStreamImpl.cpp">
+			</File>
+			<File
 				RelativePath="..\src\GLPixelGlyph.cpp">
 			</File>
 			<File
+				RelativePath="..\src\GLTextureGlyph.cpp">
+			</File>
+			<File
 				RelativePath="..\src\PixmapRenderer.cpp">
+			</File>
+			<File
+				RelativePath="..\src\TextureRenderer.cpp">
 			</File>
 			<File
 				RelativePath="..\src\gltext.cpp">
@@ -152,19 +161,25 @@
 				RelativePath="..\src\FTLibrary.h">
 			</File>
 			<File
+				RelativePath="..\src\FontStreamImpl.h">
+			</File>
+			<File
 				RelativePath="..\src\GLGlyph.h">
 			</File>
 			<File
 				RelativePath="..\src\GLPixelGlyph.h">
 			</File>
 			<File
+				RelativePath="..\src\GLTextureGlyph.h">
+			</File>
+			<File
 				RelativePath="..\src\GlyphCache.h">
 			</File>
 			<File
-				RelativePath="..\src\InterfaceImpl.h">
+				RelativePath="..\src\PixmapRenderer.h">
 			</File>
 			<File
-				RelativePath="..\src\PixmapRenderer.h">
+				RelativePath="..\src\TextureRenderer.h">
 			</File>
 			<File
 				RelativePath="..\src\gltext.h">

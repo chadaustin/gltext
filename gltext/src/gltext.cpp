@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.cpp,v $
- * Date modified: $Date: 2002-09-27 02:59:34 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-12-23 22:48:48 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -80,6 +80,12 @@ namespace gltext
             break;
          };
          return renderer;
+      }
+
+      GLTEXT_EXPORT(FontStream*, GLTextFlushStream)(
+         FontStream* stream)
+      {
+         return &stream->flush();
       }
    }
 }

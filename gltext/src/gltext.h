@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.h,v $
- * Date modified: $Date: 2002-12-23 22:21:58 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2002-12-23 22:48:48 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -339,11 +339,6 @@ namespace gltext
    typedef RefPtr<FontStream> FontStreamPtr;
 
    /**
-    * Flushes the output in the given font stream through the renderer.
-    */
-   FontStream& flush(FontStream& fs);
-   
-   /**
     * PRIVATE API - for internal use only
     * Anonymous namespace containing our exported functions. They are extern "C"
     * so we don't mangle the names and they export nicely as shared libraries.
@@ -362,6 +357,10 @@ namespace gltext
       /// Creates a new FontRenderer.
       GLTEXT_FUNC(FontRenderer*, GLTextCreateRenderer(
          FontRendererType type));
+
+      /// Flushes the given font stream.
+      GLTEXT_FUNC(FontStream*, GLTextFlushStream(
+         FontStream* stream));
    }
 
    /**
@@ -397,6 +396,15 @@ namespace gltext
    {
       return GLTextCreateRenderer(type);
    }
+
+   /**
+    * Flushes the output in the given font stream through the renderer.
+    */
+   inline FontStream& flush(FontStream& fs)
+   {
+      return *GLTextFlushStream(&fs);
+   }
+
 }
 
 #endif

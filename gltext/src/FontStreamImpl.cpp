@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: FontStreamImpl.cpp,v $
- * Date modified: $Date: 2002-12-23 22:21:58 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-12-23 22:48:47 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -139,10 +139,5 @@ namespace gltext
    FontStream& FontStreamImpl::operator<<(FontStream& (*func)(FontStream& stream))
    {
       return func(*this);
-   }
-
-   FontStream& flush(FontStream& fs)
-   {
-      return fs.flush();
    }
 }
