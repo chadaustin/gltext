@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.h,v $
- * Date modified: $Date: 2002-07-01 01:01:42 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-07-08 18:27:23 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -76,7 +76,7 @@ namespace gltext
       /// Gets the name of this font.
       virtual const char* getName() const = 0;
 
-      /// Gets the style of this font.ENDERER
+      /// Gets the style of this font.
       virtual FontStyle getStyle() const = 0;
 
       /// Gets the point size of this font.
@@ -174,7 +174,7 @@ namespace gltext
    /**
     * PRIVATE API - for internal use only
     * Anonymous namespace containing our exported functions. They are extern "C"
-    * so we don't mange the names and they export nicely as shared libraries.
+    * so we don't mangle the names and they export nicely as shared libraries.
     */
    namespace {
       /// Gets version information
