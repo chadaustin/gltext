@@ -1,5 +1,5 @@
 <?php
-// $Id: download.php,v 1.2 2002-07-04 05:55:16 nonchocoboy Exp $
+// $Id: download.php,v 1.3 2002-07-04 05:56:21 nonchocoboy Exp $
 include 'common.inc';
 layoutHeader('download', 'download');
 
@@ -50,7 +50,7 @@ echo release('GLText', '0.1.0',
       releaseFile('gltext-0.1.0.tar.gz',     'Gzipped tarball, ready to build and install using configure.'),
       releaseFile('gltext-0.1.0-1.i386.rpm', 'RPM for RedHat/Mandrake Linux.'),
       releaseFile('gltext-0.1.0-1.src.rpm',  'Source RPM for RedHat/Mandrake Linux.'),
-      releaseFile('gltext-0.1.0.win32.zip',  'Zipped Win32 binaries, ready to install.')
+      releaseFile('gltext-0.1.0.win32.zip',  'Zipped Win32 binaries, ready to install.'),
       releaseFile('gltext-src-0.1.0.tar.gz', 'Gzipped tarball of the checked-in source tree.'),
    )
 );
