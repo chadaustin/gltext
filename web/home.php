@@ -1,5 +1,5 @@
 <?php
-// $Id: home.php,v 1.4 2003-08-05 03:22:09 aegis Exp $
+// $Id: home.php,v 1.5 2003-08-05 03:27:53 aegis Exp $
 include 'common.inc';
 layoutHeader('home', 'home');
 ?>
@@ -37,7 +37,7 @@ GLText 0.3.0 has been released. Changes since 0.2.0 include:
 
 <ul>
  <li>New streaming interface derived from C++ iostreams.  Now you can
-     overload <pre>operator&lt;&lt;(ostream& out, ...)</pre> for your
+     overload <code>operator&lt;&lt;(ostream& out, ...)</code> for your
      custom classes and output them to GLText.  This also improves DLL
      binary compatibility in the streaming interface.</li>
  <li>Renderers always draw with the current position being the upper
