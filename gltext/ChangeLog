@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- -----------  -------------------------------------------------------
+2002-12-23 nonchocoboy  NEW VERSION: 0.2.0
 2002-12-23 nonchocoboy  Added FontStream class for allowing the rendering of
                         text using a stream interface.
 2002-12-23 nonchocoboy  Added method to the renderer for querying the width of

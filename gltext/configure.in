@@ -1,7 +1,7 @@
 AC_INIT(src/gltext.h)
 AC_CONFIG_AUX_DIR(config)
 
-VERSION=0.1.0
+VERSION=0.2.0
 PACKAGE=gltext
 
 AC_SUBST(VERSION)
