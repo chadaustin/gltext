@@ -25,3 +25,7 @@ SetupOpenGL(env)
 lib = pkg.createSharedLibrary('gltext', env)
 lib.addSources(sources)
 lib.addHeaders(['gltext.h'])
+
+lib = pkg.createStaticLibrary('gltext', env)
+lib.addSources(sources)
+lib.addHeaders(['headers'])
