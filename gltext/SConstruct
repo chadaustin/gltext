@@ -110,6 +110,24 @@ Export('baseEnv')
 
 # Create the gltext package
 pkg = Package('gltext', GetGLTextVersionString())
+pkg.addExtraDist(Split("""
+   AUTHORS
+   ChangeLog
+   COPYING
+   README
+   SConstruct
+   build/AutoDist.py
+   examples/SConscript
+   examples/simple/SConscript
+   examples/sizes/SConscript
+   src/SConscript
+   test/SConscript
+   vc7/example_simple.vcproj
+   vc7/example_sizes.vcproj
+   vc7/gltext.def
+   vc7/gltext.sln
+   vc7/gltext.vcproj
+"""))
 Export('pkg')
 
 subdirs = Split('src test examples')
@@ -124,4 +142,4 @@ Default(defaultTargets)
 SConscript(dirs = subdirs)
 
 pkg.build()
-#MakeSourceDist(pkg)
+MakeSourceDist(pkg)
