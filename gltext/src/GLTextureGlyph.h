@@ -21,65 +21,51 @@
  * Boston, MA 02111-1307, USA.
  *
  * -----------------------------------------------------------------
- * File:          $RCSfile: gltext.cpp,v $
+ * File:          $RCSfile: GLTextureGlyph.h,v $
  * Date modified: $Date: 2002-09-27 02:59:34 $
- * Version:       $Revision: 1.6 $
+ * Version:       $Revision: 1.1 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
-#include "gltext.h"
-#include "FTFont.h"
-#include "BitmapRenderer.h"
-#include "PixmapRenderer.h"
-#include "TextureRenderer.h"
+#ifndef GLTEXT_GLTEXTUREGLYPH_H
+#define GLTEXT_GLTEXTUREGLYPH_H
 
-#define GLTEXT_EXPORT(ret, name) ret GLTEXT_CALL name
+#include "GLGlyph.h"
 
 namespace gltext
 {
-   namespace {
-      GLTEXT_EXPORT(const char*, GLTextGetVersion)()
-      {
-         return "0.1.0";
-      }
+   /**
+    * Implementation of GLGlyph that handles texture-based data. The glyph will
+    * be bound to a texture and be rendered as bitmapped quads.
+    */
+   class GLTextureGlyph : public GLGlyph
+   {
+   public:
+      /**
+       * Creates a new OpenGL ready glyph with the given data. This glyph will
+       * take ownership of the data memory.
+       */
+      GLTextureGlyph(int posX, int posY, int width, int height, unsigned int* data);
 
-      GLTEXT_EXPORT(Font*, GLTextCreateFont)(
-         const char* name,
-         FontStyle style,
-         int size)
-      {
-         FTFont* font = 0;
-         try
-         {
-            font = new FTFont(name, style, size);
-         }
-         catch (std::runtime_error& error)
-         {
-            font = 0;
-         }
-         return font;
-      }
+      /**
+       * Frees memory used by this glyph.
+       */
+      ~GLTextureGlyph();
 
-      GLTEXT_EXPORT(FontRenderer*, GLTextCreateRenderer)(
-         FontRendererType type)
-      {
-         AbstractRenderer* renderer = 0;
-         switch (type)
-         {
-         case BITMAP:
-            renderer = new BitmapRenderer();
-            break;
-         case PIXMAP:
-            renderer = new PixmapRenderer();
-            break;
-         case TEXTURE:
-            renderer = new TextureRenderer();
-            break;
-         default:
-            renderer = 0;
-            break;
-         };
-         return renderer;
-      }
-   }
+      /**
+       * Draws this glyph using the given pen position.
+       */
+      void render(int penX, int penY) const;
+
+   private:
+      int mPosX;
+      int mPosY;
+      int mWidth;
+      int mHeight;
+      int mTexWidth;
+      int mTexHeight;
+      GLuint mTexName;
+   };
 }
+
+#endif

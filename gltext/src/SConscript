@@ -12,7 +12,9 @@ sources = Split("""
    FTGlyph.cpp
    FTLibrary.cpp
    GLPixelGlyph.cpp
+   GLTextureGlyph.cpp
    PixmapRenderer.cpp
+   TextureRenderer.cpp
 """)
 
 # Clone the environment

@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.h,v $
- * Date modified: $Date: 2002-07-31 23:51:21 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-09-27 02:59:34 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -64,7 +64,8 @@ namespace gltext
    enum FontRendererType
    {
       BITMAP,
-      PIXMAP
+      PIXMAP,
+      TEXTURE
    };
 
    /**

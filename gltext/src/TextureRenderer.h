@@ -21,65 +21,39 @@
  * Boston, MA 02111-1307, USA.
  *
  * -----------------------------------------------------------------
- * File:          $RCSfile: gltext.cpp,v $
+ * File:          $RCSfile: TextureRenderer.h,v $
  * Date modified: $Date: 2002-09-27 02:59:34 $
- * Version:       $Revision: 1.6 $
+ * Version:       $Revision: 1.1 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
-#include "gltext.h"
-#include "FTFont.h"
-#include "BitmapRenderer.h"
-#include "PixmapRenderer.h"
-#include "TextureRenderer.h"
+#ifndef GLTEXT_TEXTURERENDERER_H
+#define GLTEXT_TEXTURERENDERER_H
 
-#define GLTEXT_EXPORT(ret, name) ret GLTEXT_CALL name
+#include "AbstractRenderer.h"
 
 namespace gltext
 {
-   namespace {
-      GLTEXT_EXPORT(const char*, GLTextGetVersion)()
-      {
-         return "0.1.0";
-      }
+   /**
+    * Renders fonts anti-aliased with 256 levels of the current OpenGL color
+    * using a texture-mapped quad that is affected by the current OpenGL matrix
+    * stack.
+    */
+   class TextureRenderer : public AbstractRenderer
+   {
+   public:
+      /**
+       * Creates a new renderer without a font to render with.
+       */
+      TextureRenderer();
+      virtual ~TextureRenderer();
 
-      GLTEXT_EXPORT(Font*, GLTextCreateFont)(
-         const char* name,
-         FontStyle style,
-         int size)
-      {
-         FTFont* font = 0;
-         try
-         {
-            font = new FTFont(name, style, size);
-         }
-         catch (std::runtime_error& error)
-         {
-            font = 0;
-         }
-         return font;
-      }
-
-      GLTEXT_EXPORT(FontRenderer*, GLTextCreateRenderer)(
-         FontRendererType type)
-      {
-         AbstractRenderer* renderer = 0;
-         switch (type)
-         {
-         case BITMAP:
-            renderer = new BitmapRenderer();
-            break;
-         case PIXMAP:
-            renderer = new PixmapRenderer();
-            break;
-         case TEXTURE:
-            renderer = new TextureRenderer();
-            break;
-         default:
-            renderer = 0;
-            break;
-         };
-         return renderer;
-      }
-   }
+   protected:
+      /**
+       * Creates a GLGlyph specialized for this type of renderer.
+       */
+      GLGlyph* makeGlyph(const FTGlyph* glyph);
+   };
 }
+
+#endif
