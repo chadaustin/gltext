@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.h,v $
- * Date modified: $Date: 2002-12-20 10:05:19 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-12-20 10:14:17 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -251,26 +251,6 @@ namespace gltext
        * ascent + descent + linegap.
        */
       virtual int getLineGap() const = 0;
-
-      /**
-       * Override default delete implementation so that memory allocated on
-       * GLText's side of the shared library is deleted on that side.
-       */
-      void operator delete(void* p)
-      {
-         if (p)
-         {
-            Font* f = static_cast<Font*>(p);
-            f->destroy();
-         }
-      }
-
-   protected:
-      /**
-       * Destroy the font object, freeing any associated memory. Implementors of
-       * this interface should just call "delete this" in this method.
-       */
-      virtual void destroy() = 0;
    };
    typedef RefPtr<Font> FontPtr;
 
@@ -302,27 +282,6 @@ namespace gltext
        * @return  this renderer's font
        */
       virtual Font* getFont() const = 0;
-
-      /**
-       * Override default delete implementation so that memory allocated on
-       * GLText's side of the shared library is deleted on that side.
-       */
-      void operator delete(void* p)
-      {
-         if (p)
-         {
-            FontRenderer* f = static_cast<FontRenderer*>(p);
-            f->destroy();
-         }
-      }
-
-   protected:
-      /**
-       * Destroy the font renderer object, freeing any associated memory.
-       * Implementors of this interface should just call "delete this" in this
-       * method.
-       */
-      virtual void destroy() = 0;
    };
    typedef RefPtr<FontRenderer> FontRendererPtr;
 
