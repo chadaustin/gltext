@@ -1,5 +1,8 @@
 DATE       AUTHOR       CHANGE
 ---------- -----------  -------------------------------------------------------
+2002-06-30 nonchocoboy  Improved documentation. Added a quick tutorial to get
+                        users started with the basics.
+                        NEW VERSION: 0.0.2
 2002-06-15 nonchocoboy  Aliased (bitmap) rendering added.
 2002-05-08 nonchocoboy  Added the sizes example.
 2002-05-08 nonchocoboy  Antialiased (pixmap) rendering added.
