@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: BitmapRenderer.cpp,v $
- * Date modified: $Date: 2002-06-15 22:58:16 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-06-15 22:59:55 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -71,8 +71,6 @@ namespace gltext
       // color. Unfortunately, it appears that the FT2 bitmap is upside down.
       float* data = new float[width*height*4];
       int srcRow = height;
-      std::cout<<"---------------------------------------------------"<<std::endl;
-      std::cout<<"w="<<width<<", h="<<height<<", p="<<pitch<<", x="<<posX<<", y="<<posY<<std::endl;
       for (int r=0; r<height; ++r)
       {
          --srcRow;
@@ -82,7 +80,6 @@ namespace gltext
             int bit = c % 8;
             unsigned char byte = srcBuffer[bytePos];
             bool on = (byte & (0x80 >> bit)) != 0;
-            std::cout<<(on ? "X" : "+");
 
             int destOffset = 4*(r * width + c);
             if (on)
@@ -100,7 +97,6 @@ namespace gltext
                data[destOffset + 3] = 0;
             }
          }
-         std::cout<<std::endl;
       }
 
       // Free the bitmap glyph
