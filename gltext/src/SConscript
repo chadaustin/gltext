@@ -21,7 +21,7 @@ SetupFreeType(env)
 SetupOpenGL(env)
 
 libraries = []
-libraries.append(env.Library(target = 'gltext', source = sources))
+libraries.append(env.Library(target = 'gltext', source = sources, shared = 1))
 
 # Installation
 env.Install(pj(PREFIX, 'include', 'gltext'), 'gltext.h')
