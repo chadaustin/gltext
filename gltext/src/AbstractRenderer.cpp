@@ -22,11 +22,12 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AbstractRenderer.cpp,v $
- * Date modified: $Date: 2002-06-16 05:13:57 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-07-01 01:01:42 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
+#include <iostream>
 #include "AbstractRenderer.h"
 #include "GlyphCache.h"
 

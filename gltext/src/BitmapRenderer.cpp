@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: BitmapRenderer.cpp,v $
- * Date modified: $Date: 2002-06-16 05:13:57 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-07-01 01:01:42 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -49,7 +49,6 @@ namespace gltext
       error = FT_Glyph_To_Bitmap(&newGlyph, ft_render_mode_mono, 0, false);
       if (error)
       {
-         std::cout<<"||||||||||||||||| ERROR ||||||||||||||||||||"<<std::endl;
          return 0;
       }
 

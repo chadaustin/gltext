@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.h,v $
- * Date modified: $Date: 2002-06-16 05:13:57 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-07-01 01:01:42 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -31,7 +31,13 @@
 #define GLTEXT_H
 
 #ifndef __cplusplus
-#error GLText requires C++
+#  error GLText requires C++
+#endif
+
+// Make sure we pull in windows.h on windows
+#ifdef WIN32
+#  define WIN32_LEAN_AND_MEAN
+#  include <windows.h>
 #endif
 
 // The calling convention for cross-DLL calls in win32
