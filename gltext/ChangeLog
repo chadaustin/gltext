@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- -----------  -------------------------------------------------------
+2002-06-30 nonchocoboy  NEW VERSION: 0.1.0
 2002-06-30 aegis        autotools build system
 2002-06-30 nonchocoboy  Improved documentation. Added a quick tutorial to get
                         users started with the basics.
