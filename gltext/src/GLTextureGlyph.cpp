@@ -22,15 +22,14 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GLTextureGlyph.cpp,v $
- * Date modified: $Date: 2003-02-03 19:40:41 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-02-04 03:39:03 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
-#include "GLTextureGlyph.h"
+#include <algorithm>
 #include <string.h>
-#include <iostream>
-#include <iomanip>
+#include "GLTextureGlyph.h"
 
 namespace gltext
 {
@@ -48,9 +47,10 @@ namespace gltext
                                   int width, int height, u8* data)
       : mOffsetX(offx), mOffsetY(offy), mWidth(width), mHeight(height)
    {
-      // Make a texture sized at a power of 2
-      mTexWidth = nextPowerOf2(mWidth);
-      mTexHeight = nextPowerOf2(mHeight);
+      // Make a texture sized at a power of 2.  Require them to be 8x8
+      // to prevent some funky texture flickering rendering glitches.
+      mTexWidth  = std::max(8, nextPowerOf2(mWidth));
+      mTexHeight = std::max(8, nextPowerOf2(mHeight));
       u8* pixels = new u8[mTexWidth * mTexHeight];
       memset(pixels, 0, mTexWidth * mTexHeight);
 
@@ -76,8 +76,8 @@ namespace gltext
             pixels);
 
       // Setup clamping and our min/mag filters
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 

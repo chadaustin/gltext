@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: sizes.cpp,v $
- * Date modified: $Date: 2003-02-03 19:40:40 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2003-02-04 03:39:02 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -62,7 +62,7 @@ void display()
          exit(1);
       }
       
-      gltext::FontRendererPtr renderer(gltext::CreateRenderer(gltext::PIXMAP, font.get()));
+      gltext::FontRendererPtr renderer(gltext::CreateRenderer(gltext::TEXTURE, font.get()));
       if (! renderer)
       {
          std::cerr << "Can't create renderer" << std::endl;
