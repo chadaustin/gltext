@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.cpp,v $
- * Date modified: $Date: 2002-12-23 22:51:22 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-12-23 23:05:06 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -72,9 +72,9 @@ namespace gltext
          case PIXMAP:
             renderer = new PixmapRenderer();
             break;
-         case TEXTURE:
-            renderer = new TextureRenderer();
-            break;
+//         case TEXTURE:
+//            renderer = new TextureRenderer();
+//            break;
          default:
             renderer = 0;
             break;
