@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: FTGlyph.cpp,v $
- * Date modified: $Date: 2003-02-03 19:40:41 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-02-04 01:43:49 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -116,6 +116,8 @@ namespace gltext
       int offx = pxm_glyph_bitmap->left;
       int offy = -pxm_glyph_bitmap->top;
 
+      FT_Done_Glyph(pxm_glyph);
+      FT_Done_Glyph(btm_glyph);
 
       // FINALLY, create a new glyph object with the decoded pixel buffers
       return new FTGlyph(width, height, offx, offy, advance, pixmap, bitmap);
