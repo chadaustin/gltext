@@ -22,12 +22,25 @@ a
 {
 }
 
-body, BODY, .BODY, BODY:text, noframes, p
+body, BODY, .BODY, BODY:text, noframes, p, table, table tr, table tr td
 {
    background-color: #ffffff;
    color: #000000;
    font-size: 12px;
    vertical-align: top;
+}
+
+.filerelease
+{
+   border-spacing: 8;
+   border: 0;
+}
+
+.filerelease_header
+{
+   background-color: #ebecff;
+   font-family: sans-serif;
+   font-size: 14px;
 }
 
 .blockborder
