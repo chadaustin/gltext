@@ -1,5 +1,5 @@
 <?php
-// $Id: people.php,v 1.1 2002-06-11 03:09:30 nonchocoboy Exp $
+// $Id: people.php,v 1.2 2002-07-04 05:59:24 nonchocoboy Exp $
 include 'common.inc';
 layoutHeader('people', 'people');
 
@@ -34,7 +34,9 @@ rather than a developer directly.
 
 personList(array(
    person('Ben Scott', 'mailto:nonchocoboy@users.sourceforge.net',
-      'Developer and Project Manager')
+      'Developer and Project Manager'),
+   person('Chad Austin', 'mailto:aegis@aegisknight.org',
+      'Autotools Master')
 ));
 
 layoutFooter();
