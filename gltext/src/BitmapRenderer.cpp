@@ -22,13 +22,19 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: BitmapRenderer.cpp,v $
- * Date modified: $Date: 2002-07-01 01:01:42 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-12-20 10:24:18 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
 #include "BitmapRenderer.h"
 #include "GLPixelGlyph.h"
+
+// Sigh ... I hate windows
+#ifdef WIN32
+#  include <windows.h>
+#endif
+#include <GL/gl.h>
 
 namespace gltext
 {

@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GLGlyph.h,v $
- * Date modified: $Date: 2002-07-01 01:01:42 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-12-20 10:24:18 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -31,7 +31,6 @@
 #define GLTEXT_GLGLYPH_H
 
 #include "gltext.h"
-#include <GL/gl.h>
 
 namespace gltext
 {

@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: FTFont.h,v $
- * Date modified: $Date: 2002-06-16 05:13:57 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-12-20 10:24:18 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -34,14 +34,13 @@
 #include <stdexcept>
 #include <map>
 #include "FTGlyph.h"
-#include "InterfaceImpl.h"
 
 namespace gltext
 {
    /**
     * FreeType 2 implementation of the Font interface.
     */
-   class FTFont : public InterfaceImpl< Font >
+   class FTFont : public RefImpl< Font >
    {
    public:
       /**

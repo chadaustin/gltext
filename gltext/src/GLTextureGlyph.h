@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GLTextureGlyph.h,v $
- * Date modified: $Date: 2002-09-27 02:59:34 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-12-20 10:24:18 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -31,6 +31,12 @@
 #define GLTEXT_GLTEXTUREGLYPH_H
 
 #include "GLGlyph.h"
+
+// Sigh ... I hate windows
+#ifdef WIN32
+#  include <windows.h>
+#endif
+#include <GL/gl.h>
 
 namespace gltext
 {

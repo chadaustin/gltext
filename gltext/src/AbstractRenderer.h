@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AbstractRenderer.h,v $
- * Date modified: $Date: 2002-06-16 05:13:57 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-12-20 10:24:18 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -33,11 +33,10 @@
 #include "gltext.h"
 #include "FTFont.h"
 #include "GLGlyph.h"
-#include "InterfaceImpl.h"
 
 namespace gltext
 {
-   class AbstractRenderer : public InterfaceImpl< FontRenderer >
+   class AbstractRenderer : public RefImpl< FontRenderer >
    {
    protected:
       AbstractRenderer();

@@ -22,12 +22,18 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GLPixelGlyph.cpp,v $
- * Date modified: $Date: 2002-06-16 05:13:57 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-12-20 10:24:18 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
 #include "GLPixelGlyph.h"
+
+// Sigh ... I hate windows
+#ifdef WIN32
+#  include <windows.h>
+#endif
+#include <GL/gl.h>
 
 namespace gltext
 {
