@@ -1,5 +1,5 @@
 <?php
-// $Id: download.php,v 1.4 2002-12-23 23:44:40 nonchocoboy Exp $
+// $Id: download.php,v 1.5 2003-02-04 04:17:55 aegis Exp $
 include 'common.inc';
 layoutHeader('download', 'download');
 
@@ -64,6 +64,16 @@ repository. Instructions for anonymous CVS access are available at:
 </p>
 <blockquote>
 <a href="http://sourceforge.net/cvs/?group_id=55024">http://sourceforge.net/cvs/?group_id=55024</a>
+</blockquote>
+
+<h2>Developer</h2>
+<p>
+Developer downloads, such as third-party includes and libraries for VC7,
+are available at:
+</p>
+
+<blockquote>
+<a href="developer/">http://gltext.sourceforge.net/developer/</a>
 </blockquote>
 
 <?php
