@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: main.cpp,v $
- * Date modified: $Date: 2002-06-15 22:38:45 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-06-16 00:28:01 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -98,7 +98,7 @@ main(int argc, char** argv)
       return 1;
    }
 
-   renderer = gltext::CreateRenderer(gltext::BITMAP);
+   renderer = gltext::CreateRenderer(gltext::PIXMAP);
    if (! renderer)
    {
       std::cerr<<"Couldn't create font renderer!"<<std::endl;
