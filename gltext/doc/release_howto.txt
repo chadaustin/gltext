@@ -7,5 +7,6 @@ BUMPING THE VERSION NUMBER
 
 The following files contain version information
    configure.in
+   dist/gltext.spec
    doc/gltext.doxy
    src/gltext.cpp
