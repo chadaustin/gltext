@@ -1,5 +1,5 @@
 <?php
-// $Id: download.php,v 1.5 2003-02-04 04:17:55 aegis Exp $
+// $Id: download.php,v 1.6 2003-08-05 03:22:09 aegis Exp $
 include 'common.inc';
 layoutHeader('download', 'download');
 
@@ -39,12 +39,20 @@ EOD;
 
 <h1>Download</h1>
 <p>
-The current release of GLText is <b>0.2.0</b>. This is a <b>beta</b> release for
-testing the design. Download it here as binary or source.
+The current release of GLText is <b>0.3.0</b>. This is a <b>beta</b>
+release for testing the design. Download it here as binary or source.
 </p>
 
 <h2>Releases</h2>
 <?php
+echo release('GLText', '0.3.0',
+   array(
+      releaseFile('gltext-0.3.0.tar.gz',     'Gzipped tarball, ready to build and install using configure.'),
+      releaseFile('gltext-0.3.0-win32.zip',  'Zipped Win32 binaries, ready to install.'),
+      releaseFile('gltext-0.3.0-src.tar.gz', 'Gzipped tarball of the checked-in source tree.'),
+   )
+);
+
 echo release('GLText', '0.2.0',
    array(
       releaseFile('gltext-0.2.0.tar.gz',     'Gzipped tarball, ready to build and install using configure.'),
@@ -54,7 +62,6 @@ echo release('GLText', '0.2.0',
       releaseFile('gltext-src-0.2.0.tar.gz', 'Gzipped tarball of the checked-in source tree.'),
    )
 );
-
 ?>
 
 <h2>CVS</h2>

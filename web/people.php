@@ -1,5 +1,5 @@
 <?php
-// $Id: people.php,v 1.2 2002-07-04 05:59:24 nonchocoboy Exp $
+// $Id: people.php,v 1.3 2003-08-05 03:22:09 aegis Exp $
 include 'common.inc';
 layoutHeader('people', 'people');
 
@@ -36,7 +36,7 @@ personList(array(
    person('Ben Scott', 'mailto:nonchocoboy@users.sourceforge.net',
       'Developer and Project Manager'),
    person('Chad Austin', 'mailto:aegis@aegisknight.org',
-      'Autotools Master')
+      'Developer')
 ));
 
 layoutFooter();
