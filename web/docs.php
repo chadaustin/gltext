@@ -1,5 +1,5 @@
 <?php
-// $Id: docs.php,v 1.1 2002-06-07 04:55:49 nonchocoboy Exp $
+// $Id: docs.php,v 1.2 2002-06-11 02:46:04 nonchocoboy Exp $
 include 'common.inc';
 layoutHeader('documentation', 'documentation');
 ?>
@@ -15,9 +15,6 @@ in the following formats: <br>
 <strong>&middot;</strong> Download as <a href="doc/gltext-api.html.tgz">HTML</a>.<br>
 <strong>&middot;</strong> Download as <a href="doc/gltext-api.latex.tgz">LaTeX</a>.<br>
 <strong>&middot;</strong> Download as <a href="doc/gltext-api.man.tgz">Man pages</a>.<br>
-
-<h2>Team Docs</h2>
-<strong>&middot;</strong> <a href="doc/codingstyle.php">Coding Style Guidelines</a>.<br>
 
 <?php
 layoutFooter();
