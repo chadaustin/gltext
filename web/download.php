@@ -1,5 +1,5 @@
 <?php
-// $Id: download.php,v 1.6 2003-08-05 03:22:09 aegis Exp $
+// $Id: download.php,v 1.7 2003-11-26 19:16:07 aegis Exp $
 include 'common.inc';
 layoutHeader('download', 'download');
 
@@ -45,6 +45,12 @@ release for testing the design. Download it here as binary or source.
 
 <h2>Releases</h2>
 <?php
+echo release('GLText', '0.3.1',
+   array(
+      releaseFile('gltext-0.3.1.tar.gz', 'Gzipped tarball, ready to build and install using configure.'),
+   )
+);
+
 echo release('GLText', '0.3.0',
    array(
       releaseFile('gltext-0.3.0.tar.gz',     'Gzipped tarball, ready to build and install using configure.'),

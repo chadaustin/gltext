@@ -1,5 +1,5 @@
 <?php
-// $Id: home.php,v 1.5 2003-08-05 03:27:53 aegis Exp $
+// $Id: home.php,v 1.6 2003-11-26 19:16:07 aegis Exp $
 include 'common.inc';
 layoutHeader('home', 'home');
 ?>
@@ -29,6 +29,15 @@ virtually anywhere that FreeType2 supports.
 </p>
 
 <h2>News</h2>
+
+<h3>GLText 0.3.1 Released [2003.11.26]</h3>
+<p>
+GLText 0.3.1, a minor bugfix release, is out.  The automake build
+includes OpenGL.h, so you can actually compile it now.
+</p>
+<p>
+Windows users should continue using 0.3.0.
+</p>
 
 <h3>GLText 0.3.0 Released [2003.08.04]</h3>
 <p>
