@@ -171,11 +171,11 @@ pkg.addExtraDist(Split("""
    examples/sizes/SConscript
    src/SConscript
    test/SConscript
+   vc7/gltext.sln
    vc7/example_alpha/example_alpha.vcproj
    vc7/example_fps/example_fps.vcproj
    vc7/example_simple/example_simple.vcproj
    vc7/example_sizes/example_sizes.vcproj
-   vc7/gltext/gltext.sln
    vc7/gltext/gltext.vcproj
 """))
 Export('pkg')
