@@ -1,5 +1,5 @@
 <?php
-// $Id: links.php,v 1.1 2002-06-11 03:28:59 nonchocoboy Exp $
+// $Id: links.php,v 1.2 2003-02-04 07:27:04 aegis Exp $
 include 'common.inc';
 layoutHeader('links', 'links');
 
@@ -30,8 +30,9 @@ Provided are links to sites that relate to GLText.
 <h2>The Competition</h2>
 <?php
 linksList(array(
-   newlink('GLTT', 'http://gltt.sourceforge.net'),
-   newlink('FTGL', 'http://homepages.paradise.net.nz/henryj/code/index.html#FTGL'),
+   newlink('GLTT',  'http://gltt.sourceforge.net'),
+   newlink('FTGL',  'http://homepages.paradise.net.nz/henryj/code/index.html#FTGL'),
+   newlink('OGLFT', 'http://oglft.sourceforge.net'),
 ));
 
 layoutFooter();
