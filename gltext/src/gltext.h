@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.h,v $
- * Date modified: $Date: 2003-02-14 04:59:43 $
- * Version:       $Revision: 1.17 $
+ * Date modified: $Date: 2003-02-26 01:32:05 $
+ * Version:       $Revision: 1.18 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -275,12 +275,20 @@ namespace gltext
       /// Gets the name of this font.
       virtual const char* GLTEXT_CALL getName() = 0;
 
-      /// Returns the glyph object associated with the character c in
-      /// the font.
+      /**
+       * Returns the glyph object associated with the character c in
+       * the font.
+       */
       virtual Glyph* GLTEXT_CALL getGlyph(unsigned char c) = 0;
 
       /// Gets the point size of this font.
       virtual int GLTEXT_CALL getSize() = 0;
+
+      /**
+       * Returns the DPI value passed to OpenFont() when this font
+       * was created.
+       */
+      virtual int GLTEXT_CALL getDPI() = 0;
 
       /**
        * Gets the ascent of this font. This is the distance from the
@@ -325,6 +333,11 @@ namespace gltext
        * with this renderer.
        */
       virtual int GLTEXT_CALL getWidth(const char* text) = 0;
+
+      /**
+       * Returns the font used to create this renderer.
+       */
+      virtual Font* GLTEXT_CALL getFont() = 0;
    };
    typedef RefPtr<FontRenderer> FontRendererPtr;
 

@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: simple.cpp,v $
- * Date modified: $Date: 2003-02-26 00:57:16 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-02-26 01:32:05 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -33,7 +33,6 @@
 using namespace gltext;
 
 int gContext = 0;
-FontPtr font;
 FontRendererPtr btmRenderer;
 FontRendererPtr pxmRenderer;
 FontRendererPtr texRenderer;
@@ -57,16 +56,24 @@ void display()
    glColor4f(1, 0, 0, 1);
 
    std::string text = "hello ...\n... world!";
-   int size = font->getSize();
+   int btm_size = btmRenderer->getFont()->getSize();
+   int pxm_size = pxmRenderer->getFont()->getSize();
+   int tex_size = texRenderer->getFont()->getSize();
+
+   int btm_dpi = btmRenderer->getFont()->getDPI();
+   int pxm_dpi = pxmRenderer->getFont()->getDPI();
+   int tex_dpi = texRenderer->getFont()->getDPI();
 
    glTranslatef(100, 100, 0);
 
+   typedef FontStream FS;
+
    glPushMatrix();
-     FontStream(btmRenderer).get() << text << " (bitmap) " << size;
+     FS(btmRenderer).get() << text << " (bitmap)  " << btm_size << " " << btm_dpi;
      glTranslatef(0, 100, 0);
-     FontStream(pxmRenderer).get() << text << " (pixmap) " << size;
+     FS(pxmRenderer).get() << text << " (pixmap)  " << pxm_size << " " << pxm_dpi;
      glTranslatef(0, 100, 0);
-     FontStream(texRenderer).get() << text << " (texture) " << size;
+     FS(texRenderer).get() << text << " (texture) " << tex_size << " " << tex_dpi;
    glPopMatrix();
 
    glTranslatef(100, 200, 0);
@@ -108,7 +115,10 @@ main(int argc, char** argv)
    glutReshapeFunc(reshape);
    glutKeyboardFunc(keydown);
 
-   font = OpenFont("../arial.ttf", 26);
+   glEnable(GL_BLEND);
+   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+   FontPtr font = OpenFont("../arial.ttf", 26);
    if (! font)
    {
       std::cerr<<"Couldn't create font!"<<std::endl;

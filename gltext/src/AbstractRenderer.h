@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AbstractRenderer.h,v $
- * Date modified: $Date: 2003-02-04 01:45:04 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2003-02-26 01:32:05 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -46,6 +46,7 @@ namespace gltext
    public:
       void GLTEXT_CALL render(const char* text);
       int GLTEXT_CALL getWidth(const char* text);
+      Font* GLTEXT_CALL getFont();
 
    protected:
       /**

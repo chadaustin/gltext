@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AbstractRenderer.cpp,v $
- * Date modified: $Date: 2003-02-26 00:57:16 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2003-02-26 01:32:05 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -106,5 +106,10 @@ namespace gltext
       }
 
       return width;
+   }
+
+   Font* AbstractRenderer::getFont()
+   {
+      return mFont.get();
    }
 }

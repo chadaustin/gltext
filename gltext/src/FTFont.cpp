@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: FTFont.cpp,v $
- * Date modified: $Date: 2003-02-14 04:59:43 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2003-02-26 01:32:05 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -66,11 +66,19 @@ namespace gltext
          return 0;
       }
 
-      return new FTFont(name, size, library, face);
+      return new FTFont(name, size, dpi, library, face);
    }
 
-   FTFont::FTFont(const char* name, int size, FT_Library library, FT_Face face)
-      : mName(name), mSize(size), mLibrary(library), mFace(face)
+   FTFont::FTFont(const char* name,
+                  int size,
+                  int dpi,
+                  FT_Library library,
+                  FT_Face face)
+      : mName(name)
+      , mSize(size)
+      , mDPI(dpi)
+      , mLibrary(library)
+      , mFace(face)
    {
       std::fill(mGlyphMap, mGlyphMap + 256, (FTGlyph*)0);
    }
@@ -105,6 +113,12 @@ namespace gltext
    FTFont::getSize()
    {
       return mSize;
+   }
+
+   int
+   FTFont::getDPI()
+   {
+      return mDPI;
    }
 
    int

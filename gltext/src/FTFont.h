@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: FTFont.h,v $
- * Date modified: $Date: 2003-02-14 04:59:43 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-02-26 01:32:05 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -48,7 +48,11 @@ namespace gltext
       /// point size.
       static FTFont* create(const char* name, int size, int dpi);
 
-      FTFont(const char* name, int size, FT_Library library, FT_Face face);
+      FTFont(const char* name,
+             int size,
+             int dpi,
+             FT_Library library,
+             FT_Face face);
 
       /**
        * Destroys the font, freeing the owned FreeType face struct.
@@ -60,6 +64,8 @@ namespace gltext
 
       /// Gets the point size of this font.
       int GLTEXT_CALL getSize();
+
+      int GLTEXT_CALL getDPI();
 
       /**
        * Gets the ascent of this font. This is the distance from the baseline to
@@ -93,6 +99,9 @@ namespace gltext
 
       /// The point size for this font.
       int mSize;
+
+      /// The DPI used when the font was created.
+      int mDPI;
 
       /// The FreeType 2 library handle.
       FT_Library mLibrary;
