@@ -1,4 +1,0 @@
-EXPORTS
-   GLTextCreateFont
-   GLTextCreateRenderer
-   GLTextGetVersion

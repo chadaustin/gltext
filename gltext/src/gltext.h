@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.h,v $
- * Date modified: $Date: 2003-02-03 19:40:41 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2003-02-04 01:10:52 $
+ * Version:       $Revision: 1.15 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -45,7 +45,20 @@
 #  endif
 #endif
 
-#define GLTEXT_FUNC(ret) extern "C" ret GLTEXT_CALL
+// Export functions from the DLL
+#ifndef GLTEXT_DECL
+#  if defined(WIN32) || defined(_WIN32)
+#    ifdef GLTEXT_EXPORTS
+#      define GLTEXT_DECL __declspec(dllexport)
+#    else
+#      define GLTEXT_DECL __declspec(dllimport)
+#    endif
+#  else
+#    define GLTEXT_DECL
+#  endif
+#endif
+
+#define GLTEXT_FUNC(ret) extern "C" GLTEXT_DECL ret GLTEXT_CALL
 
 namespace gltext
 {

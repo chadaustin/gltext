@@ -106,7 +106,7 @@
 	</Configurations>
 	<Files>
 		<File
-			RelativePath="..\examples\simple\main.cpp">
+			RelativePath="..\examples\simple\simple.cpp">
 		</File>
 	</Files>
 	<Globals>
