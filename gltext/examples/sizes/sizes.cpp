@@ -22,16 +22,46 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: sizes.cpp,v $
- * Date modified: $Date: 2003-03-15 06:19:00 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-03-15 07:08:05 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
 #include <iostream>
-#include <assert.h>
+#include <map>
 #include <GL/glut.h>
 #include <gltext.h>
 using namespace gltext;
+
+
+std::map<int, FontRendererPtr> gRendererCache;
+
+
+FontRendererPtr getRenderer(int size) {
+   if (gRendererCache.count(size))
+   {
+      return gRendererCache[size];
+   }
+   else
+   {
+      FontPtr font = OpenFont("../arial.ttf", size);
+      if (!font)
+      {
+         std::cerr << "Can't open font!" << std::endl;
+         exit(1);
+      }
+      
+      FontRendererPtr renderer = CreateRenderer(TEXTURE, font);
+      if (!renderer)
+      {
+         std::cerr << "Can't create renderer!" << std::endl;
+         exit(1);
+      }
+      
+      gRendererCache[size] = renderer;
+      return renderer;
+   }
+}
 
 
 void display()
@@ -46,20 +76,9 @@ void display()
    int y = 0;
    while (y < 480)
    {
-      FontPtr font(OpenFont("../arial.ttf", size));
-      if (! font)
-      {
-         std::cerr << "Can't create font" << std::endl;
-         exit(1);
-      }
-      
-      FontRendererPtr renderer(CreateRenderer(TEXTURE, font));
-      if (! renderer)
-      {
-         std::cerr << "Can't create renderer" << std::endl;
-         exit(1);
-      }
-
+      FontRendererPtr renderer = getRenderer(size);
+      FontPtr font = renderer->getFont();
+   
       glPushMatrix();
       glTranslatef(0, y, 0);
       renderer->render("The quick, brown fox jumped over the lazy dog.");
