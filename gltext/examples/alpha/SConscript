@@ -3,12 +3,11 @@ Import('SetupFreeType SetupGLUT SetupOpenGL')
 
 # Clone the environment
 env = baseEnv.Copy()
+env.Append(LIBPATH = ['#src'], LIBS = ['gltext'])
 SetupFreeType(env)
 SetupGLUT(env)
 SetupOpenGL(env)
 
 prog = pkg.createProgram('alpha', env)
 prog.addIncludes(['#src'])
-prog.addLibPaths(['#src'])
-prog.addLibs(['gltext'])
 prog.addSources(['alpha.cpp'])
