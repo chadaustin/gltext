@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: FTFont.cpp,v $
- * Date modified: $Date: 2003-02-03 19:40:41 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2003-02-04 01:45:42 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -136,10 +136,4 @@ namespace gltext
       }
       return mGlyphMap[c];
    }
-
-//   FT_Face
-//   FTFont::getFace()
-//   {
-//      return mFace;
-//   }
 }
