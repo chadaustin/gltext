@@ -30,21 +30,47 @@ dnl Checks for libraries.
 
 AC_CHECK_LIB(freetype, FT_Init_FreeType,,
         AC_MSG_ERROR(libfreetype not found))
-AC_CHECK_LIB(GL, glNewList,
-        LIBS="$LIBS -lGL",
-	AC_MSG_ERROR(could not find libGL))
-AC_CHECK_LIB(GLU, gluLookAt,
-        LIBS="$LIBS -lGLU",
-	AC_MSG_ERROR(could not find libGLU))
-AC_CHECK_LIB(glut, glutGetModifiers,
-        HAVE_GLUT=true
-        LIBS="-lglut $LIBS"
-    ,
-	AC_MSG_WARN(libglut not found... not building examples)
-    ,
-        -lX11 -lXmu)
 
-LIBS="$LIBS -lX11 -lXmu"
+# Check for glutMainLoop in -lglut32. We have to use AC_TRY_LINK because
+# we need to include glut.h for the link to work.  Cygwin has glut32 (native
+# Win32), and we want to use it over -lglut if we can.
+AC_MSG_CHECKING(glutMainLoop in -lglut32)
+GLUT_SAVE_LIBS=$LIBS
+LIBS="-lglut32 $LIBS"
+AC_TRY_LINK(
+        #include <GL/glut.h>
+    ,
+        glutMainLoop();
+    ,
+        HAVE_GLUT=true
+        GLUT_SAVE_LIBS="-lglut32 -lopengl32 -lglu32 $LIBS"
+        AC_MSG_RESULT(yes)
+    ,
+        AC_MSG_RESULT(no))
+LIBS=$GLUT_SAVE_LIBS
+
+if [[ "x$HAVE_GLUT" != "xtrue" ]]; then
+    # Check for glutMainLoop in -lglut. We have to use AC_TRY_LINK because
+    # we need to include glut.h for the link to work.
+    AC_MSG_CHECKING(glutMainLoop in -lglut)
+    GLUT_SAVE_LIBS=$LIBS
+    LIBS="-lglut $LIBS"
+    AC_TRY_LINK(
+            #include <GL/glut.h>
+        ,
+            glutMainLoop();
+        ,
+            HAVE_GLUT=true
+            GLUT_SAVE_LIBS="-lglut -lGL -lGLU $LIBS"
+            AC_MSG_RESULT(yes)
+        ,
+            AC_MSG_RESULT(no))
+    LIBS=$GLUT_SAVE_LIBS
+fi
+
+if [[ "x$HAVE_GLUT" != "xtrue" ]]; then
+    AC_MSG_WARN(GLUT not found...  not building examples)
+fi
 
 AM_CONDITIONAL(BUILD_EXAMPLES, test x$HAVE_GLUT = xtrue)
 
