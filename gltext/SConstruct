@@ -95,9 +95,10 @@ Export('baseEnv')
 
 subdirs = Split('src test examples')
 
-# Build everything except the tests by default
+# Build everything except the examples and tests by default
 defaultTargets = list(subdirs)
 defaultTargets.remove('test')
+defaultTargets.remove('examples')
 Default(defaultTargets)
 
 # Recurse
