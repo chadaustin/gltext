@@ -1,7 +1,7 @@
 import os
 from os import path
 
-Import('baseEnv OPENGL_LIBS')
+Import('baseEnv PREFIX OPENGL_LIBS')
 
 sources = Split("""
    gltext.cpp
@@ -18,4 +18,9 @@ FT2_LIBS = ['freetype']
 
 env = baseEnv.Copy(LIBS=FT2_LIBS + OPENGL_LIBS)
 
-env.Library(target = 'gltext', source = sources)
+libraries = []
+libraries.append(env.Library(target = 'gltext', source = sources))
+
+# Installation
+env.Install(path.join(PREFIX, 'include', 'gltext'), 'gltext.h')
+env.Install(path.join(PREFIX, 'lib'), libraries)

@@ -25,6 +25,17 @@ if ARGUMENTS.get('profile', 0):
    LINKFLAGS.append('-pg')
 
 
+# Get the FreeType2 include path
+#FT2_CFLAGS = os.popen('freetype-config --cflags').read()
+#string.split(
+
+
+# Get the install prefix for the install target
+PREFIX = '/usr/local'
+if ARGUMENTS.get('prefix'):
+   PREFIX = ARGUMENTS['prefix']
+Export('PREFIX')
+
 # Create the base environment
 baseEnv = Environment(
    ENV = os.environ,
@@ -34,3 +45,6 @@ Export('baseEnv')
 
 # Recurse
 SConscript(dirs=Split('src test examples'))
+
+# Install target
+baseEnv.Alias('install', PREFIX)
