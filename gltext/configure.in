@@ -18,6 +18,15 @@ AC_PROG_CXXCPP
 AC_PROG_MAKE_SET
 AM_PROG_LIBTOOL
 
+dnl If building with gcc, build with all warnings except "class has virtual
+dnl functions but non-virtual destructor".
+if test "x$GXX" = "xyes" ; then
+   CXXFLAGS="$CXXFLAGS -Wall -Wno-non-virtual-dtor"
+fi
+if test "x$GCC" = "xyes" ; then
+   CFLAGS="$CFLAGS -Wall -Wno-non-virtual-dtor"
+fi
+
 dnl Look for where X is installed
 AC_PATH_X
 X_LDFLAGS=''
