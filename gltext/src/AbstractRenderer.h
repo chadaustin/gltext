@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AbstractRenderer.h,v $
- * Date modified: $Date: 2003-02-03 19:40:41 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2003-02-04 01:45:04 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -55,7 +55,7 @@ namespace gltext
       virtual GLGlyph* makeGlyph(Glyph* glyph) = 0;
 
    protected:
-      Font* mFont;
+      FontPtr mFont;
 
       GlyphCache mCache;
    };
