@@ -53,6 +53,7 @@ dnl Output makefiles.
 
 AC_OUTPUT(
 	Makefile
+	doc/Makefile
 	src/Makefile
 	examples/Makefile
 	examples/simple/Makefile
