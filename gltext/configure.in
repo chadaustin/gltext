@@ -1,0 +1,59 @@
+AC_INIT(src/gltext.h)
+AC_CONFIG_AUX_DIR(config)
+
+VERSION=0.1.0
+PACKAGE=gltext
+
+AC_SUBST(VERSION)
+AC_SUBST(PACKAGE)
+
+AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
+
+dnl Checks for options.
+
+dnl Checks for programs.
+
+AC_PROG_CXX
+AC_PROG_CXXCPP
+AC_PROG_MAKE_SET
+AM_PROG_LIBTOOL
+
+dnl Checks for libraries.
+
+AC_CHECK_LIB(freetype, FT_Init_FreeType,,
+        AC_MSG_ERROR(libfreetype not found))
+AC_CHECK_LIB(GL, glNewList,
+        LIBS="$LIBS -lGL",
+	AC_MSG_ERROR(could not find libGL))
+AC_CHECK_LIB(GLU, gluLookAt,
+        LIBS="$LIBS -lGLU",
+	AC_MSG_ERROR(could not find libGLU))
+AC_CHECK_LIB(glut, glutGetModifiers,
+        HAVE_GLUT=true
+        LIBS="-lglut $LIBS"
+    ,
+	AC_MSG_WARN(libglut not found... not building examples)
+    ,
+        -lX11 -lXmu)
+
+LIBS="$LIBS -lX11 -lXmu"
+
+AM_CONDITIONAL(BUILD_EXAMPLES, test x$HAVE_GLUT = xtrue)
+
+dnl Checks for header files.
+
+AC_HEADER_STDC
+
+FTCFLAGS=`freetype-config --cflags`
+CXXFLAGS="$CXXFLAGS $FTCFLAGS"
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+
+dnl Output makefiles.
+
+AC_OUTPUT(
+	Makefile
+	src/Makefile
+	examples/Makefile
+	examples/simple/Makefile
+	examples/sizes/Makefile)
