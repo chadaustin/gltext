@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.h,v $
- * Date modified: $Date: 2002-12-20 10:14:17 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-12-23 21:03:26 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -268,6 +268,12 @@ namespace gltext
        * renderer's current font.
        */
       virtual void render(const char* text) = 0;
+
+      /**
+       * Computes the width of the given text string if it were to be rendered
+       * with this renderer.
+       */
+      virtual int getWidth(const char* text) = 0;
 
       /**
        * Sets the font this renderer should use.

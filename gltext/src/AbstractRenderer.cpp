@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AbstractRenderer.cpp,v $
- * Date modified: $Date: 2002-07-01 01:01:42 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-12-23 21:03:26 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -79,6 +79,31 @@ namespace gltext
             penX += fontGlyph->getAdvance();
          }
       }
+   }
+
+   int AbstractRenderer::getWidth(const char* text)
+   {
+      // Fail if we were given null text
+      if (! text)
+      {
+         return 0;
+      }
+
+      int width = 0;
+
+      // Iterate over each character adding its width
+      for (const char* itr = text; *itr != 0; ++itr)
+      {
+         // Get the glyph for the current character
+         const FTGlyph* fontGlyph = mFont->getGlyph(*itr);
+         if (fontGlyph)
+         {
+            // Add this glyph's advance
+            width += fontGlyph->getAdvance();
+         }
+      }
+
+      return width;
    }
 
    void AbstractRenderer::setFont(Font* font)
