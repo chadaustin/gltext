@@ -19,6 +19,7 @@ libgltext_la_SOURCES = \
 	GLTextureGlyph.cpp \
 	GLTextureGlyph.h \
 	GlyphCache.h \
+	OpenGL.h \
 	PixmapRenderer.cpp \
 	PixmapRenderer.h \
 	TextureRenderer.cpp \

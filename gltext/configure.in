@@ -40,8 +40,14 @@ LDFLAGS="$X_LDFLAGS $LDFLAGS"
 
 dnl Checks for libraries.
 
-AC_CHECK_LIB(freetype, FT_Init_FreeType,,
-        AC_MSG_ERROR(libfreetype not found))
+AC_PATH_PROG(FT_CONFIG, freetype-config, no, $PATH:/usr/local/bin)
+if test "$FT_CONFIG" = "" ; then
+    AC_MSG_ERROR(freetype not found)
+fi
+FT_FLAGS=`freetype-config --cflags`
+FT_LIBS=`freetype-config --libs`
+CXXFLAGS="$FT_FLAGS $CXXFLAGS"
+LIBS="$FT_LIBS $LIBS"
 
 # Check for glutMainLoop in -lglut32. We have to use AC_TRY_LINK because
 # we need to include glut.h for the link to work.  Cygwin has glut32 (native
