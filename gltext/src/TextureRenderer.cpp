@@ -22,13 +22,14 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: TextureRenderer.cpp,v $
- * Date modified: $Date: 2002-09-27 02:59:34 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-12-21 02:48:31 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
 #include "TextureRenderer.h"
 #include "GLTextureGlyph.h"
+#include <iostream>
 #include <iomanip>
 
 namespace gltext
@@ -83,7 +84,7 @@ namespace gltext
                 | ((unsigned int)(color[1]*srcAlpha*255.0f) << 16)
                 | ((unsigned int)(color[2]*srcAlpha*255.0f) << 8)
                 | ((unsigned int)(color[3]*srcAlpha*255.0f));
-            std::cout<<setfill('0')<<setw(8)<<hex<<data[destOffset]<<dec<<","<<std::flush;
+            std::cout<<std::setfill('0')<<std::setw(8)<<std::hex<<data[destOffset]<<std::dec<<","<<std::flush;
          }
          std::cout<<std::endl;
       }

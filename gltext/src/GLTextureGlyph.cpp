@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GLTextureGlyph.cpp,v $
- * Date modified: $Date: 2002-09-27 02:59:34 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-12-21 02:48:31 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -66,9 +66,9 @@ namespace gltext
       {
          for (int x=0; x<mTexWidth; ++x)
          {
-            std::cout<<setfill('0')<<setw(8)<<hex<<pixels[y*mTexWidth+x]<<dec<<","<<flush;
+            std::cout<<std::setfill('0')<<std::setw(8)<<std::hex<<pixels[y*mTexWidth+x]<<std::dec<<","<<std::flush;
          }
-         std::cout<<endl;
+         std::cout<<std::endl;
       }
       std::cout<<"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"<<std::endl;
 
