@@ -1,5 +1,5 @@
 <?php
-// $Id: lists.php,v 1.2 2002-06-08 01:37:31 nonchocoboy Exp $
+// $Id: lists.php,v 1.3 2002-06-15 22:27:22 nonchocoboy Exp $
 include 'common.inc';
 layoutHeader('mailing lists', 'mailing lists');
 
@@ -33,11 +33,11 @@ using or developing the library easier.
 
 <?php
 lists(array(
-      mailinglist('announce', '12345', 'Announcements and news related to GLText. This '.
+      mailinglist('announce', '9700',  'Announcements and news related to GLText. This '.
                                        'low volume list is for those users who want to '.
                                        'know when the next release or updates are available.'),
-      mailinglist('users',    '12345', 'Information and discussion related to using GLText.'),
-      mailinglist('devel',    '12345', 'Discussion amongst the developers working on GLText.'),
+      mailinglist('users',    '9699',  'Information and discussion related to using GLText.'),
+      mailinglist('devel',    '9698',  'Discussion amongst the developers working on GLText.'),
       mailinglist('commits',  '9624',  'Notification of changes to the CVS respository. This '.
                                        'may be high volume at times of heavy development.')
 ));
