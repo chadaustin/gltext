@@ -9,6 +9,9 @@ AC_SUBST(PACKAGE)
 
 AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
 
+AC_MSG_WARN(GLText autoconf build system is deprecated.)
+AC_MSG_WARN(Try running 'scons'.)
+
 dnl Checks for options.
 
 dnl Checks for programs.
