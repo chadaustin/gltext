@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: main.cpp,v $
- * Date modified: $Date: 2002-07-01 02:46:25 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-07-04 17:55:35 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -91,7 +91,7 @@ main(int argc, char** argv)
    glEnable(GL_BLEND);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-   font = gltext::CreateFont("../../test/arial.ttf", gltext::PLAIN, 26);
+   font = gltext::CreateFont("../arial.ttf", gltext::PLAIN, 26);
    if (! font)
    {
       std::cerr<<"Couldn't create font!"<<std::endl;

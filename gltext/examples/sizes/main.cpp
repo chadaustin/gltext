@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: main.cpp,v $
- * Date modified: $Date: 2002-07-01 02:46:25 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-07-04 17:55:35 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -56,7 +56,7 @@ void display()
    for (int y=0; y<640; )
    {
       gltext::Font* font = 0;
-      font = gltext::CreateFont("../../test/arial.ttf", gltext::PLAIN, size);
+      font = gltext::CreateFont("../arial.ttf", gltext::PLAIN, size);
       renderer->setFont(font);
       glPushMatrix();
       y += font->getAscent();
