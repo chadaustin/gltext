@@ -1,18 +1,17 @@
-import os
-from os import path
-
 Import('baseEnv')
+Import('SetupFreeType SetupCppUnit')
 
-sources = [
-   'main.cpp',
-   'FTFontTest.cpp',
-]
+sources = Split("""
+   main.cpp
+   FTFontTest.cpp
+""")
 
-FT2_LIBS = ['freetype']
-CPPUNIT_LIBS = ['cppunit']
-
-env = baseEnv.Copy(CPPPATH = ['#src'],
-                   LIBPATH = ['#src'],
-                   LIBS = ['gltext'] + FT2_LIBS + CPPUNIT_LIBS)
+# Clone the environment
+env = baseEnv.Copy()
+env['CPPPATH'].extend(['#src'])
+env['LIBPATH'].extend(['#src'])
+env['LIBS'].extend(['gltext'])
+SetupFreeType(env)
+SetupCppUnit(env)
 
 env.Program(target = 'runtests', source = sources)

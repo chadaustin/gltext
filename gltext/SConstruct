@@ -1,50 +1,107 @@
 import os
 from os import path
+pj = os.path.join
 
-# Builds all sources and examples by default, but not the tests
-Default(Split('src examples'))
 
-# Find libraries
-execfile('opengl_libs.py')
-execfile('glut_libs.py')
-Export('GLUT_LIBS OPENGL_LIBS')
+# Check for optimize option
+optimize = 0
+if ARGUMENTS.get('opt', 0):
+   optimize = 1
 
-# Enable all warnings
-CXXFLAGS = ['-Wall']
-LINKFLAGS = []
-
-# Check for debug vs release build
-if ARGUMENTS.get('debug', 0):
-   CXXFLAGS.extend(['-g', '-DDEBUG'])
-else:
-   CXXFLAGS.extend(['-DNDEBUG'])
-
-# Check if we should insert profiling statements for gcc
+# Check for profile option
+profile = 0
 if ARGUMENTS.get('profile', 0):
-   CXXFLAGS.append('-pg')
-   LINKFLAGS.append('-pg')
+   profile = 1
 
-
-# Get the FreeType2 include path
-#FT2_CFLAGS = os.popen('freetype-config --cflags').read()
-#string.split(
-
-
-# Get the install prefix for the install target
+# Check for an install prefix
 PREFIX = '/usr/local'
 if ARGUMENTS.get('prefix'):
    PREFIX = ARGUMENTS['prefix']
 Export('PREFIX')
 
-# Create the base environment
-baseEnv = Environment(
-   ENV = os.environ,
-   CXXFLAGS = CXXFLAGS,
-   LINKFLAGS = LINKFLAGS)
+
+def BuildBaseEnvironment():
+   global optimize, profile
+
+   "Builds a base environment for other modules to build on."
+
+   CXXFLAGS = ['-Wall']
+   LINKFLAGS = []
+
+   if optimize:
+      CXXFLAGS.extend(['-DNDEBUG', '-O2'])
+   else:
+      CXXFLAGS.extend(['-DDEBUG', '-g'])
+
+   if profile:
+      CXXFLAGS.extend(['-pg'])
+      LINKFLAGS.extend(['-pg'])
+
+   env = Environment(
+      ENV = os.environ,
+      CPPPATH = [],
+      LIBPATH = [],
+      LIBS = [],
+      CXXFLAGS = CXXFLAGS,
+      LINKFLAGS = LINKFLAGS,
+   )
+
+   return env
+
+
+def ParseConfig(env, command, options):
+   "Parses xxx-config style output for compilation directives"
+
+   # Run the command
+   cmd = WhereIs(command) + ' ' + string.join(options)
+   params = string.split(os.popen(cmd).read())
+
+   # Parse its output
+   for arg in params:
+      switch = arg[0:1]
+      option = arg[1:2]
+      if switch == '-':
+         if option == 'I':
+            env['CPPPATH'].append(arg[2:])
+         elif option == 'L':
+            env['LIBPATH'].append(arg[2:])
+         elif option == 'l':
+            env['LIBS'].append(arg[2:])
+         else:
+            env['CXXFLAGS'].append(arg)
+      else:
+         # Must be a static library, add it to the libs
+         env['LIBS'].append(arg)
+
+def SetupFreeType(env):
+   "Sets up the given environment for FreeType"
+   ParseConfig(env, 'freetype-config', Split('--cflags --libs'))
+
+def SetupCppUnit(env):
+   "Sets up the given environment for CppUnit"
+   ParseConfig(env, 'cppunit-config', Split('--cflags --libs'))
+
+# Define additional functions to build with external libraries
+execfile('opengl_libs.py')
+execfile('glut_libs.py')
+
+Export('ParseConfig')
+Export('SetupFreeType SetupCppUnit')
+Export('SetupGLUT SetupOpenGL')
+
+# Create and build the base environment
+baseEnv = BuildBaseEnvironment()
 Export('baseEnv')
 
+subdirs = Split('src test examples')
+
+# Build everything except the tests by default
+defaultTargets = list(subdirs)
+defaultTargets.remove('test')
+Default(defaultTargets)
+
 # Recurse
-SConscript(dirs=Split('src test examples'))
+SConscript(dirs = subdirs)
 
 # Install target
 baseEnv.Alias('install', PREFIX)

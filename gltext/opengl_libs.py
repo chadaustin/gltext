@@ -1,6 +1,6 @@
 """
 Figure out what libraries we need to link with to use OpenGL.
-Defines OPENGL_LIBS.
+Defines the function SetupOpenGL.
 
 Supported platforms:
   Cygwin
@@ -10,14 +10,24 @@ Supported platforms:
 import sys
 import string
 
-# CYGWIN
-if sys.platform == 'cygwin':
-    OPENGL_LIBS = ['opengl32', 'glu32']
+def SetupOpenGL(env):
+   "Sets up the given environment to be able to build with OpenGL"
 
-# IRIX
-elif string.find(sys.platform, 'irix') != -1:
-    OPENGL_LIBS = ['GLU', 'GL', 'X11', 'Xmu']
+   # CYGWIN
+   if sys.platform == 'cygwin':
+       OPENGL_LIBS = ['opengl32', 'glu32']
 
-# GENERIC (LINUX?)
-else:
-    OPENGL_LIBS = ['GLU', 'GL']
+   # IRIX
+   elif string.find(sys.platform, 'irix') != -1:
+       OPENGL_LIBS = ['GLU', 'GL', 'X11', 'Xmu']
+
+   # GENERIC (LINUX?)
+   else:
+       OPENGL_LIBS = ['GLU', 'GL']
+
+   # Make sure the environment has LIBS defined
+   if not env.Dictionary().has_key('LIBS'):
+      env['LIBS'] = [];
+
+   # Add in the OpenGL libs to the environment
+   env['LIBS'].extend(OPENGL_LIBS)

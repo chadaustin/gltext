@@ -1,7 +1,8 @@
 import os
-from os import path
+pj = os.path.join
 
-Import('baseEnv PREFIX OPENGL_LIBS')
+Import('baseEnv PREFIX')
+Import('SetupFreeType SetupOpenGL')
 
 sources = Split("""
    gltext.cpp
@@ -14,13 +15,14 @@ sources = Split("""
    PixmapRenderer.cpp
 """)
 
-FT2_LIBS = ['freetype']
-
-env = baseEnv.Copy(LIBS=FT2_LIBS + OPENGL_LIBS)
+# Clone the environment
+env = baseEnv.Copy()
+SetupFreeType(env)
+SetupOpenGL(env)
 
 libraries = []
 libraries.append(env.Library(target = 'gltext', source = sources))
 
 # Installation
-env.Install(path.join(PREFIX, 'include', 'gltext'), 'gltext.h')
-env.Install(path.join(PREFIX, 'lib'), libraries)
+env.Install(pj(PREFIX, 'include', 'gltext'), 'gltext.h')
+env.Install(pj(PREFIX, 'lib'), libraries)
