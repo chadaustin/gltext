@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.h,v $
- * Date modified: $Date: 2002-07-08 18:27:23 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-07-31 23:51:21 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -176,7 +176,8 @@ namespace gltext
     * Anonymous namespace containing our exported functions. They are extern "C"
     * so we don't mangle the names and they export nicely as shared libraries.
     */
-   namespace {
+   namespace
+   {
       /// Gets version information
       GLTEXT_FUNC(const char*, GLTextGetVersion());
 
@@ -196,7 +197,8 @@ namespace gltext
     *
     * @return  GLText version information
     */
-   inline const char* GetVersion() {
+   inline const char* GetVersion()
+   {
       return GLTextGetVersion();
    }
 
