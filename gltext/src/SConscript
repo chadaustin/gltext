@@ -3,6 +3,21 @@ pj = os.path.join
 
 Import('*')
 
+headers = Split("""
+   gltext.h
+   AbstractRenderer.h
+   BitmapRenderer.h
+   FTFont.h
+   FTGlyph.h
+   GLGlyph.h
+   GLPixelGlyph.h
+   GLTextureGlyph.h
+   GlyphCache.h
+   OpenGL.h
+   PixmapRenderer.h
+   TextureRenderer.h
+""")
+
 sources = Split("""
    gltext.cpp
    AbstractRenderer.cpp
@@ -17,11 +32,10 @@ sources = Split("""
 
 env = baseEnv.Copy(tools=[SetupFreeType, SetupOpenGL])
 
-
 lib = pkg.createSharedLibrary('gltext', env)
 lib.addSources(sources)
-lib.addHeaders(['gltext.h'])
+lib.addHeaders(headers)
 
 lib = pkg.createStaticLibrary('gltext', env)
 lib.addSources(sources)
-lib.addHeaders(['gltext.h'])
+lib.addHeaders(headers)

@@ -1,13 +1,6 @@
-Import('baseEnv pkg')
-Import('SetupFreeType SetupGLUT SetupOpenGL')
+Import('*')
 
-# Clone the environment
-env = baseEnv.Copy()
-env.Append(LIBPATH = ['#src'], LIBS = ['gltext'])
-SetupFreeType(env)
-SetupGLUT(env)
-SetupOpenGL(env)
+env = baseEnv.Copy(tools=[SetupGLText, SetupFreeType, SetupGLUT, SetupOpenGL])
 
 prog = pkg.createProgram('fps', env)
-prog.addIncludes(['#src'])
 prog.addSources(['fps.cpp'])

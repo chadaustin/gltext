@@ -1,19 +1,16 @@
+from os.path import join
+
 Import('baseEnv pkg')
 Import('SetupFreeType SetupCppUnit')
 
-try:
-    sources = Split('main.cpp FTFontTest.cpp')
+sources = Split('main.cpp FTFontTest.cpp')
 
+try:
     # Clone the environment
-    env = baseEnv.Copy()
-    env.Append(CPPPATH = ['#src'],
-               LIBPATH = ['#src'],
-               LIBS = ['gltext'])
-    SetupFreeType(env)
-    SetupCppUnit(env)
+    env = baseEnv.Copy(tools=[SetupGLText, SetupFreeType, SetupCppUnit])
 
     prog = pkg.createProgram('runtests', env)
     prog.addSources(sources)
 except Exception, e:
     print "No cppunit found, not building tests"
-    pass
+    pkg.addExtraDist(map(lambda n: join('test', n), sources))

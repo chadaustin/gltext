@@ -27,8 +27,7 @@ def BuildEnvironment():
       env.Append(CXXFLAGS=['-Wall', '-Wno-non-virtual-dtor'])
 
    if env['CXX'] == 'CC':    # test for non-gcc IRIX
-      env.Append(CPPPATH=['third-party-sgi/include'],
-                 LIBPATH=['third-party-sgi/lib32'])
+      env.Append(CXXFLAGS=['-woff', '3505'])
 
    if optimize:
       env.Append(CXXFLAGS=['-DNDEBUG', '-O2'])
@@ -88,6 +87,12 @@ def SetupOpenGL(env):
    else:                                             # GENERIC (Linux?)
       env.Append(LIBS=['GLU', 'GL'])
 
+# The examples need a tool to set up GLText.
+def SetupGLText(env):
+   env.Append(CPPPATH = ['#src'],
+              LIBPATH = ['#src'],
+              LIBS = ['gltext'])
+
 def SetupGLUT(env):
    "Sets up the given environment to be able to build with GLUT"
    if sys.platform == 'cygwin':                      # CYGWIN
@@ -106,6 +111,7 @@ def GetGLTextVersionString():
 
 
 Export('ParseConfig')
+Export('SetupGLText')
 Export('SetupFreeType SetupCppUnit')
 Export('SetupGLUT SetupOpenGL')
 
@@ -123,6 +129,8 @@ pkg.addExtraDist(Split("""
    SConstruct
    build/AutoDist.py
    examples/SConscript
+   examples/alpha/SConscript
+   examples/fps/SConscript
    examples/simple/SConscript
    examples/sizes/SConscript
    src/SConscript
