@@ -6,7 +6,7 @@ Thank you for downloading GLText and taking the time to read this file! GLText
 is a TrueType font rendering system for OpenGL. This library is reminiscent of
 GLTT and FTGL, but is designed to work well as a shared library. Most of all, it
 is designed from the ground up to be cross-platform, supporting no less than
-Windows (VC7 and CygWin), Linux and IRIX.
+Windows (VC7 and Cygwin), Linux and IRIX.
 
 The goal of GLText is to have a platform independent font rendering system
 implemented in an object-oriented way, such that the details of the fonts and
@@ -41,6 +41,8 @@ DOCUMENTATION
 =============
 
 Installation instructions can be found in the INSTALL file.
+
+A quick and dirty tutorial can be found in the doc/tutorial.txt file.
 
 GLText API documentation is generated from the source code using Doxygen which
 may be obtained from http://www.doxygen.org.
