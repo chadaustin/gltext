@@ -36,6 +36,7 @@ current OpenGL color to draw the text.
 
    glMatrixMode(GL_MODELVIEW);
    glTranslatef(100, 100, 100);
+   glColor4f(1, 1, 1, 0.5f);
    myRenderer->render("hello world");
 
 6.
