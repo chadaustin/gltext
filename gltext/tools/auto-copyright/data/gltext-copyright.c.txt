@@ -1,5 +1,5 @@
  *
- * GLText - OpenGL TrueType Front Renderer
+ * GLText - OpenGL TrueType Font Renderer
  * GLText is (C) Copyright 2002 by Ben Scott
  *
  * This library is free software; you can redistribute it and/or

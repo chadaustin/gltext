@@ -2,7 +2,7 @@
 // vim:cindent:ts=3:sw=3:et:tw=80:sta:
 /*************************************************************** gltext-cpr beg
  *
- * GLText - OpenGL TrueType Front Renderer
+ * GLText - OpenGL TrueType Font Renderer
  * GLText is (C) Copyright 2002 by Ben Scott
  *
  * This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: FTFont.h,v $
- * Date modified: $Date: 2002-06-15 22:38:46 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-06-16 05:13:57 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
