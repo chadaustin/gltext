@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GLTextureGlyph.cpp,v $
- * Date modified: $Date: 2003-03-15 04:04:11 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-04-09 23:43:54 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -125,6 +125,7 @@ namespace gltext
    void GLTextureGlyph::render(int penX, int penY) const
    {
       // Enable texturing and bind our texture
+      glPushAttrib(GL_TEXTURE_BIT);
       glEnable(GL_TEXTURE_2D);
       glBindTexture(GL_TEXTURE_2D, mTexName);
 
@@ -146,8 +147,6 @@ namespace gltext
 
       glPopMatrix();
 
-      // Unbind our texture and disable texturing
-      glBindTexture(GL_TEXTURE_2D, 0);
-      glDisable(GL_TEXTURE_2D);
+      glPopAttrib();
    }
 }
