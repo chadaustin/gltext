@@ -1,5 +1,5 @@
 <?php
-// $Id: download.php,v 1.1 2002-06-08 00:43:18 nonchocoboy Exp $
+// $Id: download.php,v 1.2 2002-07-04 05:55:16 nonchocoboy Exp $
 include 'common.inc';
 layoutHeader('download', 'download');
 
@@ -47,11 +47,11 @@ testing the design. Download it here as binary or source.
 <?php
 echo release('GLText', '0.1.0',
    array(
-      releaseFile('gltext-0.1.0.tar.gz',     'Gzipped tarball of the source.'),
-      releaseFile('gltext-0.1.0.zip',        'Zip of the source.'),
-      releaseFile('gltext-0.1.0-1.i586.rpm', 'RPM for RedHat/Mandrake Linux.'),
+      releaseFile('gltext-0.1.0.tar.gz',     'Gzipped tarball, ready to build and install using configure.'),
+      releaseFile('gltext-0.1.0-1.i386.rpm', 'RPM for RedHat/Mandrake Linux.'),
       releaseFile('gltext-0.1.0-1.src.rpm',  'Source RPM for RedHat/Mandrake Linux.'),
-      releaseFile('gltext-0.1.0.win32.exe',  'Win32 installer.')
+      releaseFile('gltext-0.1.0.win32.zip',  'Zipped Win32 binaries, ready to install.')
+      releaseFile('gltext-src-0.1.0.tar.gz', 'Gzipped tarball of the checked-in source tree.'),
    )
 );
 

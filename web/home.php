@@ -1,5 +1,5 @@
 <?php
-// $Id: home.php,v 1.1 2002-06-08 01:12:34 nonchocoboy Exp $
+// $Id: home.php,v 1.2 2002-07-04 05:55:16 nonchocoboy Exp $
 include 'common.inc';
 layoutHeader('home', 'home');
 ?>
@@ -28,7 +28,7 @@ virtually anywhere that FreeType2 supports.
 
 <h2>News</h2>
 
-<h3>GLText 0.1.0 Released [2002.06.07]</h3>
+<h3>GLText 0.1.0 Released [2002.07.04]</h3>
 <p>
 GLText 0.1.0 has been released. Here are the major features:
 </p>
@@ -36,6 +36,7 @@ GLText 0.1.0 has been released. Here are the major features:
 <ul>
  <li>Supports any TrueType font using FreeType2 as the backend.</li>
  <li>Anti-aliased pixmap rendering.</li>
+ <li>Fast aliased bitmap rendering.</li>
  <li>Doxygen API documentation.</li>
 </ul>
 
