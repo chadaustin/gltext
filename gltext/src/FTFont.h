@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: FTFont.h,v $
- * Date modified: $Date: 2003-02-03 19:40:41 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2003-02-14 04:59:43 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -46,7 +46,7 @@ namespace gltext
    public:
       /// Creates a new FreeType font with the given face name and
       /// point size.
-      static FTFont* create(const char* name, int size);
+      static FTFont* create(const char* name, int size, int dpi);
 
       FTFont(const char* name, int size, FT_Library library, FT_Face face);
 

@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: FTFont.cpp,v $
- * Date modified: $Date: 2003-02-04 01:45:42 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-02-14 04:59:43 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -33,7 +33,7 @@
 
 namespace gltext
 {
-   FTFont* FTFont::create(const char* name, int size)
+   FTFont* FTFont::create(const char* name, int size, int dpi)
    {
       FT_Library library;
       FT_Error error = FT_Init_FreeType(&library);
@@ -57,8 +57,8 @@ namespace gltext
       error = FT_Set_Char_Size(face,
                                size * 64, // width in 1/64 of points
                                0,         // height same as width
-                               72,        // device horiz resolution (dpi)
-                               72);       // device vert resolution (dpi)
+                               dpi,       // device horiz resolution (dpi)
+                               dpi);      // device vert resolution (dpi)
       if (error)
       {
          FT_Done_FreeType(library);

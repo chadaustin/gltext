@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.h,v $
- * Date modified: $Date: 2003-02-07 23:02:36 $
- * Version:       $Revision: 1.16 $
+ * Date modified: $Date: 2003-02-14 04:59:43 $
+ * Version:       $Revision: 1.17 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -425,7 +425,7 @@ namespace gltext
       GLTEXT_FUNC(const char*) GLTextGetVersion();
 
       /// Creates a new Font by name.
-      GLTEXT_FUNC(Font*) GLTextOpenFont(const char* name, int size);
+      GLTEXT_FUNC(Font*) GLTextOpenFont(const char* name, int size, int dpi);
 
       /// Creates a new FontRenderer.
       GLTEXT_FUNC(FontRenderer*) GLTextCreateRenderer(
@@ -447,11 +447,12 @@ namespace gltext
     * Creates a new font from the given name, style and point size.
     *
     * @param name    the name of a particular font face.
-    * @param size    the point size of the font.
+    * @param size    the point size of the font, in 1/72nds of an inch.
+    * @param dpi     number of pixels per inch on the display
     */
-   inline Font* OpenFont(const char* name, int size)
+   inline Font* OpenFont(const char* name, int size, int dpi = 72)
    {
-      return internal::GLTextOpenFont(name, size);
+      return internal::GLTextOpenFont(name, size, dpi);
    }
 
    /**
