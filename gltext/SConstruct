@@ -186,4 +186,4 @@ Default('.')
 SConscript(dirs = subdirs)
 
 pkg.build()
-MakeSourceDist(pkg)
+MakeSourceDist(pkg, baseEnv)
