@@ -1,5 +1,5 @@
 <?php
-// $Id: common.inc,v 1.2 2002-06-07 23:56:39 nonchocoboy Exp $
+// $Id: common.inc,v 1.3 2002-06-11 03:09:19 nonchocoboy Exp $
 include 'menu.inc';
 include 'doctype.inc';
 
@@ -141,8 +141,10 @@ function layoutFooter()
    <td class="blockborder" width=2 height=2><img src="clear.gif" width=2 height=2></td>
    <td class="blockbody" align=center>
     <small>
-    For inquiries, wishes or comments please contact <a href="mailto:nonchocoboy@users.sourceforge.net">nonchocoboy@users.sourceforge.net</a><br>
-    GLText is copyright (C) 2002 Ben Scott.
+    For inquiries, wishes or comments please contact
+    <a href="mailto:gltext-users@lists.sourceforge.net">gltext-users@lists.sourceforge.net</a>.<br>
+    GLText is copyright (C) 2002 Ben Scott and released under the
+    <a href="http://opensource.org/licenses/lgpl-license.txt">LGPL</a>.
     </small>
    </td>
    <td class="blockborder" width=2 height=2><img src="clear.gif" width=2 height=2></td>
