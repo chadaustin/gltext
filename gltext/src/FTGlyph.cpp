@@ -22,11 +22,12 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: FTGlyph.cpp,v $
- * Date modified: $Date: 2003-02-04 01:43:49 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2003-02-04 03:31:03 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
+#include <algorithm>
 #include "FTGlyph.h"
 
 namespace gltext

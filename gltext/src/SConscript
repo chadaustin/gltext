@@ -10,7 +10,6 @@ sources = Split("""
    BitmapRenderer.cpp
    FTFont.cpp
    FTGlyph.cpp
-   FTLibrary.cpp
    GLPixelGlyph.cpp
    GLTextureGlyph.cpp
    PixmapRenderer.cpp
