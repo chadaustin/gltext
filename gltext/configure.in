@@ -100,5 +100,6 @@ AC_OUTPUT(
 	src/Makefile
 	examples/Makefile
         examples/alpha/Makefile
+        examples/fps/Makefile
 	examples/simple/Makefile
 	examples/sizes/Makefile)
