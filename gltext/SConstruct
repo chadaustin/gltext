@@ -7,10 +7,9 @@ from AutoDist import *
 
 EnsureSConsVersion(0, 90)
 
-
-# Check for optimize option
-optimize = ARGUMENTS.get('opt',     0)
-profile  = ARGUMENTS.get('profile', 0)
+# Check for options
+debug   = ARGUMENTS.get('debug', 0)
+profile = ARGUMENTS.get('profile', 0)
 
 # Check for an install prefix
 if ARGUMENTS.get('prefix'):
@@ -29,10 +28,10 @@ def BuildEnvironment():
    if env['CXX'] == 'CC':    # test for non-gcc IRIX
       env.Append(CXXFLAGS=['-woff', '3505'])
 
-   if optimize:
-      env.Append(CXXFLAGS=['-DNDEBUG', '-O2'])
-   else:
+   if debug:
       env.Append(CXXFLAGS=['-DDEBUG', '-g'])
+   else:
+      env.Append(CXXFLAGS=['-DNDEBUG', '-O2'])
 
    if profile:
       env.Append(CXXFLAGS=['-pg'],
@@ -128,6 +127,8 @@ pkg.addExtraDist(Split("""
    README
    SConstruct
    build/AutoDist.py
+   doc/release_howto.txt
+   doc/tutorial.txt
    examples/SConscript
    examples/alpha/SConscript
    examples/fps/SConscript
