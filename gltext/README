@@ -27,7 +27,7 @@ REQUIREMENTS
 
 GLText uses FreeType 2.1.x for the handling of TrueType fonts and OpenGL for the
 rendering of the fonts to the screen. There should be no other dependencies or
-requirements to run GLText.
+requirements to use GLText.
 
 You can obtain FreeType from the FreeType Project Web site at:
 
@@ -36,6 +36,24 @@ You can obtain FreeType from the FreeType Project Web site at:
 You can obtain OpenGL from the OpenGL Web site at:
 
       http://www.opengl.org
+
+OPTIONAL REQUIREMENTS
+=====================
+
+The examples use GLUT 3.7 to abstract the windowing system from the
+applications. If you wish to compile and run the examples, you will need to get
+GLUT.
+
+The test suite in the CVS tree requires CppUnit 1.8.x to build and run. If you
+wish to run the tests, you will need to get CppUnit.
+
+You can obtain GLUT from the OpenGL Web site at:
+
+      http://www.opengl.org/developers/documentation/glut.html
+
+You can obtain CppUnit from the CppUnit Web site at:
+
+      http://cppunit.sourceforge.net
 
 DOCUMENTATION
 =============
