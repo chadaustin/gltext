@@ -5,58 +5,41 @@ pj = os.path.join
 sys.path = ['build'] + sys.path
 from AutoDist import *
 
-EnsureSConsVersion(0,11)
+EnsureSConsVersion(0, 90)
 
 
 # Check for optimize option
-optimize = 0
-if ARGUMENTS.get('opt', 0):
-   optimize = 1
-
-# Check for profile option
-profile = 0
-if ARGUMENTS.get('profile', 0):
-   profile = 1
+optimize = ARGUMENTS.get('opt',     0)
+profile  = ARGUMENTS.get('profile', 0)
 
 # Check for an install prefix
 if ARGUMENTS.get('prefix'):
    Prefix(ARGUMENTS['prefix'])
 
 
-def BuildBaseEnvironment():
+def BuildEnvironment():
    "Builds a base environment for other modules to build on."
    global optimize, profile
 
-   CXX = WhereIs('g++3') or 'g++'
-   LINK = CXX
-   CXXFLAGS = ['-Wall', '-Wno-non-virtual-dtor']
-   LINKFLAGS = []
+   env = Environment(ENV=os.environ)
+
+   if env['CXX'] == 'g++':
+      env.Append(CXXFLAGS=['-Wall', '-Wno-non-virtual-dtor'])
+
+   if env['CXX'] == 'CC':    # test for non-gcc IRIX
+      env.Append(CPPPATH=['third-party-sgi/include'],
+                 LIBPATH=['third-party-sgi/lib32'])
 
    if optimize:
-      CXXFLAGS.extend(['-DNDEBUG', '-O2'])
+      env.Append(CXXFLAGS=['-DNDEBUG', '-O2'])
    else:
-      CXXFLAGS.extend(['-DDEBUG', '-g'])
+      env.Append(CXXFLAGS=['-DDEBUG', '-g'])
 
    if profile:
-      CXXFLAGS.extend(['-pg'])
-      LINKFLAGS.extend(['-pg'])
-
-   env = Environment(
-      ENV = os.environ,
-      CXX = CXX,
-      LINK = LINK,
-      CXXFLAGS = CXXFLAGS,
-      LINKFLAGS = LINKFLAGS,
-   )
+      env.Append(CXXFLAGS=['-pg'],
+                 LINKFLAGS=['-pg'])
 
    return env
-
-
-def BuildIRIXEnvironment():
-   "Builds an environment for IRIX that other modules can build on."
-   return Environment(ENV = os.environ,
-                      CPPPATH = [Dir('third-party-sgi/include')],
-                      LIBPATH = [Dir('third-party-sgi/lib32')])
 
 
 def ParseConfig(env, command, options):
@@ -98,50 +81,27 @@ def SetupCppUnit(env):
 
 def SetupOpenGL(env):
    "Sets up the given environment to be able to build with OpenGL"
-   # CYGWIN
-   if sys.platform == 'cygwin':
-       OPENGL_LIBS = ['opengl32', 'glu32']
-
-   # IRIX
-   elif string.find(sys.platform, 'irix') != -1:
-       OPENGL_LIBS = ['GLU', 'GL', 'X11', 'Xmu']
-
-   # GENERIC (LINUX?)
-   else:
-       OPENGL_LIBS = ['GLU', 'GL']
-
-   # Make sure the environment has LIBS defined
-   if not env.Dictionary().has_key('LIBS'):
-      env['LIBS'] = []
-
-   # Add in the OpenGL libs to the environment
-   env['LIBS'].extend(OPENGL_LIBS)
+   if sys.platform == 'cygwin':                      # CYGWIN
+      env.Append(LIBS=['opengl32', 'glu32'])
+   elif string.find(sys.platform, 'irix') != -1:     # IRIX
+      env.Append(LIBS=['GLU', 'GL', 'X11', 'Xmu'])
+   else:                                             # GENERIC (Linux?)
+      env.Append(LIBS=['GLU', 'GL'])
 
 def SetupGLUT(env):
    "Sets up the given environment to be able to build with GLUT"
-   # CYGWIN
-   if sys.platform == 'cygwin':
-       GLUT_LIBS = ['glut32']
-
-   # IRIX
-   elif string.find(sys.platform, 'irix') != -1:
-       GLUT_LIBS = ['glut']
-
-   # GENERIC (LINUX?)
-   else:
-       GLUT_LIBS = ['glut']
-
-   # Make sure the environment has LIBS defined
-   if not env.Dictionary().has_key('LIBS'):
-      env['LIBS'] = []
-
-   # Add in the GLUT libs to the environment
-   env['LIBS'].extend(GLUT_LIBS)
+   if sys.platform == 'cygwin':                      # CYGWIN
+      env.Append(LIBS=['glut32'])
+   elif string.find(sys.platform, 'irix') != -1:     # IRIX
+      env.Append(LIBS=['glut'])
+   else:                                             # GENERIC (LINUX?)
+      env.Append(LIBS=['glut'])
 
 def GetGLTextVersionString():
    import re
    contents = open('src/gltext.cpp', 'r').read()
-   version = re.compile(r'.*return +"(\d+\.\d+\.\d+)".*', re.DOTALL).sub(r'\1', contents)
+   exp = r'.*return +"(\d+\.\d+\.\d+)".*'
+   version = re.compile(exp, re.DOTALL).sub(r'\1', contents)
    return version
 
 
@@ -149,13 +109,9 @@ Export('ParseConfig')
 Export('SetupFreeType SetupCppUnit')
 Export('SetupGLUT SetupOpenGL')
 
-# Create and build the base environment
-if string.find(sys.platform, 'irix') != -1:
-   baseEnv = BuildIRIXEnvironment()
-else:
-   baseEnv = BuildBaseEnvironment()
-
+baseEnv = BuildEnvironment()
 Export('baseEnv')
+
 
 # Create the gltext package
 pkg = Package('gltext', GetGLTextVersionString())
@@ -176,16 +132,11 @@ pkg.addExtraDist(Split("""
    vc7/example_fps/example_fps.vcproj
    vc7/example_simple/example_simple.vcproj
    vc7/example_sizes/example_sizes.vcproj
-   vc7/gltext/gltext.vcproj
-"""))
+   vc7/gltext/gltext.vcproj"""))
 Export('pkg')
 
-subdirs = Split('src test examples')
+SConscript(dirs = Split('src test examples'))
 
-Default('.')
-
-# Recurse
-SConscript(dirs = subdirs)
 
 pkg.build()
 MakeSourceDist(pkg, baseEnv)

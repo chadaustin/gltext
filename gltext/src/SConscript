@@ -1,8 +1,7 @@
 import os
 pj = os.path.join
 
-Import('baseEnv pkg')
-Import('SetupFreeType SetupOpenGL')
+Import('*')
 
 sources = Split("""
    gltext.cpp
@@ -16,10 +15,7 @@ sources = Split("""
    TextureRenderer.cpp
 """)
 
-# Clone the environment
-env = baseEnv.Copy()
-SetupFreeType(env)
-SetupOpenGL(env)
+env = baseEnv.Copy(tools=[SetupFreeType, SetupOpenGL])
 
 
 lib = pkg.createSharedLibrary('gltext', env)

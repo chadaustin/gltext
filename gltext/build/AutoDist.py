@@ -27,8 +27,8 @@ Automatic distribution builder and packager for SCons.
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: AutoDist.py,v $
-# Date modified: $Date: 2003-03-06 08:24:17 $
-# Version:       $Revision: 1.6 $
+# Date modified: $Date: 2003-08-05 00:36:47 $
+# Version:       $Revision: 1.7 $
 # -----------------------------------------------------------------
 ############################################################## autodist-cpr end
 
@@ -38,7 +38,6 @@ __author__     = 'Ben Scott'
 
 from os import path
 
-import SCons.Defaults
 import SCons.Environment
 import SCons.Node.FS
 
@@ -47,6 +46,7 @@ import SCons.Node.FS
 Action          = SCons.Action.Action
 Builder         = SCons.Builder.Builder
 Environment     = SCons.Environment.Environment
+Dir             = SCons.Node.FS.default_fs.Dir
 File            = SCons.Node.FS.default_fs.File
 
 # The currently defined prefix
@@ -97,19 +97,18 @@ class _Assembly:
       Constructs a new Assembly object with the given name within the given
       environment.
       """
-      self.data = {}
-      self.data['name']          = File(name)
-      self.data['sources']       = []
-      self.data['includes']      = []
-      self.data['libs']          = []
-      self.data['libpaths']      = []
-      self.data['headers']       = []
+      self.name          = File(name)
+      self.sources       = []
+      self.includes      = []
+      self.libs          = []
+      self.libpaths      = []
+      self.headers       = []
 
       # Clone the base environment if we have one
       if baseEnv:
-         self.data['env'] = baseEnv.Copy()
+         self.env = baseEnv.Copy()
       else:
-         self.data['env'] = Environment()
+         self.env = Environment()
 
    def addSources(self, sources):
       """
@@ -119,7 +118,7 @@ class _Assembly:
       # Use File() to figure out the absolute path to the file
       srcs = map(File, sources)
       # Add these sources into the mix
-      self.data['sources'].extend(srcs)
+      self.sources.extend(srcs)
 
    def addHeaders(self, headers, prefix = None):
       """
@@ -128,43 +127,43 @@ class _Assembly:
       in as strings as they are processed through File().
       """
       hdrs = map(lambda n,prefix=prefix: Header(n,prefix), map(File, headers))
-      self.data['headers'].extend(hdrs)
+      self.headers.extend(hdrs)
 
    def addIncludes(self, includes):
       """
       Adds in the given list of include directories that this assembly will use
       while compiling.
       """
-      self.data['includes'].extend(includes)
+      self.includes.extend(includes)
 
    def addLibs(self, libs):
       """
       Adds in the given list of libraries directories that this assembly will
       link with.
       """
-      self.data['libs'].extend(libs)
+      self.libs.extend(libs)
 
    def addLibPaths(self, libpaths):
       """
       Adds in the given list of library directories that this assembly will use
       to find libraries while linking.
       """
-      self.data['libpaths'].extend(libpaths)
+      self.libpaths.extend(libpaths)
 
    def getHeaders(self):
-      return self.data['headers']
+      return self.headers
 
    def getSources(self):
-      return self.data['sources']
+      return self.sources
 
    def build(self):
       """
       Sets up the build and install targets for this assembly.
       """
       # Setup the environment for the build
-      self.data['env'].Append(CPPPATH = self.data['includes'],
-                              LIBPATH = self.data['libpaths'],
-                              LIBS    = self.data['libs'])
+      self.env.Append(CPPPATH = self.includes,
+                      LIBPATH = self.libpaths,
+                      LIBS    = self.libs)
 
       # Now actually do the build
       self._buildImpl()
@@ -177,36 +176,32 @@ class _Library(_Assembly):
    meant to be private.
    """
 
-   def __init__(self, name, baseEnv, builder):
+   def __init__(self, name, baseEnv):
       """
       Creates a new library builder for a library of the given name.
       """
       _Assembly.__init__(self, name, baseEnv)
-      self.data['builder'] = builder
 
    def _buildImpl(self):
       """
       Sets up the build dependencies and the install.
       """
 
-      # Get the function that is used to build the library
-      makeLib = self.data['builder']
-
       # Build rule
-      lib = makeLib(self.data['env'], self.data['name'], self.data['sources'])
+      lib = self._getBuilder()(self.name, self.sources)
 
       # Install the binary
-      self.data['env'].Install(path.join(Prefix(), 'lib'), lib)
+      self.env.Install(path.join(Prefix(), 'lib'), lib)
 
       # Install the headers in the source list
-      for h in self.data['headers']:
+      for h in self.headers:
          prefix = h.getPrefix()
          filename = h.getName()
          target = path.join(Prefix(), 'include')
          # Add on the prefix if this header has one
          if prefix:
             target = path.join(target, prefix)
-         self.data['env'].Install(target, filename)
+         self.env.Install(target, filename)
 
 
 class SharedLibrary(_Library):
@@ -222,8 +217,10 @@ class SharedLibrary(_Library):
       lib_name = path.join(path.dirname(str(name)),
                            baseEnv.subst('${SHLIBPREFIX}') + path.basename(str(name)) + baseEnv.subst('${SHLIBSUFFIX}'))
 
-      _Library.__init__(self, lib_name, baseEnv, SCons.Defaults.SharedLibrary)
+      _Library.__init__(self, lib_name, baseEnv)
 
+   def _getBuilder(self):
+      return self.env.SharedLibrary
 
 class StaticLibrary(_Library):
    """
@@ -238,8 +235,10 @@ class StaticLibrary(_Library):
       lib_name = path.join(path.dirname(str(name)),
                            baseEnv.subst('${LIBPREFIX}') + path.basename(str(name)) + baseEnv.subst('${LIBSUFFIX}'))
 
-      _Library.__init__(self, lib_name, baseEnv, SCons.Defaults.StaticLibrary)
+      _Library.__init__(self, lib_name, baseEnv)
 
+   def _getBuilder(self):
+      return self.env.Library
 
 class Program(_Assembly):
    """
@@ -260,12 +259,12 @@ class Program(_Assembly):
       Sets up the build dependencies and the install.
       """
       # Build rule
-      prog = self.data['env'].Program(
-         self.data['name'],
-         source = self.data['sources'])
+      prog = self.env.Program(
+         self.name,
+         source = self.sources)
 
       # Install the binary
-      self.data['env'].Install(path.join(Prefix(), 'bin'), prog)
+      self.env.Install(path.join(Prefix(), 'bin'), prog)
 
 
 class Package:
@@ -280,18 +279,16 @@ class Package:
       Creates a new package with the given name and version, where version is in
       the form of <major>.<minor>.<patch> (e.g 1.12.0)
       """
-      self.data = {
-         'name'         : name,
-         'assemblies'   : [],
-         'extra_dist'   : [],
-      }
+      self.name = name
+      self.assemblies = []
+      self.extra_dist = []
 
       # Extract the version parameters
       import re
       re_matches = re.match(r'^(\d+)\.(\d+)\.(\d+)$', version)
-      self.data['version_major'] = int(re_matches.group(1))
-      self.data['version_minor'] = int(re_matches.group(2))
-      self.data['version_patch'] = int(re_matches.group(3))
+      self.version_major = int(re_matches.group(1))
+      self.version_minor = int(re_matches.group(2))
+      self.version_patch = int(re_matches.group(3))
 
    def createSharedLibrary(self, name, baseEnv = None):
       """
@@ -299,7 +296,7 @@ class Package:
       The library will be built within the given environment.
       """
       lib = SharedLibrary(name, baseEnv)
-      self.data['assemblies'].extend([lib])
+      self.assemblies.append(lib)
       return lib
 
    def createStaticLibrary(self, name, baseEnv = None):
@@ -308,7 +305,7 @@ class Package:
       The library will be built within the given environment.
       """
       lib = StaticLibrary(name, baseEnv)
-      self.data['assemblies'].extend([lib])
+      self.assemblies.append(lib )
       return lib
 
    def createProgram(self, name, baseEnv = None):
@@ -317,32 +314,32 @@ class Package:
       package. The program will be built within the given environment.
       """
       prog = Program(name, baseEnv)
-      self.data['assemblies'].extend([prog])
+      self.assemblies.append(prog )
       return prog
 
    def addExtraDist(self, files):
       """
       Adds in the given files to the distribution of this package.
       """
-      self.data['extra_dist'].extend(files)
+      self.extra_dist.extend(files)
 
    def getName(self):
-      return self.data['name']
+      return self.name
 
    def getVersionMajor(self):
-      return self.data['version_major']
+      return self.version_major
 
    def getVersionMinor(self):
-      return self.data['version_minor']
+      return self.version_minor
 
    def getVersionPatch(self):
-      return self.data['version_patch']
+      return self.version_patch
 
    def getAssemblies(self):
-      return self.data['assemblies']
+      return self.assemblies
 
    def getExtraDist(self):
-      return self.data['extra_dist']
+      return self.extra_dist
 
    def build(self):
       """
@@ -421,7 +418,7 @@ def _CreateSourceTarGzBuilder(env):
 
       # Make the tar.gz
       targz = Action('tar cf - -C '+temp_dir+' $SOURCES | gzip -f > $TARGET')
-      targz(target, [dist_name], env)
+      targz(target, [Dir(dist_name)], env)
 
       # Remove the temporary directory
       shutil.rmtree(temp_dir)
