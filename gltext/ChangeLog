@@ -1,5 +1,8 @@
 DATE       AUTHOR       CHANGE
 ---------- -----------  -------------------------------------------------------
+2003-02-25 aegis        When rendering a \n, the FontRenderer now drops down
+                        to the next line, rather than trying to draw the glyph
+                        for \n.
 2003-02-13 aegis        Fixed the texture renderer to actually use alpha
                         blending and added an alpha example.
 2003-02-13 aegis        OpenFont takes an optional dpi argument now.

@@ -22,20 +22,21 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: simple.cpp,v $
- * Date modified: $Date: 2003-02-23 09:58:57 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-02-26 00:57:16 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
+#include <iostream>
 #include <GL/glut.h>
 #include <gltext.h>
-#include <iostream>
+using namespace gltext;
 
 int gContext = 0;
-gltext::FontPtr font;
-gltext::FontRendererPtr btmRenderer;
-gltext::FontRendererPtr pxmRenderer;
-gltext::FontRendererPtr texRenderer;
+FontPtr font;
+FontRendererPtr btmRenderer;
+FontRendererPtr pxmRenderer;
+FontRendererPtr texRenderer;
 
 void idle()
 {
@@ -55,19 +56,23 @@ void display()
 
    glColor4f(1, 0, 0, 1);
 
-   glPushMatrix();
+   std::string text = "hello ...\n... world!";
+   int size = font->getSize();
+
    glTranslatef(100, 100, 0);
-   gltext::FontStream(btmRenderer).get() << "hello world (btm) AVWAW." << 10;
-   glPopMatrix();
 
    glPushMatrix();
-   glTranslatef(100, 200, 0);
-   gltext::FontStream(pxmRenderer).get() << "hello world (pxm) AVWAW." << 10;
+     FontStream(btmRenderer).get() << text << " (bitmap) " << size;
+     glTranslatef(0, 100, 0);
+     FontStream(pxmRenderer).get() << text << " (pixmap) " << size;
+     glTranslatef(0, 100, 0);
+     FontStream(texRenderer).get() << text << " (texture) " << size;
    glPopMatrix();
+
+   glTranslatef(100, 200, 0);
 
    glPushMatrix();
    glTranslatef(100, 300, 0);
-   gltext::FontStream(texRenderer).get() << "hello world (tex) AVWAW." << 10;
    glPopMatrix();
 
    glutSwapBuffers();
@@ -103,28 +108,28 @@ main(int argc, char** argv)
    glutReshapeFunc(reshape);
    glutKeyboardFunc(keydown);
 
-   font = gltext::OpenFont("../arial.ttf", 26);
+   font = OpenFont("../arial.ttf", 26);
    if (! font)
    {
       std::cerr<<"Couldn't create font!"<<std::endl;
       return 1;
    }
 
-   btmRenderer = gltext::CreateRenderer(gltext::BITMAP, font.get());
+   btmRenderer = CreateRenderer(BITMAP, font.get());
    if (! btmRenderer)
    {
       std::cerr<<"Couldn't create bitmap font renderer!"<<std::endl;
       return 1;
    }
 
-   pxmRenderer = gltext::CreateRenderer(gltext::PIXMAP, font.get());
+   pxmRenderer = CreateRenderer(PIXMAP, font.get());
    if (! pxmRenderer)
    {
       std::cerr<<"Couldn't create pixmap font renderer!"<<std::endl;
       return 1;
    }
 
-   texRenderer = gltext::CreateRenderer(gltext::TEXTURE, font.get());
+   texRenderer = CreateRenderer(TEXTURE, font.get());
    if (! texRenderer)
    {
       std::cerr<<"Couldn't create texture font renderer!"<<std::endl;

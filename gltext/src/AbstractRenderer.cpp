@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AbstractRenderer.cpp,v $
- * Date modified: $Date: 2003-02-03 19:40:40 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2003-02-26 00:57:16 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -39,11 +39,24 @@ namespace gltext
 
    void AbstractRenderer::render(const char* text)
    {
+      const int ascent = mFont->getAscent();
+      const int descent = mFont->getDescent();
+      const int height = ascent + descent + mFont->getLineGap();
+
       int penX = 0;
+      int penY = 0;
 
       // Run through each char and generate a glyph to draw
       for (const char* itr = text; *itr; ++itr)
       {
+         // newline?
+         if (*itr == '\n')
+         {
+            penX = 0;
+            penY += height;
+            continue;
+         }
+
          // Get the glyph for the current character
          Glyph* fontGlyph = mFont->getGlyph(*itr);
          if (!fontGlyph)
@@ -66,7 +79,7 @@ namespace gltext
          }
 
          // Now tell the glyph to render itself.
-         drawGlyph->render(penX, 0);
+         drawGlyph->render(penX, penY);
          penX += fontGlyph->getAdvance();
       }
    }
