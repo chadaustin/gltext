@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: sizes.cpp,v $
- * Date modified: $Date: 2003-03-10 09:37:04 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-03-11 23:00:47 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -31,9 +31,6 @@
 #include <assert.h>
 #include <GL/glut.h>
 #include <gltext.h>
-
-
-gltext::FontRendererPtr renderer;
 
 
 void display()
@@ -54,7 +51,7 @@ void display()
          exit(1);
       }
       
-      gltext::FontRendererPtr renderer(gltext::CreateRenderer(gltext::TEXTURE, font.get()));
+      gltext::FontRendererPtr renderer(gltext::CreateRenderer(gltext::TEXTURE, font));
       if (! renderer)
       {
          std::cerr << "Can't create renderer" << std::endl;
@@ -64,7 +61,7 @@ void display()
       glPushMatrix();
       y += font->getAscent();
       glTranslatef(5, y, 0);
-      gltext::FontStream(renderer).get() << "The quick, brown fox jumped over the lazy dog.";
+      renderer->render("The quick, brown fox jumped over the lazy dog.");
       glPopMatrix();
 
       y += (font->getDescent() + font->getLineGap());

@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.h,v $
- * Date modified: $Date: 2003-03-10 09:37:06 $
- * Version:       $Revision: 1.20 $
+ * Date modified: $Date: 2003-03-11 23:00:49 $
+ * Version:       $Revision: 1.21 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -487,9 +487,10 @@ namespace gltext
     * @param type    the type of renderer to create.
     * @param font    the font to render
     */
-   inline FontRenderer* CreateRenderer(FontRendererType type, Font* font)
+   inline FontRenderer* CreateRenderer(FontRendererType type,
+                                       const FontPtr& font)
    {
-      return internal::GLTextCreateRenderer(type, font);
+      return internal::GLTextCreateRenderer(type, font.get());
    }
 }
 

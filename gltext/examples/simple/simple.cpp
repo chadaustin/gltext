@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: simple.cpp,v $
- * Date modified: $Date: 2003-03-11 02:57:08 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2003-03-11 23:00:45 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -37,7 +37,7 @@ FontRendererPtr pxmRenderer;
 FontRendererPtr texRenderer;
 
 
-void drawText(FontRenderer* renderer, std::string text)
+void drawText(const FontRendererPtr& renderer, std::string text)
 {
    text += " Hello...\n...World!  ";
    const int size   = renderer->getFont()->getSize();
@@ -62,11 +62,11 @@ void display()
    typedef FontStream FS;
 
    glPushMatrix();
-   drawText(btmRenderer.get(), "(bitmap) ");
+   drawText(btmRenderer, "(bitmap) ");
    glTranslatef(0, 100, 0);
-   drawText(pxmRenderer.get(), "(pixmap) ");
+   drawText(pxmRenderer, "(pixmap) ");
    glTranslatef(0, 100, 0);
-   drawText(texRenderer.get(), "(texture)");
+   drawText(texRenderer, "(texture)");
    glPopMatrix();
 
    glutSwapBuffers();
@@ -111,21 +111,21 @@ main(int argc, char** argv)
       return 1;
    }
 
-   btmRenderer = CreateRenderer(BITMAP, font.get());
+   btmRenderer = CreateRenderer(BITMAP, font);
    if (! btmRenderer)
    {
       std::cerr<<"Couldn't create bitmap font renderer!"<<std::endl;
       return 1;
    }
 
-   pxmRenderer = CreateRenderer(PIXMAP, font.get());
+   pxmRenderer = CreateRenderer(PIXMAP, font);
    if (! pxmRenderer)
    {
       std::cerr<<"Couldn't create pixmap font renderer!"<<std::endl;
       return 1;
    }
 
-   texRenderer = CreateRenderer(TEXTURE, font.get());
+   texRenderer = CreateRenderer(TEXTURE, font);
    if (! texRenderer)
    {
       std::cerr<<"Couldn't create texture font renderer!"<<std::endl;

@@ -2,7 +2,7 @@ Import('baseEnv pkg')
 Import('SetupFreeType SetupCppUnit')
 
 try:
-    sources = Split("""main.cpp FTFontTest.cpp""")
+    sources = Split('main.cpp FTFontTest.cpp')
 
     # Clone the environment
     env = baseEnv.Copy()
@@ -14,7 +14,6 @@ try:
 
     prog = pkg.createProgram('runtests', env)
     prog.addSources(sources)
-except RuntimeError, e:
-    print e
+except Exception, e:
     print "No cppunit found, not building tests"
     pass

@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: alpha.cpp,v $
- * Date modified: $Date: 2003-03-11 02:57:07 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-03-11 23:00:43 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -110,21 +110,21 @@ main(int argc, char** argv)
       return 1;
    }
 
-   btmRenderer = gltext::CreateRenderer(gltext::BITMAP, font.get());
+   btmRenderer = gltext::CreateRenderer(gltext::BITMAP, font);
    if (! btmRenderer)
    {
       std::cerr<<"Couldn't create bitmap font renderer!"<<std::endl;
       return 1;
    }
 
-   pxmRenderer = gltext::CreateRenderer(gltext::PIXMAP, font.get());
+   pxmRenderer = gltext::CreateRenderer(gltext::PIXMAP, font);
    if (! pxmRenderer)
    {
       std::cerr<<"Couldn't create pixmap font renderer!"<<std::endl;
       return 1;
    }
 
-   texRenderer = gltext::CreateRenderer(gltext::TEXTURE, font.get());
+   texRenderer = gltext::CreateRenderer(gltext::TEXTURE, font);
    if (! texRenderer)
    {
       std::cerr<<"Couldn't create texture font renderer!"<<std::endl;

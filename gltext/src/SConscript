@@ -28,4 +28,4 @@ lib.addHeaders(['gltext.h'])
 
 lib = pkg.createStaticLibrary('gltext', env)
 lib.addSources(sources)
-lib.addHeaders(['headers'])
+lib.addHeaders(['gltext.h'])

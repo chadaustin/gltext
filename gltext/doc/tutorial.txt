@@ -21,7 +21,7 @@ font it should render. If the creation fails, CreateRenderer will
 return NULL.
 
    gltext::RendererPtr myRenderer(gltext::CreateRenderer(
-      gltext::PIXMAP, myFont.get());
+      gltext::PIXMAP, myFont));
 
 4.
 Tell the renderer which font you want to use when it draws your text to the
