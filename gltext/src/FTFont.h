@@ -22,90 +22,87 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: FTFont.h,v $
- * Date modified: $Date: 2002-12-20 10:24:18 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-02-03 19:40:41 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
 #ifndef GLTEXT_FTFONT_H
 #define GLTEXT_FTFONT_H
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
 #include "gltext.h"
-#include <stdexcept>
-#include <map>
-#include "FTGlyph.h"
 
 namespace gltext
 {
+   class FTGlyph;
+
    /**
     * FreeType 2 implementation of the Font interface.
     */
-   class FTFont : public RefImpl< Font >
+   class FTFont : public RefImpl<Font>
    {
    public:
-      /**
-       * Creates a new FreeType font with the given face name, style and point
-       * size.
-       */
-      FTFont(const char* name, FontStyle style, int size)
-         throw (std::runtime_error);
+      /// Creates a new FreeType font with the given face name and
+      /// point size.
+      static FTFont* create(const char* name, int size);
+
+      FTFont(const char* name, int size, FT_Library library, FT_Face face);
 
       /**
        * Destroys the font, freeing the owned FreeType face struct.
        */
-      virtual ~FTFont();
+      ~FTFont();
 
       /// Gets the name of this font.
-      const char* getName() const;
-
-      /// Gets the style of this font.
-      FontStyle getStyle() const;
+      const char* GLTEXT_CALL getName();
 
       /// Gets the point size of this font.
-      int getSize() const;
+      int GLTEXT_CALL getSize();
 
       /**
        * Gets the ascent of this font. This is the distance from the baseline to
        * the top of the tallest glyph of this font.
        */
-      int getAscent() const;
+      int GLTEXT_CALL getAscent();
 
       /**
        * Gets the descent of this font. This is the distance from the baseline
        * to the bottom of the the glyph that descends the most from the
        * baseline.
        */
-      int getDescent() const;
+      int GLTEXT_CALL getDescent();
 
       /**
        * Gets the distance that must be placed between two lines of text. Thus
        * the baseline to baseline distance can be computed as
-       * ascent + descent + linegap.
+       * ascent - descent + linegap.
        */
-      int getLineGap() const;
+      int GLTEXT_CALL getLineGap();
 
       /**
        * Gets the FT2 glyph for the given character. Returns NULL if this font
        * does not support the character requested.
        */
-      const FTGlyph* getGlyph(char c);
+      Glyph* GLTEXT_CALL getGlyph(unsigned char c);
 
    private:
       /// The name of this font.
       std::string mName;
 
-      /// The style for this font.
-      FontStyle mStyle;
-
       /// The point size for this font.
       int mSize;
+
+      /// The FreeType 2 library handle.
+      FT_Library mLibrary;
 
       /// The FreeType 2 face handle.
       FT_Face mFace;
 
-      typedef std::map<char, FTGlyph*> GlyphMap;
-      /// Map of characters to FTGlyphs.
-      GlyphMap mGlyphMap;
+      /// Map of characters to FTGlyphs.  This should be replaced with
+      /// a std::map when we need characters larger than 8 bits.
+      FTGlyph* mGlyphMap[256];
    };
 }
 

@@ -22,68 +22,53 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: FTGlyph.h,v $
- * Date modified: $Date: 2002-06-16 05:13:57 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-02-03 19:40:41 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
 #ifndef GLTEXT_FTGLYPH_H
 #define GLTEXT_FTGLYPH_H
 
-#include <stdexcept>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
+#include "FTFont.h"
 
 namespace gltext
 {
    /**
     * C++ wrapper for a FreeType2 glyph handle.
     */
-   class FTGlyph
+   class FTGlyph : public RefImpl<Glyph>
    {
    public:
-      /**
-       * Creates a new glyph from the given font face for the given character.
-       */
-      FTGlyph(FT_Face face, char c)
-         throw(std::runtime_error);
+      /// Creates a new glyph from the given font face for the given
+      /// character.
+      static FTGlyph* create(FT_Face face, char c);
+
+      FTGlyph(int width, int height, int offx, int offy,
+              int advance, u8* pixmap, u8* bitmap);
 
       /// Release the FT2 resources.
       ~FTGlyph();
 
-      /**
-       * Gets the width of this glyph.
-       */
-      int getWidth() const;
-
-      /**
-       * Gets the height of this glyph.
-       */
-      int getHeight() const;
-      
-      /**
-       * Gets the advance width of this glyph.
-       */
-      int getAdvance() const;
-
-      /**
-       * Gets the glyph handle for this glyph.
-       */
-      FT_Glyph getGlyph() const;
+      int  GLTEXT_CALL getWidth();
+      int  GLTEXT_CALL getHeight();
+      int  GLTEXT_CALL getXOffset();
+      int  GLTEXT_CALL getYOffset();
+      int  GLTEXT_CALL getAdvance();
+      void GLTEXT_CALL render(u8* pixels);
+      void GLTEXT_CALL renderBitmap(u8* pixels);
 
    private:
-      /// The FT2 glyph handle
-      FT_Glyph mGlyph;
-
-      /// The height of this glyph
       int mWidth;
-
-      /// The width of this glyph
       int mHeight;
-
-      /// Cache of the advance width of this glyph
+      int mXOffset;
+      int mYOffset;
       int mAdvance;
+      u8* mPixmap;
+      u8* mBitmap;
    };
 }
 

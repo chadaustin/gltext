@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GLPixelGlyph.h,v $
- * Date modified: $Date: 2002-06-16 05:13:57 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-02-03 19:40:41 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -45,7 +45,7 @@ namespace gltext
        * Creates a new OpenGL ready glyph with the given data. This glyph will
        * take ownership of the data memory.
        */
-      GLPixelGlyph(int posX, int posY, int width, int height, float* data);
+      GLPixelGlyph(int offX, int offY, int width, int height, u8* data);
 
       /**
        * Frees memory used by this glyph.
@@ -58,11 +58,11 @@ namespace gltext
       void render(int penX, int penY) const;
 
    private:
-      int mPosX;
-      int mPosY;
+      int mOffsetX;
+      int mOffsetY;
       int mWidth;
       int mHeight;
-      float* mData;
+      u8* mData;
    };
 }
 

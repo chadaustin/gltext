@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AbstractRenderer.h,v $
- * Date modified: $Date: 2002-12-23 22:21:58 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-02-03 19:40:41 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -32,33 +32,32 @@
 
 #include "gltext.h"
 #include "FTFont.h"
-#include "GLGlyph.h"
+#include "GlyphCache.h"
 
 namespace gltext
 {
-   class AbstractRenderer : public RefImpl< FontRenderer >
+   class GLGlyph;
+
+   class AbstractRenderer : public RefImpl<FontRenderer>
    {
    protected:
-      AbstractRenderer();
-      virtual ~AbstractRenderer();
+      AbstractRenderer(Font* f);
 
    public:
-      void render(const char* text);
-      FontStream& getStream();
-      int getWidth(const char* text);
-      void setFont(Font* font);
-      Font* getFont() const;
+      void GLTEXT_CALL render(const char* text);
+      int GLTEXT_CALL getWidth(const char* text);
 
    protected:
       /**
        * Makes a rendered glyph ready for OpenGL based on the given FreeType2
        * glyph.
        */
-      virtual GLGlyph* makeGlyph(const FTGlyph* glyph) = 0;
+      virtual GLGlyph* makeGlyph(Glyph* glyph) = 0;
 
    protected:
-      FTFont* mFont;
-      FontStreamPtr mStream;
+      Font* mFont;
+
+      GlyphCache mCache;
    };
 }
 

@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: BitmapRenderer.h,v $
- * Date modified: $Date: 2002-06-16 05:13:57 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-02-03 19:40:41 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -35,23 +35,20 @@
 namespace gltext
 {
    /**
-    * Renders fonts aliased with 1 level of the current OpenGL color. Pixels are
-    * either on or off.
+    * Renders fonts aliased with 1 level of the current OpenGL
+    * color. Pixels are either on or off.
     */
    class BitmapRenderer : public AbstractRenderer
    {
    public:
-      /**
-       * Creates a new renderer without a font to render with.
-       */
-      BitmapRenderer();
-      virtual ~BitmapRenderer();
+      static BitmapRenderer* create(Font* font);
+      BitmapRenderer(Font* font);
 
    protected:
       /**
        * Creates a GLGlyph specialized for this type of renderer.
        */
-      GLGlyph* makeGlyph(const FTGlyph* glyph);
+      GLGlyph* makeGlyph(Glyph* glyph);
    };
 }
 

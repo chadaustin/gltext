@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GLTextureGlyph.h,v $
- * Date modified: $Date: 2002-12-20 10:24:18 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-02-03 19:40:41 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -31,12 +31,7 @@
 #define GLTEXT_GLTEXTUREGLYPH_H
 
 #include "GLGlyph.h"
-
-// Sigh ... I hate windows
-#ifdef WIN32
-#  include <windows.h>
-#endif
-#include <GL/gl.h>
+#include "OpenGL.h"
 
 namespace gltext
 {
@@ -51,7 +46,7 @@ namespace gltext
        * Creates a new OpenGL ready glyph with the given data. This glyph will
        * take ownership of the data memory.
        */
-      GLTextureGlyph(int posX, int posY, int width, int height, unsigned int* data);
+      GLTextureGlyph(int offx, int offy, int width, int height, u8* data);
 
       /**
        * Frees memory used by this glyph.
@@ -64,8 +59,8 @@ namespace gltext
       void render(int penX, int penY) const;
 
    private:
-      int mPosX;
-      int mPosY;
+      int mOffsetX;
+      int mOffsetY;
       int mWidth;
       int mHeight;
       int mTexWidth;

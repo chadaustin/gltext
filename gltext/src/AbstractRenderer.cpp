@@ -22,76 +22,57 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AbstractRenderer.cpp,v $
- * Date modified: $Date: 2002-12-23 22:21:58 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-02-03 19:40:40 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
 #include <iostream>
 #include "AbstractRenderer.h"
-#include "FontStreamImpl.h"
-#include "GlyphCache.h"
 
 namespace gltext
 {
-   AbstractRenderer::AbstractRenderer()
-      : mFont(0)
+   AbstractRenderer::AbstractRenderer(Font* font)
+      : mFont(font)
    {
-      mStream = new FontStreamImpl(this);
    }
-
-   AbstractRenderer::~AbstractRenderer()
-   {}
 
    void AbstractRenderer::render(const char* text)
    {
-      // Fail silently if we don't have a current font
-      if (! mFont)
-      {
-         std::cerr<<"This renderer doesn't have a current font."<<std::endl;
-         return;
-      }
-
-      GlyphCache cache;
       int penX = 0;
 
       // Run through each char and generate a glyph to draw
-      for (const char* itr = text; *itr != 0; ++itr)
+      for (const char* itr = text; *itr; ++itr)
       {
          // Get the glyph for the current character
-         const FTGlyph* fontGlyph = mFont->getGlyph(*itr);
-         if (fontGlyph)
+         Glyph* fontGlyph = mFont->getGlyph(*itr);
+         if (!fontGlyph)
          {
-            // Check the cache first
-            const GLGlyph* drawGlyph = cache.get(fontGlyph);
-            if (! drawGlyph)
-            {
-               // Cache miss. Ask this renderer to create a new one
-               GLGlyph* newGlyph = makeGlyph(fontGlyph);
-               if (! newGlyph)
-               {
-                  // AAACK! Couldn't create the glyph. Fail silently.
-                  continue;
-               }
-               cache.put(fontGlyph, newGlyph);
-               drawGlyph = newGlyph;
-            }
-
-            // Now tell the glyph to render itself.
-            drawGlyph->render(penX, 0);
-            penX += fontGlyph->getAdvance();
+            continue;
          }
-      }
-   }
 
-   FontStream& AbstractRenderer::getStream()
-   {
-      return *mStream;
+         // Check the cache first
+         GLGlyph* drawGlyph = mCache.get(fontGlyph);
+         if (!drawGlyph)
+         {
+            // Cache miss. Ask this renderer to create a new one
+            drawGlyph = makeGlyph(fontGlyph);
+            if (!drawGlyph)
+            {
+               // AAACK! Couldn't create the glyph. Fail silently.
+               continue;
+            }
+            mCache.put(fontGlyph, drawGlyph);
+         }
+
+         // Now tell the glyph to render itself.
+         drawGlyph->render(penX, 0);
+         penX += fontGlyph->getAdvance();
+      }
    }
 
    int AbstractRenderer::getWidth(const char* text)
    {
-      // Fail if we were given null text
       if (! text)
       {
          return 0;
@@ -103,7 +84,7 @@ namespace gltext
       for (const char* itr = text; *itr != 0; ++itr)
       {
          // Get the glyph for the current character
-         const FTGlyph* fontGlyph = mFont->getGlyph(*itr);
+         Glyph* fontGlyph = mFont->getGlyph(*itr);
          if (fontGlyph)
          {
             // Add this glyph's advance
@@ -112,15 +93,5 @@ namespace gltext
       }
 
       return width;
-   }
-
-   void AbstractRenderer::setFont(Font* font)
-   {
-      mFont = (FTFont*)font;
-   }
-
-   Font* AbstractRenderer::getFont() const
-   {
-      return mFont;
    }
 }

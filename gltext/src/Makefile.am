@@ -13,20 +13,16 @@ libgltext_la_SOURCES = \
 	FTFont.h \
 	FTGlyph.cpp \
 	FTGlyph.h \
-	FTLibrary.cpp \
-	FTLibrary.h \
-   FontStreamImpl.cpp \
-   FontStreamImpl.h \
 	GLGlyph.h \
 	GLPixelGlyph.cpp \
 	GLPixelGlyph.h \
-   GLTextureGlyph.cpp \
-   GLTextureGlyph.h \
+	GLTextureGlyph.cpp \
+	GLTextureGlyph.h \
 	GlyphCache.h \
 	PixmapRenderer.cpp \
 	PixmapRenderer.h \
-   TextureRenderer.cpp \
-   TextureRenderer.h
+	TextureRenderer.cpp \
+	TextureRenderer.h
 
 libgltext_la_LDFLAGS = \
 	-release $(VERSION)

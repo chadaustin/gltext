@@ -21,19 +21,21 @@
  * Boston, MA 02111-1307, USA.
  *
  * -----------------------------------------------------------------
- * File:          $RCSfile: main.cpp,v $
- * Date modified: $Date: 2002-12-23 22:21:58 $
- * Version:       $Revision: 1.7 $
+ * File:          $RCSfile: simple.cpp,v $
+ * Date modified: $Date: 2003-02-03 19:40:40 $
+ * Version:       $Revision: 1.1 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
 #include <GL/glut.h>
 #include <gltext.h>
-#include <assert.h>
 #include <iostream>
 
 int gContext = 0;
-gltext::FontRendererPtr renderer;
+gltext::FontPtr font;
+gltext::FontRendererPtr btmRenderer;
+gltext::FontRendererPtr pxmRenderer;
+gltext::FontRendererPtr texRenderer;
 
 void idle()
 {
@@ -49,23 +51,24 @@ void display()
    glClearColor(0,0,0,1);
    glClear(GL_COLOR_BUFFER_BIT);
    glMatrixMode(GL_MODELVIEW);
-      glLoadIdentity();
+   glLoadIdentity();
 
-   glColor4f(0,0,1,1);
-   int size = 4;
-   for (int y=0; y<640; )
-   {
-      gltext::FontPtr font(gltext::CreateFont("../arial.ttf", gltext::PLAIN, size));
-      renderer->setFont(font.get());
-      glPushMatrix();
-      y += font->getAscent();
-      glTranslatef(5, y, 0);
-      renderer->getStream() << "The quick, brown fox jumped over the lazy dog." << gltext::flush;
-      glPopMatrix();
+   glColor4f(1,0,0,1);
 
-      y += (font->getDescent() + font->getLineGap());
-      size += 2;
-   }
+   glPushMatrix();
+   glTranslatef(100, 100, 0);
+   gltext::FontStream(btmRenderer).get() << "hello world (btm) AVWAW." << 10;
+   glPopMatrix();
+
+   glPushMatrix();
+   glTranslatef(100, 200, 0);
+   gltext::FontStream(pxmRenderer).get() << "hello world (pxm) AVWAW." << 10;
+   glPopMatrix();
+
+   glPushMatrix();
+   glTranslatef(100, 300, 0);
+   gltext::FontStream(texRenderer).get() << "hello world (tex) AVWAW." << 10;
+   glPopMatrix();
 
    glutSwapBuffers();
 }
@@ -74,8 +77,8 @@ void reshape(int width, int height)
 {
    glViewport(0, 0, width, height);
    glMatrixMode(GL_PROJECTION);
-      glLoadIdentity();
-      gluOrtho2D(0, width, height, 0);
+   glLoadIdentity();
+   gluOrtho2D(0, width, height, 0);
 }
 
 void keydown(unsigned char key, int x, int y)
@@ -93,7 +96,7 @@ main(int argc, char** argv)
    glutInitWindowPosition(50, 50);
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
-   gContext = glutCreateWindow("Sizes Example");
+   gContext = glutCreateWindow("Simple Example");
 
    glutDisplayFunc(display);
    glutIdleFunc(idle);
@@ -103,10 +106,31 @@ main(int argc, char** argv)
    glEnable(GL_BLEND);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-   renderer = gltext::CreateRenderer(gltext::PIXMAP);
-   if (! renderer)
+   font = gltext::CreateFont("../arial.ttf", 26);
+   if (! font)
    {
-      std::cerr<<"Couldn't create font renderer!"<<std::endl;
+      std::cerr<<"Couldn't create font!"<<std::endl;
+      return 1;
+   }
+
+   btmRenderer = gltext::CreateRenderer(gltext::BITMAP, font.get());
+   if (! btmRenderer)
+   {
+      std::cerr<<"Couldn't create bitmap font renderer!"<<std::endl;
+      return 1;
+   }
+
+   pxmRenderer = gltext::CreateRenderer(gltext::PIXMAP, font.get());
+   if (! pxmRenderer)
+   {
+      std::cerr<<"Couldn't create pixmap font renderer!"<<std::endl;
+      return 1;
+   }
+
+   texRenderer = gltext::CreateRenderer(gltext::TEXTURE, font.get());
+   if (! texRenderer)
+   {
+      std::cerr<<"Couldn't create texture font renderer!"<<std::endl;
       return 1;
    }
 

@@ -21,19 +21,19 @@
  * Boston, MA 02111-1307, USA.
  *
  * -----------------------------------------------------------------
- * File:          $RCSfile: main.cpp,v $
- * Date modified: $Date: 2002-12-23 22:21:57 $
- * Version:       $Revision: 1.8 $
+ * File:          $RCSfile: sizes.cpp,v $
+ * Date modified: $Date: 2003-02-03 19:40:40 $
+ * Version:       $Revision: 1.1 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
+#include <iostream>
+#include <assert.h>
 #include <GL/glut.h>
 #include <gltext.h>
-#include <iostream>
 
 int gContext = 0;
-gltext::FontPtr font = 0;
-gltext::FontRendererPtr renderer = 0;
+gltext::FontRendererPtr renderer;
 
 void idle()
 {
@@ -51,10 +51,33 @@ void display()
    glMatrixMode(GL_MODELVIEW);
       glLoadIdentity();
 
-   glColor4f(1,0,0,1);
-   glTranslatef(100, 100, 0);
-   renderer->getStream() << "hello world " << 10 << gltext::flush;
-//   renderer->render("hello world");
+   glColor4f(0,0,1,1);
+   int size = 4;
+   for (int y=0; y<480; )
+   {
+      gltext::FontPtr font(gltext::CreateFont("../arial.ttf", size));
+      if (! font)
+      {
+         std::cerr << "Can't create font" << std::endl;
+         exit(1);
+      }
+      
+      gltext::FontRendererPtr renderer(gltext::CreateRenderer(gltext::PIXMAP, font.get()));
+      if (! renderer)
+      {
+         std::cerr << "Can't create renderer" << std::endl;
+         exit(1);
+      }
+
+      glPushMatrix();
+      y += font->getAscent();
+      glTranslatef(5, y, 0);
+      gltext::FontStream(renderer).get() << "The quick, brown fox jumped over the lazy dog.";
+      glPopMatrix();
+
+      y += (font->getDescent() + font->getLineGap());
+      size += 2;
+   }
 
    glutSwapBuffers();
 }
@@ -82,7 +105,7 @@ main(int argc, char** argv)
    glutInitWindowPosition(50, 50);
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
-   gContext = glutCreateWindow("Simple Example");
+   gContext = glutCreateWindow("Sizes Example");
 
    glutDisplayFunc(display);
    glutIdleFunc(idle);
@@ -91,21 +114,6 @@ main(int argc, char** argv)
 
    glEnable(GL_BLEND);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-   font = gltext::CreateFont("../arial.ttf", gltext::PLAIN, 26);
-   if (! font)
-   {
-      std::cerr<<"Couldn't create font!"<<std::endl;
-      return 1;
-   }
-
-   renderer = gltext::CreateRenderer(gltext::PIXMAP);
-   if (! renderer)
-   {
-      std::cerr<<"Couldn't create font renderer!"<<std::endl;
-      return 1;
-   }
-   renderer->setFont(font.get());
 
    glutMainLoop();
 }

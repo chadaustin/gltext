@@ -22,135 +22,124 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: FTFont.cpp,v $
- * Date modified: $Date: 2002-07-01 01:01:42 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-02-03 19:40:41 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
-#include <iostream>
+#include <algorithm>
 #include "FTFont.h"
-#include "FTLibrary.h"
+#include "FTGlyph.h"
 
 namespace gltext
 {
-   FTFont::FTFont(const char* name, FontStyle style, int size)
-      throw (std::runtime_error)
-      : mName(name), mStyle(style), mSize(size), mFace(0)
+   FTFont* FTFont::create(const char* name, int size)
    {
-      // Get the freetype library handle
-      FT_Library& library = FTLibrary::getInstance().getLibrary();
-      if (! library)
+      FT_Library library;
+      FT_Error error = FT_Init_FreeType(&library);
+      if (error)
       {
-         throw std::runtime_error("Failed to initialized FreeType2");
+         return 0;
       }
 
       // @todo Determine the path to the font using the style somehow.
 
       // Try to open the face
-      FT_Error error;
-      error = FT_New_Face(library,
-                          name,
-                          0,
-                          &mFace);
+      FT_Face face;
+      error = FT_New_Face(library, name, 0, &face);
       if (error)
       {
-         throw std::runtime_error("Failed to open font face");
+         FT_Done_FreeType(library);
+         return 0;
       }
 
       // Set the point size of this font
-      error = FT_Set_Char_Size(mFace,
-                               size*64,   // width in 1/64 of points
+      error = FT_Set_Char_Size(face,
+                               size * 64, // width in 1/64 of points
                                0,         // height same as width
                                72,        // device horiz resolution (dpi)
                                72);       // device vert resolution (dpi)
       if (error)
       {
-         FT_Done_Face(mFace);
-         throw std::runtime_error("Failed to set the size of the font.");
+         FT_Done_FreeType(library);
+         FT_Done_Face(face);
+         return 0;
       }
+
+      return new FTFont(name, size, library, face);
+   }
+
+   FTFont::FTFont(const char* name, int size, FT_Library library, FT_Face face)
+      : mName(name), mSize(size), mLibrary(library), mFace(face)
+   {
+      std::fill(mGlyphMap, mGlyphMap + 256, (FTGlyph*)0);
    }
 
    FTFont::~FTFont()
    {
       // Free all of our cached glyphs
-      GlyphMap::iterator itr;
-      for (itr = mGlyphMap.begin(); itr != mGlyphMap.end(); ++itr)
-      {
-         delete itr->second;
+      for (int i = 0; i < 256; ++i) {
+         delete mGlyphMap[i];
       }
 
-      // Destroy the FreeType 2 Face handle
       if (mFace)
       {
          FT_Done_Face(mFace);
          mFace = 0;
       }
+
+      if (mLibrary)
+      {
+         FT_Done_FreeType(mLibrary);
+         mLibrary = 0;
+      }
    }
 
    const char*
-   FTFont::getName() const
+   FTFont::getName()
    {
       return mName.c_str();
    }
 
-   FontStyle
-   FTFont::getStyle() const
-   {
-      return mStyle;
-   }
-
    int
-   FTFont::getSize() const
+   FTFont::getSize()
    {
       return mSize;
    }
 
    int
-   FTFont::getAscent() const
+   FTFont::getAscent()
    {
       return mFace->size->metrics.ascender >> 6;
    }
 
    int
-   FTFont::getDescent() const
+   FTFont::getDescent()
    {
       // FT2 does descent in negative values. We want positive values.
       return mFace->size->metrics.descender >> 6;
    }
 
    int
-   FTFont::getLineGap() const
+   FTFont::getLineGap()
    {
       return (mFace->size->metrics.height >> 6) - getAscent() - getDescent();
    }
 
-   const FTGlyph*
-   FTFont::getGlyph(char c)
+   Glyph*
+   FTFont::getGlyph(unsigned char c)
    {
-      const FTGlyph* glyph = 0;
-
-      // See if we've already loaded that glyph
-      GlyphMap::const_iterator itr = mGlyphMap.find(c);
-      if (itr != mGlyphMap.end())
+      // Have we already loaded a glyph?
+      if (!mGlyphMap[c])
       {
-         // cache hit
-         glyph = itr->second;
+         mGlyphMap[c] = FTGlyph::create(mFace, c);
       }
-      else
-      {
-         // cache miss
-         try
-         {
-            FTGlyph* newGlyph = new FTGlyph(mFace, c);
-            mGlyphMap[c] = newGlyph;
-            glyph = newGlyph;
-         }
-         catch (std::runtime_error& error)
-         {
-            std::cerr<<"Failed to create glyph: "<<error.what()<<std::endl;
-            glyph = 0;
-         }
-      }
-      return glyph;
+      return mGlyphMap[c];
    }
+
+//   FT_Face
+//   FTFont::getFace()
+//   {
+//      return mFace;
+//   }
 }

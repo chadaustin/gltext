@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GLTextureGlyph.cpp,v $
- * Date modified: $Date: 2002-12-21 02:48:31 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-02-03 19:40:41 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -44,33 +44,20 @@ namespace gltext
       return i;
    }
 
-   GLTextureGlyph::GLTextureGlyph(int posX, int posY,
-                                  int width, int height, unsigned int* data)
-      : mPosX(posX), mPosY(posY), mWidth(width), mHeight(height)
+   GLTextureGlyph::GLTextureGlyph(int offx, int offy,
+                                  int width, int height, u8* data)
+      : mOffsetX(offx), mOffsetY(offy), mWidth(width), mHeight(height)
    {
       // Make a texture sized at a power of 2
       mTexWidth = nextPowerOf2(mWidth);
       mTexHeight = nextPowerOf2(mHeight);
-      unsigned int* pixels = new unsigned int[mTexWidth * mTexHeight];
-      memset(pixels, 0, mTexWidth * mTexHeight * sizeof(unsigned int));
+      u8* pixels = new u8[mTexWidth * mTexHeight];
+      memset(pixels, 0, mTexWidth * mTexHeight);
 
       for (int row = 0; row < mHeight; ++row)
       {
-         memcpy(pixels + mTexWidth * row,
-                data + mWidth * row,
-                mWidth * sizeof(unsigned int));
+         memcpy(pixels + mTexWidth * row, data + mWidth * row, mWidth);
       }
-
-      std::cout<<"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"<<std::endl;
-      for (int y=0; y<mTexHeight; ++y)
-      {
-         for (int x=0; x<mTexWidth; ++x)
-         {
-            std::cout<<std::setfill('0')<<std::setw(8)<<std::hex<<pixels[y*mTexWidth+x]<<std::dec<<","<<std::flush;
-         }
-         std::cout<<std::endl;
-      }
-      std::cout<<"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"<<std::endl;
 
       // Get a unique texture name for our new texture
       glGenTextures(1, &mTexName);
@@ -80,14 +67,13 @@ namespace gltext
       glTexImage2D(
             GL_TEXTURE_2D,
             0,
-            GL_RGBA8,
-            mWidth,
-            mHeight,
+            1,
+            mTexWidth,
+            mTexHeight,
             0,
-            GL_RGBA,
-            GL_UNSIGNED_INT,
-            pixels
-      );
+            GL_LUMINANCE,
+            GL_UNSIGNED_BYTE,
+            pixels);
 
       // Setup clamping and our min/mag filters
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -114,32 +100,20 @@ namespace gltext
 
       // Draw the texture-mapped quad
       glPushMatrix();
-         // Translate over to the font position
-         glTranslatef(penX + mPosX, penY + mPosY, 0);
-         glBegin(GL_QUADS);
-//            glTexCoord2f(0.0f, 0.0f); glVertex2i(0,      mHeight);
-//            glTexCoord2f(0.0f, 1.0f); glVertex2i(0,      0);
-//            glTexCoord2f(1.0f, 1.0f); glVertex2i(mWidth, 0);
-//            glTexCoord2f(1.0f, 0.0f); glVertex2i(mWidth, mHeight);
 
-//            glTexCoord2f(1.0f, 0.0f); glVertex2i(mWidth, mHeight);
-//            glTexCoord2f(1.0f, 1.0f); glVertex2i(mWidth, 0);
-//            glTexCoord2f(0.0f, 1.0f); glVertex2i(0,      0);
-//            glTexCoord2f(0.0f, 0.0f); glVertex2i(0,      mHeight);
+      // Translate over to the font position
+      glTranslatef(GLfloat(penX + mOffsetX), GLfloat(penY + mOffsetY), 0);
 
-            float realWidth = float(mWidth) / mTexWidth;
-            float realHeight = float(mHeight) / mTexHeight;
+      float realWidth = float(mWidth) / mTexWidth;
+      float realHeight = float(mHeight) / mTexHeight;
 
-            glTexCoord2f(0,         0);            glVertex2i(0,      0);
-            glTexCoord2f(realWidth, 0);            glVertex2i(mWidth, 0);
-            glTexCoord2f(realWidth, realHeight);   glVertex2i(mWidth, mHeight);
-            glTexCoord2f(0,         realHeight);   glVertex2i(0,      mHeight);
+      glBegin(GL_QUADS);
+      glTexCoord2f(0,         0);            glVertex2i(0,      0);
+      glTexCoord2f(realWidth, 0);            glVertex2i(mWidth, 0);
+      glTexCoord2f(realWidth, realHeight);   glVertex2i(mWidth, mHeight);
+      glTexCoord2f(0,         realHeight);   glVertex2i(0,      mHeight);
+      glEnd();
 
-//            glTexCoord2f(realWidth, 0.0f);         glVertex2i(mWidth, mHeight);
-//            glTexCoord2f(realWidth, realHeight);   glVertex2i(mWidth, 0);
-//            glTexCoord2f(0.0f,      realHeight);   glVertex2i(0,      0);
-//            glTexCoord2f(0.0f,      0.0f);         glVertex2i(0,      mHeight);
-         glEnd();
       glPopMatrix();
 
       // Unbind our texture and disable texturing

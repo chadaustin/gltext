@@ -2,4 +2,3 @@ EXPORTS
    GLTextCreateFont
    GLTextCreateRenderer
    GLTextGetVersion
-   GLTextFlushStream

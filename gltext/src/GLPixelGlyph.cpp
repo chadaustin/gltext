@@ -22,40 +22,44 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GLPixelGlyph.cpp,v $
- * Date modified: $Date: 2002-12-20 10:24:18 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-02-03 19:40:41 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
 #include "GLPixelGlyph.h"
-
-// Sigh ... I hate windows
-#ifdef WIN32
-#  include <windows.h>
-#endif
-#include <GL/gl.h>
+#include "OpenGL.h"
 
 namespace gltext
 {
-   GLPixelGlyph::GLPixelGlyph(int posX, int posY,
-                              int width, int height, float* data)
-      : mPosX(posX), mPosY(posY), mWidth(width), mHeight(height), mData(data)
-   {}
+   GLPixelGlyph::GLPixelGlyph(int offx, int offy,
+                              int width, int height, u8* data)
+      : mOffsetX(offx), mOffsetY(offy)
+      , mWidth(width), mHeight(height)
+   {
+      // align the rows in the pixel buffer to 4-byte boundaries
+      int pitch = (width + 3) / 4 * 4;
+      mData = new u8[pitch * height];
+      memset(mData, 0, pitch * height);
+      for (int y = 0; y < height; ++y)
+      {
+         memcpy(mData + pitch * y,
+                data + width * (height - y - 1),
+                width);
+      }
+      delete[] data;
+   }
 
    GLPixelGlyph::~GLPixelGlyph()
    {
-      delete [] mData;
+      delete[] mData;
    }
 
    void GLPixelGlyph::render(int penX, int penY) const
    {
-      // Bail silently if there's nothing to render.
-      if (mData)
-      {
-         // Move the raster position to the right location and blit the glyph
-         // image to the buffer.
-         glRasterPos2i(penX + mPosX, penY + mPosY);
-         glDrawPixels(mWidth, mHeight, GL_RGBA, GL_FLOAT, mData);
-      }
+      // Move the raster position to the right location and blit the glyph
+      // image to the buffer.
+      glRasterPos2i(penX + mOffsetX, penY + mHeight + mOffsetY);
+      glDrawPixels(mWidth, mHeight, GL_LUMINANCE, GL_UNSIGNED_BYTE, mData);
    }
 }

@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.cpp,v $
- * Date modified: $Date: 2002-12-23 23:05:06 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2003-02-03 19:40:41 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -33,59 +33,38 @@
 #include "PixmapRenderer.h"
 #include "TextureRenderer.h"
 
-#define GLTEXT_EXPORT(ret, name) ret GLTEXT_CALL name
+#define GLTEXT_EXPORT(ret) ret GLTEXT_CALL
 
 namespace gltext
 {
-   namespace {
-      GLTEXT_EXPORT(const char*, GLTextGetVersion)()
+   namespace internal
+   {
+      GLTEXT_EXPORT(const char*) GLTextGetVersion()
       {
          return "0.2.0";
       }
 
-      GLTEXT_EXPORT(Font*, GLTextCreateFont)(
-         const char* name,
-         FontStyle style,
-         int size)
+      GLTEXT_EXPORT(Font*) GLTextCreateFont(const char* name, int size)
       {
-         FTFont* font = 0;
-         try
-         {
-            font = new FTFont(name, style, size);
-         }
-         catch (std::runtime_error& error)
-         {
-            font = 0;
-         }
-         return font;
+         return FTFont::create(name, size);
       }
 
-      GLTEXT_EXPORT(FontRenderer*, GLTextCreateRenderer)(
-         FontRendererType type)
+      GLTEXT_EXPORT(FontRenderer*) GLTextCreateRenderer(
+         FontRendererType type,
+         Font* font)
       {
-         AbstractRenderer* renderer = 0;
+         if (!font)
+         {
+            return 0;
+         }
+
          switch (type)
          {
-         case BITMAP:
-            renderer = new BitmapRenderer();
-            break;
-         case PIXMAP:
-            renderer = new PixmapRenderer();
-            break;
-//         case TEXTURE:
-//            renderer = new TextureRenderer();
-//            break;
-         default:
-            renderer = 0;
-            break;
-         };
-         return renderer;
-      }
-
-      GLTEXT_EXPORT(FontStream*, GLTextFlushStream)(
-         FontStream* stream)
-      {
-         return &stream->flush();
+            case BITMAP:  return BitmapRenderer::create(font);
+            case PIXMAP:  return PixmapRenderer::create(font);
+            case TEXTURE: return TextureRenderer::create(font);
+            default:      return 0;
+         }
       }
    }
 }

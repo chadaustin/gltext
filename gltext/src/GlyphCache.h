@@ -22,21 +22,21 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GlyphCache.h,v $
- * Date modified: $Date: 2002-06-16 05:13:57 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-02-03 19:40:41 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
 #ifndef GLTEXT_GLYPHCACHE_H
 #define GLTEXT_GLYPHCACHE_H
 
-#include "FTGlyph.h"
 #include <map>
-#include <ft2build.h>
-#include FT_FREETYPE_H
+#include "GLGlyph.h"
 
 namespace gltext
 {
+   class Glyph;
+
    /**
     * Helper class for FontRenderer implementations to cache the rendering of a
     * particular glyph so they don't try to render it multiple times while
@@ -59,7 +59,7 @@ namespace gltext
        * Puts the given GLGlyph in the cache for the given FT2 glyph. Behavior
        * is undefined if either fontGlyph or glGlyph are NULL.
        */
-      void put(const FTGlyph* fontGlyph, GLGlyph* glGlyph)
+      void put(Glyph* fontGlyph, GLGlyph* glGlyph)
       {
          mCache[fontGlyph] = glGlyph;
       }
@@ -68,20 +68,13 @@ namespace gltext
        * Gets the GLGlyph for the given FT2 glyph. Returns NULL if the GL
        * rendered glyph is not yet in this cache.
        */
-      const GLGlyph* get(const FTGlyph* glyph) const
+      GLGlyph* get(Glyph* glyph)
       {
-         Cache::const_iterator itr = mCache.find(glyph);
-         if (itr != mCache.end())
-         {
-            // Cache hit
-            return itr->second;
-         }
-         // Cache miss
-         return 0;
+         return mCache[glyph];
       }
 
    private:
-      typedef std::map<const FTGlyph*, GLGlyph*> Cache;
+      typedef std::map<Glyph*, GLGlyph*> Cache;
 
       /// The mapping between font glyphs and rendered glyphs.
       Cache mCache;

@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: TextureRenderer.h,v $
- * Date modified: $Date: 2002-09-27 02:59:34 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2003-02-03 19:40:41 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -42,17 +42,14 @@ namespace gltext
    class TextureRenderer : public AbstractRenderer
    {
    public:
-      /**
-       * Creates a new renderer without a font to render with.
-       */
-      TextureRenderer();
-      virtual ~TextureRenderer();
+      static TextureRenderer* create(Font* font);
+      TextureRenderer(Font* font);
 
-   protected:
+   private:
       /**
        * Creates a GLGlyph specialized for this type of renderer.
        */
-      GLGlyph* makeGlyph(const FTGlyph* glyph);
+      GLGlyph* makeGlyph(Glyph* glyph);
    };
 }
 

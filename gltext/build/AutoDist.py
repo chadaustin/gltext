@@ -27,8 +27,8 @@ Automatic distribution builder and packager for SCons.
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: AutoDist.py,v $
-# Date modified: $Date: 2002-12-23 20:20:55 $
-# Version:       $Revision: 1.2 $
+# Date modified: $Date: 2003-02-03 19:40:38 $
+# Version:       $Revision: 1.3 $
 # -----------------------------------------------------------------
 ############################################################## autodist-cpr end
 
@@ -112,8 +112,8 @@ class _Assembly:
 
    def addSources(self, sources):
       """
-      Adds the given list of source files into this assembly. The list must come
-      in as strings as they are processed through File().
+      Adds the given list of source files into this assembly. The list must
+      come in as strings as they are processed through File().
       """
       # Use File() to figure out the absolute path to the file
       srcs = map(File, sources)
@@ -122,11 +122,11 @@ class _Assembly:
 
    def addHeaders(self, headers, prefix = None):
       """
-      Adds the given list of distribution header files into this assembly. These
-      headers will be installed to Prefix()/include/prefix. The list must come
-      in as strings as they are processed through File().
+      Adds the given list of distribution header files into this assembly.
+      These headers will be installed to Prefix()/include/prefix. The list
+      must come in as strings as they are processed through File().
       """
-      hdrs = map(lambda n: Header(n,prefix), map(File, headers))
+      hdrs = map(lambda n, prefix=prefix: Header(n,prefix), map(File, headers))
       self.data['headers'].extend(hdrs)
 
    def addIncludes(self, includes):

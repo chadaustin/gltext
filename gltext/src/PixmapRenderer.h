@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PixmapRenderer.h,v $
- * Date modified: $Date: 2002-06-16 05:13:57 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-02-03 19:40:41 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -35,22 +35,20 @@
 namespace gltext
 {
    /**
-    * Renders fonts anti-aliased with 256 levels of the current OpenGL color.
+    * Renders fonts anti-aliased with 256 levels of the current OpenGL
+    * color.
     */
    class PixmapRenderer : public AbstractRenderer
    {
    public:
-      /**
-       * Creates a new renderer without a font to render with.
-       */
-      PixmapRenderer();
-      virtual ~PixmapRenderer();
+      static PixmapRenderer* create(Font* font);
+      PixmapRenderer(Font* font);
 
    protected:
       /**
        * Creates a GLGlyph specialized for this type of renderer.
        */
-      GLGlyph* makeGlyph(const FTGlyph* glyph);
+      GLGlyph* makeGlyph(Glyph* glyph);
    };
 }
 

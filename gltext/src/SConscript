@@ -8,7 +8,6 @@ sources = Split("""
    gltext.cpp
    AbstractRenderer.cpp
    BitmapRenderer.cpp
-   FontStreamImpl.cpp
    FTFont.cpp
    FTGlyph.cpp
    FTLibrary.cpp

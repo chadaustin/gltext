@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.h,v $
- * Date modified: $Date: 2002-12-23 22:50:33 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2003-02-03 19:40:41 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -37,16 +37,21 @@
 #include <sstream>
 
 // The calling convention for cross-DLL calls in win32
-#ifdef WIN32
-#  define GLTEXT_CALL __stdcall
-#else
-#  define GLTEXT_CALL
+#ifndef GLTEXT_CALL
+#  ifdef WIN32
+#    define GLTEXT_CALL __stdcall
+#  else
+#    define GLTEXT_CALL
+#  endif
 #endif
 
-#define GLTEXT_FUNC(ret, decl) extern "C" ret GLTEXT_CALL decl
+#define GLTEXT_FUNC(ret) extern "C" ret GLTEXT_CALL
 
 namespace gltext
 {
+   typedef unsigned char u8;
+
+
    /**
     * Base class for classes the manage their own memory using reference
     * counting.
@@ -62,21 +67,22 @@ namespace gltext
        * delete operator.
        *
        * Interfaces that derive from RefCounted should define an inline, empty,
-       * protected destrutor as well.
+       * protected destructor as well.
        */
       ~RefCounted() {}
+
    public:
       /**
        * Add a reference to this object. This will increment the internal
        * reference count.
        */
-      virtual void ref() = 0;
+      virtual void GLTEXT_CALL ref() = 0;
 
       /**
        * Remove a reference from this object. This will decrement the internal
        * reference count. When this count reaches 0, the object is destroyed.
        */
-      virtual void unref() = 0;
+      virtual void GLTEXT_CALL unref() = 0;
    };
 
    /**
@@ -181,12 +187,12 @@ namespace gltext
       virtual ~RefImpl() {}
 
    public:
-      void ref()
+      void GLTEXT_CALL ref()
       {
          ++mRefCount;
       }
 
-      void unref()
+      void GLTEXT_CALL unref()
       {
          if (--mRefCount == 0)
          {
@@ -199,21 +205,50 @@ namespace gltext
    };
 
 
-   /// Styles of fonts supported.
-   enum FontStyle
-   {
-      PLAIN       = 0,  ///< Plain style
-      BOLD        = 1,  ///< Bold style
-      ITALIC      = 2,  ///< Italic style
-      BOLDITALIC  = 3   ///< Bold and italic. Equivalent to BOLD | ITALIC.
-   };
-
    /// Renderer types supported
    enum FontRendererType
    {
       BITMAP,
-      PIXMAP
+      PIXMAP,
+      TEXTURE,
    };
+
+
+   /// Represents a particular shape in a font used to represent one
+   /// or more characters.
+   class Glyph : public RefCounted
+   {
+   protected:
+      ~Glyph() {}
+
+   public:
+      /// Returns width in pixels
+      virtual int GLTEXT_CALL getWidth() = 0;
+
+      /// Returns height in pixels.
+      virtual int GLTEXT_CALL getHeight() = 0;
+      
+      /// Returns the X offset of this glyph when it is drawn.
+      virtual int GLTEXT_CALL getXOffset() = 0;
+      
+      /// Returns the Y offset of this glyph when it is drawn.
+      virtual int GLTEXT_CALL getYOffset() = 0;
+
+      /// Returns the number of pixels the pen should move to the
+      /// right to draw the next character
+      virtual int GLTEXT_CALL getAdvance() = 0;
+
+      /// Renders the glyph into a buffer of width * height bytes.  A
+      /// value of 0 means the pixel is transparent; likewise, 255
+      /// means opaque.
+      virtual void GLTEXT_CALL render(u8* pixels) = 0;
+
+      /// renderBitmap() is the same as render, except that it only
+      /// uses values 0 and 255.  These bitmaps may look better on
+      /// two-color displays.
+      virtual void GLTEXT_CALL renderBitmap(u8* pixels) = 0;
+   };
+
 
    /**
     * Represents a particular font face.
@@ -225,37 +260,37 @@ namespace gltext
 
    public:
       /// Gets the name of this font.
-      virtual const char* getName() const = 0;
+      virtual const char* GLTEXT_CALL getName() = 0;
 
-      /// Gets the style of this font.
-      virtual FontStyle getStyle() const = 0;
+      /// Returns the glyph object associated with the character c in
+      /// the font.
+      virtual Glyph* GLTEXT_CALL getGlyph(unsigned char c) = 0;
 
       /// Gets the point size of this font.
-      virtual int getSize() const = 0;
+      virtual int GLTEXT_CALL getSize() = 0;
 
       /**
-       * Gets the ascent of this font. This is the distance from the baseline to
-       * the top of the tallest glyph of this font.
+       * Gets the ascent of this font. This is the distance from the
+       * baseline to the top of the tallest glyph of this font.
        */
-      virtual int getAscent() const = 0;
+      virtual int GLTEXT_CALL getAscent() = 0;
 
       /**
-       * Gets the descent of this font. This is the distance from the baseline
-       * to the bottom of the the glyph that descends the most from the
-       * baseline.
+       * Gets the descent of this font. This is the distance from the
+       * baseline to the bottom of the glyph that descends the most
+       * from the baseline.
        */
-      virtual int getDescent() const = 0;
+      virtual int GLTEXT_CALL getDescent() = 0;
 
       /**
-       * Gets the distance that must be placed between two lines of text. Thus
-       * the baseline to baseline distance can be computed as
-       * ascent + descent + linegap.
+       * Gets the distance that must be placed between two lines of
+       * text. Thus the baseline to baseline distance can be computed
+       * as ascent + descent + linegap.
        */
-      virtual int getLineGap() const = 0;
+      virtual int GLTEXT_CALL getLineGap() = 0;
    };
    typedef RefPtr<Font> FontPtr;
 
-   class FontStream;
 
    /**
     * Interface to an object that knows how to render a font.
@@ -270,96 +305,119 @@ namespace gltext
        * Renders the text in the given string as glyphs using this font
        * renderer's current font.
        */
-      virtual void render(const char* text) = 0;
-
-      /**
-       * Gets a stream for this renderer. All output to the stream will be sent
-       * as text to this renderer when it has been flushed.
-       */
-      virtual FontStream& getStream() = 0;
+      virtual void GLTEXT_CALL render(const char* text) = 0;
 
       /**
        * Computes the width of the given text string if it were to be rendered
        * with this renderer.
        */
-      virtual int getWidth(const char* text) = 0;
-
-      /**
-       * Sets the font this renderer should use.
-       *
-       * @param font    the new font to use
-       */
-      virtual void setFont(Font* font) = 0;
-
-      /**
-       * Gets the font this renderer should use.
-       *
-       * @return  this renderer's font
-       */
-      virtual Font* getFont() const = 0;
+      virtual int GLTEXT_CALL getWidth(const char* text) = 0;
    };
    typedef RefPtr<FontRenderer> FontRendererPtr;
 
+
    /**
-    * Provides a stream with which to use to provide text to a renderer.
+    * Provides an iostream-like interface to a font renderer.  Use as follows:
+    * FontStream(renderer).get() << blah blah blah;
     */
-   class FontStream : public RefCounted
+   class FontStream : public std::ostringstream
    {
-   protected:
-      ~FontStream() {}
-
    public:
-      /**
-       * Flushes the output in the given font stream through the renderer.
-       */
-      virtual FontStream& flush() = 0;
+      FontStream(FontRenderer* r)
+         : mRenderer(r)
+      {
+      }
+      
+      FontStream(const FontRendererPtr& p)
+         : mRenderer(p.get())
+      {
+      }
 
-      ///@{
+      ~FontStream()
+      {
+         flush();
+      }
+
       /**
-       * Renders the value of the given type as text.
+       * This is a little trick to convert an rvalue to an lvalue.
+       * The problem is this: class temporaries created with
+       * FontStream(r) are rvalues, which means they cannot be
+       * assigned to FontStream& references.  Therefore, temporaries
+       * cannot be used as arguments to the standard operator<<
+       * overloads.
+       *
+       * However!  You CAN call methods on object rvalues and methods
+       * CAN return lvalues!  This method effectively converts *this
+       * from an rvalue to an lvalue using the syntax:
+       * FontStream(r).get().
        */
-      virtual FontStream& operator<<(long val) = 0;
-      virtual FontStream& operator<<(unsigned long val) = 0;
-      virtual FontStream& operator<<(bool val) = 0;
-      virtual FontStream& operator<<(short val) = 0;
-      virtual FontStream& operator<<(unsigned short val) = 0;
-      virtual FontStream& operator<<(int val) = 0;
-      virtual FontStream& operator<<(unsigned int val) = 0;
-      virtual FontStream& operator<<(float val) = 0;
-      virtual FontStream& operator<<(double val) = 0;
-      virtual FontStream& operator<<(long double val) = 0;
-      virtual FontStream& operator<<(char val) = 0;
-      virtual FontStream& operator<<(unsigned char val) = 0;
-      virtual FontStream& operator<<(const char* val) = 0;
-      virtual FontStream& operator<<(const unsigned char* val) = 0;
-      virtual FontStream& operator<<(FontStream& (*func)(FontStream& stream)) = 0;
-      ///@}
+      FontStream& get()
+      {
+         return *this;
+      }
+
+      FontRenderer* getRenderer()
+      {
+         return mRenderer;
+      }
+
+      /**
+       * Calls render() on the associated FontRenderer using the
+       * string that has been created so far.  Then it sets the string
+       * to empty.  flush() is called before any GLText manipulator
+       * and when the font stream is destroyed.
+       */
+      void flush()
+      {
+         mRenderer->render(str().c_str());
+         str("");
+      }
+
+   private:
+      FontRenderer* mRenderer;
    };
-   typedef RefPtr<FontStream> FontStreamPtr;
+
+   /**
+    * This generic insertion operator can take any type (but fails if
+    * the type can't be inserted into a std::ostream) and returns a
+    * FontStream&.  Otherwise, something like |FontStream(...) <<
+    * "blah" << gltextmanip;| would not work, as 'gltextmanip' cannot
+    * be inserted into a std::ostream.
+    */
+   template<typename T>
+   FontStream& operator<<(FontStream& fs, T t)
+   {
+      static_cast<std::ostream&>(fs) << t;
+      return fs;
+   }
+
+   /**
+    * Flush the font stream and apply the gltext stream manipulator to it.
+    */
+   inline FontStream& operator<<(FontStream& fs, FontStream& (*manip)(FontStream&))
+   {
+      fs.flush();
+      return manip(fs);
+   }
+
 
    /**
     * PRIVATE API - for internal use only
     * Anonymous namespace containing our exported functions. They are extern "C"
     * so we don't mangle the names and they export nicely as shared libraries.
     */
-   namespace
+   namespace internal
    {
       /// Gets version information
-      GLTEXT_FUNC(const char*, GLTextGetVersion());
+      GLTEXT_FUNC(const char*) GLTextGetVersion();
 
       /// Creates a new Font by name.
-      GLTEXT_FUNC(Font*, GLTextCreateFont(
-         const char* name,
-         FontStyle style,
-         int size));
+      GLTEXT_FUNC(Font*) GLTextCreateFont(const char* name, int size);
 
       /// Creates a new FontRenderer.
-      GLTEXT_FUNC(FontRenderer*, GLTextCreateRenderer(
-         FontRendererType type));
-
-      /// Flushes the given font stream.
-      GLTEXT_FUNC(FontStream*, GLTextFlushStream(
-         FontStream* stream));
+      GLTEXT_FUNC(FontRenderer*) GLTextCreateRenderer(
+         FontRendererType type,
+         Font* font);
    }
 
    /**
@@ -369,41 +427,31 @@ namespace gltext
     */
    inline const char* GetVersion()
    {
-      return GLTextGetVersion();
+      return internal::GLTextGetVersion();
    }
 
    /**
     * Creates a new font from the given name, style and point size.
     *
     * @param name    the name of a particular font face.
-    * @param style   the style constant for the Font. This can be PLAIN, BOLD,
-    *                ITALIC or BOLD|ITALIC. Any other bitwise combination of
-    *                these values will be ignored.
     * @param size    the point size of the font.
     */
-   inline Font* CreateFont(const char* name, FontStyle style, int size)
+   inline Font* CreateFont(const char* name, int size)
    {
-      return GLTextCreateFont(name, style, size);
+      return internal::GLTextCreateFont(name, size);
    }
 
    /**
     * Creates a new font renderer of the given type.
     *
     * @param type    the type of renderer to create.
+    * @param font    the font to render
     */
-   inline FontRenderer* CreateRenderer(FontRendererType type)
+   inline FontRenderer* CreateRenderer(FontRendererType type, Font* font)
    {
-      return GLTextCreateRenderer(type);
+      return internal::GLTextCreateRenderer(type, font);
    }
-
-   /**
-    * Flushes the output in the given font stream through the renderer.
-    */
-   inline FontStream& flush(FontStream& fs)
-   {
-      return *GLTextFlushStream(&fs);
-   }
-
 }
+
 
 #endif

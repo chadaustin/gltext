@@ -19,7 +19,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(SolutionDir)../src"
+				AdditionalIncludeDirectories="$(SolutionDir)../src;$(SolutionDir)../third-party-vc7/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -35,7 +35,7 @@
 				AdditionalDependencies="glut32.lib gltext.lib"
 				OutputFile="$(OutDir)/example_sizes.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(OutDir)"
+				AdditionalLibraryDirectories="$(OutDir);$(SolutionDir)../third-party-vc7/lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/example_sizes.pdb"
 				SubSystem="1"
@@ -66,7 +66,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OmitFramePointers="TRUE"
-				AdditionalIncludeDirectories="$(SolutionDir)../src"
+				AdditionalIncludeDirectories="$(SolutionDir)../src;$(SolutionDir)../third-party-vc7/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				StringPooling="TRUE"
 				RuntimeLibrary="4"
@@ -82,7 +82,7 @@
 				AdditionalDependencies="glut32.lib gltext.lib"
 				OutputFile="$(OutDir)/example_sizes.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(OutDir)"
+				AdditionalLibraryDirectories="$(OutDir);$(SolutionDir)../third-party-vc7/lib"
 				GenerateDebugInformation="TRUE"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -106,7 +106,7 @@
 	</Configurations>
 	<Files>
 		<File
-			RelativePath="..\examples\sizes\main.cpp">
+			RelativePath="..\examples\sizes\sizes.cpp">
 		</File>
 	</Files>
 	<Globals>

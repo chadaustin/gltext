@@ -1,9 +1,9 @@
 Microsoft Visual Studio Solution File, Format Version 7.00
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gltext", "gltext.vcproj", "{A737529C-8CC0-4303-BD76-071F2232C965}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example_simple", "example_simple.vcproj", "{A737529C-8CC0-4303-BD76-071F2232C965}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example_sizes", "example_sizes.vcproj", "{AFE97A6E-60A0-4583-ADE3-79C6D8078439}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example_simple", "example_simple.vcproj", "{E111584B-A981-48C2-AAA5-1C2DD23B494B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gltext", "gltext.vcproj", "{E111584B-A981-48C2-AAA5-1C2DD23B494B}"
 EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -11,8 +11,8 @@ Global
 		ConfigName.1 = Release
 	EndGlobalSection
 	GlobalSection(ProjectDependencies) = postSolution
-		{AFE97A6E-60A0-4583-ADE3-79C6D8078439}.0 = {A737529C-8CC0-4303-BD76-071F2232C965}
-		{E111584B-A981-48C2-AAA5-1C2DD23B494B}.0 = {A737529C-8CC0-4303-BD76-071F2232C965}
+		{A737529C-8CC0-4303-BD76-071F2232C965}.0 = {E111584B-A981-48C2-AAA5-1C2DD23B494B}
+		{AFE97A6E-60A0-4583-ADE3-79C6D8078439}.0 = {E111584B-A981-48C2-AAA5-1C2DD23B494B}
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{A737529C-8CC0-4303-BD76-071F2232C965}.Debug.ActiveCfg = Debug|Win32

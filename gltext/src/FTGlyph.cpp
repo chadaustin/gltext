@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: FTGlyph.cpp,v $
- * Date modified: $Date: 2002-06-16 05:13:57 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-02-03 19:40:41 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -31,66 +31,155 @@
 
 namespace gltext
 {
-   FTGlyph::FTGlyph(FT_Face face, char c)
-      throw(std::runtime_error)
+   FTGlyph* FTGlyph::create(FT_Face face, char c)
    {
-      FT_Error error;
-
-      // Compute the index of the glyph for the given char
-      FT_UInt glyph_index = FT_Get_Char_Index(face, int(c));
-      if (glyph_index == 0)
-      {
-         throw std::runtime_error("Character has undefined character code");
-      }
-
-      // Try to load the glyph from the face
-      error = FT_Load_Glyph(face, glyph_index, FT_LOAD_DEFAULT);
+      // just load the glyph into the face's glyph slot
+      FT_Error error = FT_Load_Char(face, c, FT_LOAD_DEFAULT);
       if (error)
       {
-         throw std::runtime_error("Failed to load glyph");
+         return 0;
       }
 
-      // Try to cache the glyph
-      error = FT_Get_Glyph(face->glyph, &mGlyph);
+      // get a glyph object from the glyph slot to be rendered as a pixmap
+      FT_Glyph pxm_glyph;
+      error = FT_Get_Glyph(face->glyph, &pxm_glyph);
       if (error)
       {
-         throw std::runtime_error("Failed to cache the glyph");
+         return 0;
       }
 
-      // Cache glyph metrics
-      mWidth = face->glyph->metrics.width >> 6;
-      mHeight = face->glyph->metrics.height >> 6;
-      mAdvance = face->glyph->metrics.horiAdvance >> 6;
+      // copy the unmodified pixmap glyph into a glyph fated to be
+      // rendered as a bitmap
+      FT_Glyph btm_glyph;
+      error = FT_Glyph_Copy(pxm_glyph, &btm_glyph);
+      if (error)
+      {
+         FT_Done_Glyph(pxm_glyph);
+         return 0;
+      }
+
+      error = FT_Glyph_To_Bitmap(&pxm_glyph, ft_render_mode_normal, 0, true);
+      if (error)
+      {
+         FT_Done_Glyph(pxm_glyph);
+         FT_Done_Glyph(btm_glyph);
+         return 0;
+      }
+
+      error = FT_Glyph_To_Bitmap(&btm_glyph, ft_render_mode_mono, 0, true);
+      if (error)
+      {
+         FT_Done_Glyph(pxm_glyph);
+         FT_Done_Glyph(btm_glyph);
+         return 0;
+      }
+
+      FT_BitmapGlyph pxm_glyph_bitmap = (FT_BitmapGlyph)pxm_glyph;
+      FT_BitmapGlyph btm_glyph_bitmap = (FT_BitmapGlyph)btm_glyph;
+
+      int advance = face->glyph->metrics.horiAdvance / 64;
+
+      // use the largest bitmap rendering...
+      int width  = std::max(pxm_glyph_bitmap->bitmap.width,
+                            btm_glyph_bitmap->bitmap.width);
+      int height = std::max(pxm_glyph_bitmap->bitmap.rows,
+                            btm_glyph_bitmap->bitmap.rows);
+
+      // allocate pixmap and bitmap buffers
+      u8* pixmap = new u8[width * height];
+      u8* bitmap = new u8[width * height];
+
+      // copy the pixmap bitmap glyph buffer into our local buffer
+      int pxm_pitch  = pxm_glyph_bitmap->bitmap.pitch;
+      u8* pxm_source = pxm_glyph_bitmap->bitmap.buffer;
+      for (int i = 0; i < height; ++i)
+      {
+         memcpy(pixmap + i * width, pxm_source, width);
+         pxm_source += pxm_pitch;
+      }
+
+      // copy the bitmap bitmap glyph buffer into our local buffer
+      int btm_pitch  = btm_glyph_bitmap->bitmap.pitch;
+      u8* btm_source = btm_glyph_bitmap->bitmap.buffer;
+      for (int i = 0; i < height; ++i)
+      {
+         for (int c = 0; c < width; ++c)
+         {
+            int bytePos = i * btm_pitch + (c / 8);
+            int bit = c % 8;
+            unsigned char byte = btm_source[bytePos];
+            int value = ((byte & (0x80 >> bit)) != 0) * 255;
+            bitmap[i * width + c] = value;
+         }
+      }
+      
+      int offx = pxm_glyph_bitmap->left;
+      int offy = -pxm_glyph_bitmap->top;
+
+
+      // FINALLY, create a new glyph object with the decoded pixel buffers
+      return new FTGlyph(width, height, offx, offy, advance, pixmap, bitmap);
+   }
+
+   FTGlyph::FTGlyph(int width, int height, int offx, int offy, int advance,
+                    u8* pixmap, u8* bitmap)
+   {
+      mWidth   = width;
+      mHeight  = height;
+      mXOffset = offx;
+      mYOffset = offy;
+      mAdvance = advance;
+      mPixmap  = pixmap;
+      mBitmap  = bitmap;
    }
 
    FTGlyph::~FTGlyph()
    {
-      // Release the glyph
-      FT_Done_Glyph(mGlyph);
+      delete[] mPixmap;
+      mPixmap = 0;
+      delete[] mBitmap;
+      mBitmap = 0;
    }
 
    int
-   FTGlyph::getWidth() const
+   FTGlyph::getWidth()
    {
       return mWidth;
    }
 
    int
-   FTGlyph::getHeight() const
+   FTGlyph::getHeight()
    {
       return mHeight;
    }
+   
+   int
+   FTGlyph::getXOffset()
+   {
+      return mXOffset;
+   }
+   
+   int
+   FTGlyph::getYOffset()
+   {
+      return mYOffset;
+   }
 
    int
-   FTGlyph::getAdvance() const
+   FTGlyph::getAdvance()
    {
-      /// @todo this should really be a float...
       return mAdvance;
    }
 
-   FT_Glyph
-   FTGlyph::getGlyph() const
+   void
+   FTGlyph::render(u8* pixels)
    {
-      return mGlyph;
+      memcpy(pixels, mPixmap, mWidth * mHeight);
+   }
+
+   void
+   FTGlyph::renderBitmap(u8* pixels)
+   {
+      memcpy(pixels, mBitmap, mWidth * mHeight);
    }
 }
