@@ -35,7 +35,7 @@ current OpenGL color to draw the text.
    glMatrixMode(GL_MODELVIEW);
    glTranslatef(100, 100, 100);
    glColor4f(1, 1, 1, 0.5f);
-   gltext::FontStream(myRenderer) << "hello world in the year " << 2002;
+   GLTEXT_STREAM(myRenderer) << "hello world in the year " << 2002;
 
 6.  When you're done, make sure you delete your fonts and renderers.
 The smart pointers will take care of this in most cases for you.

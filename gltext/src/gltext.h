@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.h,v $
- * Date modified: $Date: 2003-03-18 06:38:56 $
- * Version:       $Revision: 1.23 $
+ * Date modified: $Date: 2003-03-18 06:59:57 $
+ * Version:       $Revision: 1.24 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -401,7 +401,7 @@ namespace gltext
 
       FontRenderer* getRenderer()
       {
-         return mRenderer;
+         return mRenderer.get();
       }
 
       /**
@@ -417,7 +417,7 @@ namespace gltext
       }
 
    private:
-      FontRenderer* mRenderer;
+      FontRendererPtr mRenderer;
    };
 
    /**

@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: fps.cpp,v $
- * Date modified: $Date: 2003-03-15 06:18:59 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2003-03-18 06:59:56 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -98,7 +98,7 @@ void display()
    const FontRendererPtr& renderer = gRenderers[gCurrentRenderer].renderer;
 
    int fps = gFPSCounter.getFPS();
-   std::stringstream ss;
+   std::ostringstream ss;
    ss << "FPS: " << fps << "\n" << "Renderer: " << name << "\n\n";
    for (int i = 0; i < 12; ++i)
    {
