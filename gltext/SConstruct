@@ -5,6 +5,8 @@ pj = os.path.join
 sys.path = ['build'] + sys.path
 from AutoDist import *
 
+EnsureSConsVersion(0,11)
+
 
 # Check for optimize option
 optimize = 0

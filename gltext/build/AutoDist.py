@@ -27,12 +27,13 @@ Automatic distribution builder and packager for SCons.
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: AutoDist.py,v $
-# Date modified: $Date: 2003-02-13 06:01:04 $
-# Version:       $Revision: 1.4 $
+# Date modified: $Date: 2003-02-13 06:36:32 $
+# Version:       $Revision: 1.5 $
 # -----------------------------------------------------------------
 ############################################################## autodist-cpr end
 
-__version__ = '0.1.3'
+__version__    = '0.1.4'
+__author__     = 'Ben Scott'
 
 
 from os import path
@@ -418,7 +419,7 @@ def _CreateSourceTarGzBuilder(env):
 
       # Make the tar.gz
       targz = Action('tar cf - -C '+temp_dir+' $SOURCES | gzip -f > $TARGET')
-      targz.execute(target, [dist_name], env)
+      targz(target, [dist_name], env)
 
       # Remove the temporary directory
       shutil.rmtree(temp_dir)
