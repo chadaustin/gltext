@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gltext.h,v $
- * Date modified: $Date: 2003-03-15 04:04:12 $
- * Version:       $Revision: 1.22 $
+ * Date modified: $Date: 2003-03-18 06:38:56 $
+ * Version:       $Revision: 1.23 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -358,22 +358,25 @@ namespace gltext
 
    /**
     * Provides an iostream-like interface to a font renderer.  Use as follows:
-    * FontStream(renderer).get() << blah blah blah;
+    * Stream(renderer).get() << blah blah blah;
+    *
+    * The GLTEXT_STREAM macro may be simpler:
+    * GLTEXT_STREAM(renderer) << blah blah blah;
     */
-   class FontStream : public std::ostringstream
+   class Stream : public std::ostringstream
    {
    public:
-      FontStream(FontRenderer* r)
+      Stream(FontRenderer* r)
          : mRenderer(r)
       {
       }
       
-      FontStream(const FontRendererPtr& p)
+      Stream(const FontRendererPtr& p)
          : mRenderer(p.get())
       {
       }
 
-      ~FontStream()
+      ~Stream()
       {
          flush();
       }
@@ -391,7 +394,7 @@ namespace gltext
        * from an rvalue to an lvalue using the syntax:
        * FontStream(r).get().
        */
-      FontStream& get()
+      Stream& get()
       {
          return *this;
       }
@@ -425,7 +428,7 @@ namespace gltext
     * be inserted into a std::ostream.
     */
    template<typename T>
-   FontStream& operator<<(FontStream& fs, T t)
+   Stream& operator<<(Stream& fs, T t)
    {
       static_cast<std::ostream&>(fs) << t;
       return fs;
@@ -434,11 +437,20 @@ namespace gltext
    /**
     * Flush the font stream and apply the gltext stream manipulator to it.
     */
-   inline FontStream& operator<<(FontStream& fs, FontStream& (*manip)(FontStream&))
+   inline Stream& operator<<(Stream& fs, Stream& (*manip)(Stream&))
    {
       fs.flush();
       return manip(fs);
    }
+
+   /**
+    * A convenience macro around gltext::Stream().  Used as follows:
+    * GLTEXT_STREAM(renderer) << blah blah blah;
+    *
+    * This is the preferred interface for streaming text to a
+    * renderer.
+    */
+   #define GLTEXT_STREAM(renderer) gltext::Stream(renderer).get()
 
 
    /**

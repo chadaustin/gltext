@@ -22,8 +22,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: simple.cpp,v $
- * Date modified: $Date: 2003-03-15 06:18:59 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2003-03-18 06:38:56 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  ************************************************************ gltext-cpr-end */
@@ -46,8 +46,8 @@ void drawText(const FontRendererPtr& renderer, std::string text)
    const int dpi    = renderer->getFont()->getDPI();
    const int width  = renderer->getWidth(text.c_str());
    const int height = renderer->getHeight(text.c_str());
-   FontStream(renderer).get() << text << size << "  " << dpi
-                              << "  " << width << "*" << height;
+   GLTEXT_STREAM(renderer) << text << size << "  " << dpi
+                           << "  " << width << "*" << height;
 }
 
 void display()

@@ -1,5 +1,7 @@
 DATE       AUTHOR       CHANGE
 ---------- -----------  -------------------------------------------------------
+2003-03-18 aegis        Renamed FontStream to Stream and added the
+                        GLTEXT_STREAM convenience macro.
 2003-03-15 aegis        Added an fps example and made the renderers always
 	                draw with the current position being the upper left
 	                corner of the text.
