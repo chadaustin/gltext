@@ -154,7 +154,7 @@ if string.find(sys.platform, 'irix') != -1:
    baseEnv = BuildIRIXEnvironment()
 else:
    baseEnv = BuildBaseEnvironment()
-   
+
 Export('baseEnv')
 
 # Create the gltext package

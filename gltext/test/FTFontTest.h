@@ -1,6 +1,7 @@
 #ifndef FTFONTTEST_H
 #define FTFONTTEST_H
 
+#include <stdexcept>
 #include <cppunit/TestCase.h>
 #include <cppunit/extensions/HelperMacros.h>
 

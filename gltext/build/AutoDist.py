@@ -27,8 +27,8 @@ Automatic distribution builder and packager for SCons.
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: AutoDist.py,v $
-# Date modified: $Date: 2003-02-13 06:36:32 $
-# Version:       $Revision: 1.5 $
+# Date modified: $Date: 2003-03-06 08:24:17 $
+# Version:       $Revision: 1.6 $
 # -----------------------------------------------------------------
 ############################################################## autodist-cpr end
 
@@ -260,7 +260,9 @@ class Program(_Assembly):
       Sets up the build dependencies and the install.
       """
       # Build rule
-      prog = self.data['env'].Program(self.data['name'], source  = self.data['sources'])
+      prog = self.data['env'].Program(
+         self.data['name'],
+         source = self.data['sources'])
 
       # Install the binary
       self.data['env'].Install(path.join(Prefix(), 'bin'), prog)

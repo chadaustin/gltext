@@ -6,14 +6,15 @@ try:
 
     # Clone the environment
     env = baseEnv.Copy()
-    env['CPPPATH'].extend(['#src'])
-    env['LIBPATH'].extend(['#src'])
-    env['LIBS'].extend(['gltext'])
+    env.Append(CPPPATH = ['#src'],
+               LIBPATH = ['#src'],
+               LIBS = ['gltext'])
     SetupFreeType(env)
     SetupCppUnit(env)
 
     prog = pkg.createProgram('runtests', env)
     prog.addSources(sources)
-except:
+except RuntimeError, e:
+    print e
     print "No cppunit found, not building tests"
     pass
